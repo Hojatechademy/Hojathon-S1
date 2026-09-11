@@ -1,35 +1,31 @@
 # Hojathon
 
-**Build. Create. Innovate.**
+Build agents that don't just respond — they act.
 
-Welcome to the official **Hojathon** starter and submission repository. This repository is the single source of truth for the hackathon — every team forks it, builds their project inside their fork, and submits their final work back here through a Pull Request.
+Hojathon is an agentic AI hackathon. Teams build systems that can reason, plan, call tools or APIs, and carry out multi-step tasks on their own — not just chatbots that answer a single prompt. This repository is the official starter and submission template: fork it, build your project inside your fork, and submit your final work back here through a Pull Request.
 
-Hojathon is **technology-agnostic**. There is no required programming language, framework, library, database, or platform. Teams are free to build with whatever tools best fit their idea, from a static HTML page to a full-stack AI application.
-
-This repository is a **starting point and submission template**, not an application boilerplate. It contains no source code and no dependencies — only structure and documentation to keep every team's submission consistent and easy for judges to evaluate.
+There's no required stack. Build your agent with any language, any framework, any model provider or orchestration approach — LangChain, a custom agent loop, raw API calls, whatever gets the job done. This repo itself contains no code. It's just the structure and docs every team needs so judges can actually run and evaluate what you built.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-New to hackathons or to Git/GitHub? Follow these steps:
-
-1. **Fork the Hojathon repository** — click the "Fork" button at the top of this page to create your own copy.
-2. **Clone your fork** to your computer:
+1. **Fork this repository** — click "Fork" at the top of this page.
+2. **Clone your fork:**
    ```bash
    git clone https://github.com/<your-username>/<your-fork>.git
    ```
-3. **Add your teammates as collaborators** on your fork (GitHub → Settings → Collaborators), so everyone can push directly.
-4. **Create your project** inside your fork, using any technology stack you like.
-5. **Commit and push your work regularly** — don't wait until the last minute to save your progress.
-6. **Complete the project documentation** (see [Project Documentation](#project-documentation) below and the [`docs/`](docs/) folder).
-7. **Create the final Pull Request** back to the official Hojathon repository before the deadline.
+3. **Add your teammates as collaborators** on your fork (GitHub → Settings → Collaborators) so everyone can push directly.
+4. **Build your project** inside your fork, using whatever stack fits your idea.
+5. **Commit and push regularly** — don't wait until the deadline to save your work.
+6. **Fill in the project documentation** (see [Project Documentation](#project-documentation) below and the [`docs/`](docs/) folder).
+7. **Open your final Pull Request** back to this repository before the deadline.
 
 ---
 
 ## Team Information
 
-Fill this section in as soon as your team is formed.
+Fill this in as soon as your team is formed.
 
 **Team ID:**
 
@@ -49,7 +45,7 @@ Fill this section in as soon as your team is formed.
 
 ## Project Documentation
 
-Replace the placeholders below with your own project's details. This is the core of what judges will read.
+Replace the placeholders below with your own project's details — this is what judges will actually read.
 
 ### Project Name
 
@@ -57,11 +53,11 @@ Replace the placeholders below with your own project's details. This is the core
 
 ### Problem Statement
 
-What problem are you solving?
+What problem are you solving, and why does it call for an agent rather than a static script or a plain UI?
 
 ### Proposed Solution
 
-Explain your solution clearly.
+Explain your solution and how your agent approaches the problem.
 
 ### Key Features
 
@@ -84,7 +80,7 @@ Describe whatever stack you chose. None of the categories below are required —
 
 ### How It Works
 
-Explain the architecture/workflow of your solution. Feel free to add diagrams if useful.
+Explain your agent's architecture: what tools or APIs it can call, how it plans and decides what to do next, and what a full run through your system looks like. Add diagrams if they help.
 
 ### Setup & Installation
 
@@ -92,7 +88,7 @@ Replace this section with your project's actual setup instructions.
 
 ### Running the Project
 
-Explain exactly how judges can run/use the project.
+Explain exactly how judges can run and use the project.
 
 ### Demo
 
@@ -150,7 +146,7 @@ Official Hojathon Repository
     Judges
 ```
 
-Teams should **not** send Pull Requests for every development change. Work normally inside your own fork, committing and pushing as often as you like — only create a Pull Request to the official repository when you are ready to make your **final submission**.
+Don't open a Pull Request for every change. Work normally inside your own fork, committing and pushing as often as you like — only open a Pull Request to the official repository when you're ready to make your **final submission**.
 
 ---
 
