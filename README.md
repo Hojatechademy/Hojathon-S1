@@ -91,26 +91,6 @@ Replace this section with your project's actual setup instructions.
 
 Explain exactly how judges can run and use the project.
 
-### Demo
-
-**Demo URL:**
-
-### Demo Video
-
-**Video URL:**
-
-### Screenshots
-
-Add screenshots here.
-
-### Challenges Faced
-
-Describe the main challenges encountered.
-
-### Future Improvements
-
-Describe what could be improved with more time.
-
 ---
 
 ## Participant Rules
