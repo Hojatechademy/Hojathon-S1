@@ -10,16 +10,17 @@ There's no required stack. Build your agent with any language, any framework, an
 
 ## Getting Started
 
-1. **Fork this repository** — click "Fork" at the top of this page.
-2. **Clone your fork:**
+1. **Fork this repository** — click "Fork" at the top of this page, then click the green **"Create fork"** button on the page that follows to confirm.
+2. **Clone your fork** to your computer:
    ```bash
    git clone https://github.com/<your-username>/<your-fork>.git
    ```
-3. **Add your teammates as collaborators** on your fork (GitHub → Settings → Collaborators) so everyone can push directly.
-4. **Build your project** inside your fork, using whatever stack fits your idea.
-5. **Commit and push regularly** — don't wait until the deadline to save your work.
-6. **Fill in the project documentation** (see [Project Documentation](#project-documentation) below and the [`docs/`](docs/) folder).
-7. **Open your final Pull Request** back to this repository before the deadline.
+3. **Read through this README and the [`docs/`](docs/) folder in full** before you write any code, so you understand the rules, the workflow, and what your final submission needs to include.
+4. **Add your teammates as collaborators** on your fork (GitHub → Settings → Collaborators) so everyone can push directly.
+5. **Build your project** inside your fork, using whatever stack fits your idea.
+6. **Commit and push regularly** — don't wait until the deadline to save your work.
+7. **Fill in the project documentation** (see [Project Documentation](#project-documentation) below and the [`docs/`](docs/) folder).
+8. **Open your final Pull Request** back to this repository before the deadline.
 
 ---
 
