@@ -1,0 +1,46 @@
+# =========================================
+# Hojathon — Generic, stack-agnostic .gitignore
+# =========================================
+# This file protects against accidentally committing secrets and
+# common OS/editor junk. It does not assume any specific language,
+# framework, or tool. Add stack-specific rules for your own project
+# as needed inside your fork.
+
+# ---- Secrets & credentials ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*secret*
+*credentials*
+*.p12
+*.pfx
+
+# ---- OS-generated files ----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ---- Editor / IDE metadata ----
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ---- Temporary / log files ----
+*.log
+*.tmp
+*.temp
+*.bak
+*.cache
