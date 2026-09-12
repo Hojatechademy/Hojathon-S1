@@ -1,25 +1,22 @@
-# Supabase ownership and coordination
+# Supabase Ownership Boundaries
 
-## One shared project
+## Shared Database & Configuration
 
-The entire hackathon uses one Supabase project. Both developers use the same database, Auth configuration, RLS policies, and environment configuration. Separate developer projects are not allowed.
+Both Developer 1 and Developer 2 share a single Supabase project instance.
 
-## Module ownership
+- **Schema Migration**: `supabase/migrations/001_foundation.sql` defines:
+  - `patient_profiles` (RLS: `auth.uid() = id`)
+  - `follow_up_tasks` (RLS: `auth.uid() = patient_id`)
+  - `appointments` (RLS: `auth.uid() = patient_id`)
+  - `reminders` (RLS: `auth.uid() = patient_id`)
 
-- **Developer 1 — Patient Workspace:** owns the Supabase reads and writes required for authentication, patient context, task/appointment/reminder display, and dashboard refresh.
-- **Developer 2 — Follow-up Agent and Actions:** owns the Supabase reads and writes required for agent context retrieval, validated task status updates, and reminder creation.
+## Developer 1 Ownership
+- Supabase Auth (Sign in, sign up, sign out, session tokens).
+- Patient Workspace reads: `getFollowUpContext()` in `lib/workspace/context.ts`.
+- Profile creation / bootstrap on first sign-in.
 
-Each developer must avoid changing unrelated module data logic and must not duplicate database access functions owned by the other module.
-
-## Coordinated areas
-
-Coordinate before modifying:
-
-- schema and migrations
-- RLS policies
-- shared database contracts and status names
-- authentication assumptions
-- environment variable names
-- shared Supabase client behavior
-
-Keep the access pattern simple: UI → Next.js Server Action/Route Handler → Supabase. Privileged operations remain server-side. Never expose a service-role credential to client-side code or commit it to Git.
+## Developer 2 Ownership
+- Follow-up Agent tool executions / mutations:
+  - `update_follow_up_status`: updates `follow_up_tasks`
+  - `create_reminder`: inserts into `reminders`
+  - Context retrieval for Gemini prompt construction outside client boundaries.
