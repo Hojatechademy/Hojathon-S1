@@ -10,6 +10,7 @@ import { AuthenticatedUserContext } from '../types/agent';
 
 const LOCAL_ISSUES_KEY = 'enteward_cached_issues';
 const LOCAL_TIMELINE_KEY = 'enteward_cached_timelines';
+const LOCAL_EVIDENCE_KEY = 'enteward_cached_evidence';
 
 class IssueService {
   private localIssues: Issue[] = [];
@@ -26,9 +27,12 @@ class IssueService {
       this.localIssues = storedIssues ? JSON.parse(storedIssues) : [];
       const storedTimelines = localStorage.getItem(LOCAL_TIMELINE_KEY);
       this.localTimelines = storedTimelines ? JSON.parse(storedTimelines) : {};
+      const storedEvidence = localStorage.getItem(LOCAL_EVIDENCE_KEY);
+      this.localEvidence = storedEvidence ? JSON.parse(storedEvidence) : {};
     } catch (_e) {
       this.localIssues = [];
       this.localTimelines = {};
+      this.localEvidence = {};
     }
   }
 
@@ -36,6 +40,7 @@ class IssueService {
     try {
       localStorage.setItem(LOCAL_ISSUES_KEY, JSON.stringify(this.localIssues));
       localStorage.setItem(LOCAL_TIMELINE_KEY, JSON.stringify(this.localTimelines));
+      localStorage.setItem(LOCAL_EVIDENCE_KEY, JSON.stringify(this.localEvidence));
     } catch (_e) {
       // Ignore storage quota issues
     }
@@ -128,25 +133,41 @@ class IssueService {
 
     if (isSupabaseConfigured) {
       try {
+        const issuePayload: Record<string, any> = {
+          issue_number: issueNumber,
+          title: data.titleMl,
+          description: data.descriptionMl,
+          category: data.category,
+          priority: data.priority || 'medium',
+          status: 'submitted'
+        };
+
+        if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(authContext.wardId)) {
+          issuePayload.ward_id = authContext.wardId;
+        }
+        if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(authContext.userId)) {
+          issuePayload.resident_id = authContext.userId;
+        }
+
         const { data: dbData, error } = await supabase
           .from('issues')
-          .insert({
-            issue_number: issueNumber,
-            ward_id: authContext.wardId,
-            resident_id: authContext.userId,
-            title_ml: data.titleMl,
-            description_ml: data.descriptionMl,
-            category: data.category,
-            priority: data.priority || 'medium',
-            status: 'submitted',
-            location_landmark: data.locationLandmark
-          })
+          .insert(issuePayload)
           .select()
           .single();
 
         if (!error && dbData) {
           newIssue.id = String(dbData.id);
           initialTimeline.issueId = String(dbData.id);
+
+          // Also record initial timeline entry in Supabase
+          try {
+            await supabase.from('issue_timeline').insert({
+              issue_id: String(dbData.id),
+              old_status: null,
+              new_status: 'submitted',
+              message: 'പരാതി വാർഡ് സഹായകൻ വഴി രേഖപ്പെടുത്തി (വാർഡ് ജനപ്രതിനിധിക്ക് കൈമാറി)'
+            });
+          } catch (_tlErr) {}
         }
       } catch (err) {
         console.warn('Supabase issue insertion note:', err);
@@ -184,18 +205,18 @@ class IssueService {
           .from('issue_timeline')
           .select('*')
           .eq('issue_id', issueId)
-          .order('timestamp', { ascending: true });
+          .order('created_at', { ascending: true });
 
         if (!error && data && data.length > 0) {
           const mapped: IssueTimeline[] = data.map((d: any) => ({
             id: String(d.id),
             issueId: String(d.issue_id),
-            status: d.status_to || d.status || 'submitted',
-            actorId: String(d.performed_by || d.actor_id || ''),
-            actorRole: d.performer_role || d.actor_role || 'system',
-            titleMl: String(d.action_taken || d.title_ml || 'സ്റ്റാറ്റസ് അപ്ഡേറ്റ്'),
-            remarksMl: d.remarks || d.remarks_ml,
-            createdAt: String(d.timestamp || d.created_at || new Date().toISOString())
+            status: d.new_status || d.status_to || d.status || 'submitted',
+            actorId: String(d.actor_id || d.performed_by || ''),
+            actorRole: (d.actor_id ? 'representative' : 'system') as any,
+            titleMl: String(d.message || d.action_taken || 'സ്റ്റാറ്റസ് അപ്ഡേറ്റ്'),
+            remarksMl: d.message || d.remarks,
+            createdAt: String(d.created_at || d.timestamp || new Date().toISOString())
           }));
           this.localTimelines[issueId] = mapped;
           return mapped;
@@ -277,21 +298,24 @@ class IssueService {
           .update({
             status: newStatus,
             updated_at: now,
-            ...(newStatus === 'resolved' ? { resolved_at: now, resolution_remarks: remarks } : {})
+            ...(newStatus === 'resolved' ? { resolved_at: now } : {})
           })
           .eq('id', issueId);
 
+        const timelinePayload: Record<string, any> = {
+          issue_id: issueId,
+          old_status: oldStatus,
+          new_status: newStatus,
+          message: remarks || newTimeline.titleMl
+        };
+
+        if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(authContext.userId)) {
+          timelinePayload.actor_id = authContext.userId;
+        }
+
         await supabase
           .from('issue_timeline')
-          .insert({
-            issue_id: issueId,
-            status_from: oldStatus,
-            status_to: newStatus,
-            action_taken: newTimeline.titleMl,
-            remarks,
-            performed_by: authContext.userId,
-            performer_role: authContext.role
-          });
+          .insert(timelinePayload);
       } catch (err) {
         console.warn('Supabase issue status update note:', err);
       }
@@ -362,6 +386,7 @@ class IssueService {
       this.localEvidence[evidence.issueId] = [];
     }
     this.localEvidence[evidence.issueId].push(newEv);
+    this.saveLocal();
     return newEv;
   }
 }

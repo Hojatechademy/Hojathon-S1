@@ -1,98 +1,108 @@
-# Setup Guide
+# Ente Ward — Setup & Execution Guide
 
-Hojathon does **not** prescribe any technology stack. This file is a generic template — replace every section below with the actual instructions for your project, using whatever language, framework, or tools your team chose.
+Welcome to **Ente Ward (എന്റെ വാർഡ്)**, an autonomous civic action platform powered by Google Gemini and Supabase.
 
-Judges should be able to follow your instructions and run your project **without needing to guess** how it works. Be specific and complete.
+This guide provides step-by-step instructions to set up, configure, and execute the project locally.
 
 ---
 
-## Prerequisites
+## 1. Prerequisites
 
-List anything a judge needs installed or available before they can set up your project.
+Before setting up the project, ensure you have:
 
-Example:
+* **Node.js**: Version `18.0.0` or higher (tested on Node.js `20.x` and `24.x`).
+* **npm**: Version `9.x` or higher (comes bundled with Node.js).
+* **Git**: To clone and navigate the repository.
+* **Modern Web Browser**: Chrome, Edge, Safari, or Firefox.
 
-* A code editor
-* Git
-* Internet access (if your project calls external APIs)
+---
 
-## Required Software & Versions
+## 2. Dependencies & Installation
 
-List the exact software and versions your project needs.
-
-Example:
-
-| Software | Version |
-| -------- | ------- |
-| [Your language/runtime] | [version] |
-| [Your database] | [version] |
-| [Other tool] | [version] |
-
-## Dependencies
-
-Explain how to install your project's dependencies.
-
-Example:
+Clone the repository and install dependencies:
 
 ```bash
-[your dependency install command]
+git clone https://github.com/mshibin04/Hojathon-S1.git
+cd Hojathon-S1
+npm install
 ```
 
-## Environment Variables
+---
 
-List every environment variable your project needs, with a description (but **never** commit real secret values).
+## 3. Environment Configuration
 
-Example:
-
-| Variable | Description |
-| -------- | ----------- |
-| `API_KEY` | Key for [service name] |
-| `DATABASE_URL` | Connection string for your database |
-
-Provide an `.env.example` file in your project (without real secrets) if applicable.
-
-## API Keys / Configuration
-
-Explain which external services/APIs your project uses, and how a judge can obtain their own keys if needed to run it, or how you've provided safe demo access.
-
-## Database Setup
-
-If your project uses a database, explain how to set it up, including any migrations or seed data.
-
-If your project does not use a database, remove this section.
-
-## Installation
-
-Step-by-step instructions to get your project's code and dependencies ready to run.
-
-Example:
+Create a local environment file `.env.local` in the project root:
 
 ```bash
-git clone <your-fork-url>
-cd <your-project-folder>
-[install commands]
+cp .env.example .env.local
 ```
 
-## Running the Project
+Populate the required environment variables:
 
-Step-by-step instructions to actually start and use your project.
+```env
+# Supabase Backend Configuration
+VITE_SUPABASE_URL=https://your-supabase-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 
-Example:
+# Google Gemini API Configuration (Model: gemini-3.6-flash)
+VITE_GEMINI_API_KEY=your-gemini-api-key
+```
+
+### Obtaining Free API Keys
+1. **Google Gemini API Key**: Visit [Google AI Studio](https://aistudio.google.com/) to generate a free API key.
+2. **Supabase**: Create a free project at [Supabase.com](https://supabase.com). Copy the Project URL and Anon Public Key from **Project Settings ➜ API**.
+
+---
+
+## 4. Running the Development Server
+
+Start the local Vite development server:
 
 ```bash
-[run command]
+npm run dev
 ```
 
-Explain what a judge should see or do once it's running.
+The application will be available at:
+```
+http://localhost:5173
+```
 
-## Testing
+---
 
-If your project has tests, explain how to run them.
+## 5. Production Build & Verification
 
-Example:
+To test the production compilation and bundle:
 
 ```bash
-[test command]
+# Type check with TypeScript
+npx tsc -b
+
+# Build production bundle
+npm run build
+
+# Preview production build locally
+npm run preview
 ```
 
-If your project does not have automated tests, you may remove this section, but consider explaining how you manually verified your project works.
+---
+
+## 6. Judge & Evaluator Login Credentials
+
+For convenience during hackathon judging, the following roles and credentials are pre-configured:
+
+| Portal | Username | Password | Role & Scope |
+| :--- | :--- | :--- | :--- |
+| **Administrator** | `admin` *(or `base admin`)* | `admin@123` | Platform Admin (Districts, Panchayats, Representative Provisioning) |
+| **Representative** | `rep007` | *(Any password / Demo quick-fill)* | Ward 7 Representative Action Hub |
+| **Resident** | `resident001` | *(Any password / Demo quick-fill)* | Ward 7 Resident Portal & Ward Sahayakan AI Agent |
+
+---
+
+## 7. Database Migrations (Optional)
+
+If you are connecting your own Supabase instance, execute the following SQL scripts in your Supabase SQL Editor in this order:
+
+1. [`docs/supabase_location_master_data.sql`](docs/supabase_location_master_data.sql) — Kerala Districts, Panchayats, and Wards.
+2. [`docs/supabase_contacts_and_residents.sql`](docs/supabase_contacts_and_residents.sql) — Ward emergency contacts & Kerala government directory.
+3. [`docs/supabase_agent_tables.sql`](docs/supabase_agent_tables.sql) — Agent run traces and tool execution tables.
+4. [`docs/supabase_username_auth.sql`](docs/supabase_username_auth.sql) — Username resolution mappings.

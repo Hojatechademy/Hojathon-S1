@@ -9,7 +9,7 @@ interface AdminLoginProps {
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => {
   const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('admin@123');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -151,7 +151,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => 
             fontSize: '0.75rem',
             color: 'var(--outline)'
           }}>
-            Platform administration node provisioning and audit tracking.
+            Platform Administrator credentials: <code>admin</code> / <code>admin@123</code>.
           </div>
 
           <button

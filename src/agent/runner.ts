@@ -369,7 +369,7 @@ CRITICAL INSTRUCTION: Return STRICT JSON ONLY (no markdown formatting, no code b
     onActivityStep?: ActivityListener,
     conversationHistory?: ConversationTurn[]
   ): Promise<AgentRunRecord> {
-    const runId = `run-${Date.now()}`;
+    const runId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `run-${Date.now()}`;
     const runRecord: AgentRunRecord = {
       id: runId,
       userId: authContext.userId,

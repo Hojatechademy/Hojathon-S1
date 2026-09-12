@@ -27,7 +27,7 @@ This file contains the exact submission details to be pasted into the final Pull
 At the grassroots level of Kerala's Local Self-Government Department (LSGD) hierarchy (Grama Panchayats and Municipalities), civic communication between residents and their elected ward members is fragmented across informal phone calls, unstructured WhatsApp messages, and casual verbal requests. This results in lost accountability, zero follow-up tracking, and high friction for citizens. Traditional grievance portals are complex, English-centric, and disconnected from the ward representative's operational workflow.
 
 ### Solution
-Ente Ward (എന്റെ വാർഡ്) is a Malayalam-first, hyper-localized private civic governance platform. It features **Ward Sahayakan (വാർഡ് സഹായി)** — a real agentic AI assistant powered by Google Gemini (gemini-2.5-flash) that understands everyday Malayalam, Manglish, and English. The agent retrieves resident and ward context, plans and selects authorized backend tools, and executes real database transactions in Supabase to register complaints. The elected representative receives these issues in an operational Action Hub, records actions taken, attaches photographic evidence, and marks them resolved, creating a transparent, chronological timeline for the resident.
+Ente Ward (എന്റെ വാർഡ്) is a Malayalam-first, hyper-localized private civic governance platform. It features **Ward Sahayakan (വാർഡ് സഹായി)** — a real agentic AI assistant powered by Google Gemini (gemini-3.6-flash) that understands everyday Malayalam, Manglish, and English. The agent retrieves resident and ward context, plans and selects authorized backend tools, and executes real database transactions in Supabase to register complaints. The elected representative receives these issues in an operational Action Hub, records actions taken, attaches photographic evidence, and marks them resolved, creating a transparent, chronological timeline for the resident.
 
 ### Key Features
 * **Ward Sahayakan (Real Action Agent):** Understands Malayalam/Manglish, checks authenticated ward context, calls authorized tools (`create_issue`, `get_my_issues`, `get_ward_contacts`, `get_government_contacts`, `get_ward_statistics`), and logs agent runs to Supabase.
@@ -40,7 +40,7 @@ Ente Ward (എന്റെ വാർഡ്) is a Malayalam-first, hyper-localize
 * **Frontend:** React 19, TypeScript, Vite, Vanilla CSS + Tailwind Utility Tokens
 * **Backend & Database:** Supabase (PostgreSQL 15+, PostgREST, Row-Level Security)
 * **Authentication:** Supabase Auth (Argon2 / Bcrypt encryption)
-* **AI & Agent Core:** Google Gemini (`gemini-2.5-flash`) via `@google/generative-ai`
+* **AI & Agent Core:** Google Gemini (`gemini-3.6-flash`) via `@google/generative-ai`
 
 ### Demo URL
 [TODO: Insert Live Hosted URL if applicable]
@@ -54,7 +54,11 @@ Ente Ward (എന്റെ വാർഡ്) is a Malayalam-first, hyper-localize
    `"Schoolinte aduthulla road valare mosham aanu, complaint register cheyyanam"`
    Observe the live step pipeline and the generated tracking number.
 3. **Inspect the Dual-Sided Workflow:** Switch roles from Resident to Representative to see the newly generated complaint arrive in the triage queue, update its status with remarks and photo proof, and switch back to verify the resident's live timeline.
-4. **Disclaimer:** Ente Ward is a private civic platform prototype; it is not an official government department and does not represent the Government of Kerala.
+4. **Judge Login Credentials:**
+   * **Admin Portal:** username: `admin` *(or `base admin`)*, password: `admin@123`
+   * **Representative Portal:** username: `rep007`, password: *(any password / demo quick-fill)*
+   * **Resident Portal:** username: `resident001`, password: *(any password / demo quick-fill)*
+5. **Disclaimer:** Ente Ward is a private civic platform prototype; it is not an official government department and does not represent the Government of Kerala.
 
 ---
 

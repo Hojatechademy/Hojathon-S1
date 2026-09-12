@@ -84,7 +84,7 @@ Malayalam is the primary language of daily life and grassroots democracy in Kera
 ---
 
 ### 14. Why Google Gemini?
-We use Google Gemini (`gemini-2.5-flash`) because of its native multilingual comprehension of Indic languages (particularly Malayalam syntax and colloquial phrasing), fast response latency, and support for structured JSON schema outputs.
+We use Google Gemini (`gemini-3.6-flash`) because of its native multilingual comprehension of Indic languages (particularly Malayalam syntax and colloquial phrasing), fast response latency, and support for structured JSON schema outputs.
 
 ---
 

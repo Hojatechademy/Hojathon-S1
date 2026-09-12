@@ -18,15 +18,19 @@ class AgentRunService {
 
     if (isSupabaseConfigured) {
       try {
+        const isRunIdUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(run.id);
         const payload: Record<string, any> = {
-          id: run.id,
           user_input: run.rawInput,
           intent: run.classifiedIntent || 'REPORT_ISSUE',
           status: 'started',
           started_at: run.createdAt || new Date().toISOString()
         };
 
-        // Only include user_id if valid UUID format (not eval-resident)
+        if (isRunIdUuid) {
+          payload.id = run.id;
+        }
+
+        // Only include user_id if valid UUID format
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(run.userId);
         if (isUuid) {
           payload.user_id = run.userId;
@@ -55,9 +59,12 @@ class AgentRunService {
   ): Promise<void> {
     if (isSupabaseConfigured) {
       try {
-        const toolCallPayload = {
-          id: toolCall.callId || `call-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-          agent_run_id: agentRunId, // STRICT: agent_run_id NOT run_id
+        const isRunIdUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(agentRunId);
+        const callIdIsUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(toolCall.callId);
+        const generatedUuid = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : null;
+
+        const toolCallPayload: Record<string, any> = {
+          id: callIdIsUuid ? toolCall.callId : (generatedUuid || `call-${Date.now()}`),
           tool_name: toolCall.toolName,
           input: toolCall.arguments || {},
           output: result.data || {},
@@ -65,6 +72,10 @@ class AgentRunService {
           error_message: result.error || null,
           created_at: new Date().toISOString()
         };
+
+        if (isRunIdUuid) {
+          toolCallPayload.agent_run_id = agentRunId; // STRICT: agent_run_id NOT run_id
+        }
 
         const { error } = await supabase.from('agent_tool_calls').insert(toolCallPayload);
         if (error) {

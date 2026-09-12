@@ -158,7 +158,7 @@ The Representative Dashboard is the **Action Center**:
 |  ┌───────────────────────────────────────────────────────────────────┐  |
 |  | Ward Sahayakan Agent Core (runner.ts + state.ts)                  |  |
 |  |   - Multi-Step ReAct Loop                                         |  |
-|  |   - Google Gemini SDK (gemini-2.5-flash)                          |  |
+|  |   - Google Gemini SDK (gemini-3.6-flash)                          |  |
 |  |   - Natural Language Parser (Malayalam / Manglish / English)      |  |
 |  └───────────────────────────────────────────────────────────────────┘  |
 |  ┌───────────────────────────────────────────────────────────────────┐  |
@@ -222,7 +222,7 @@ The Representative Dashboard is the **Action Center**:
 | **Styling** | Vanilla CSS Design System + Tailwind Utility Tokens |
 | **Backend** | Supabase (PostgreSQL 15+, PostgREST, RLS) |
 | **Authentication** | Supabase Auth (Argon2 / Bcrypt Password Hashing) |
-| **AI / LLM** | Google Gemini (`gemini-2.5-flash` via `@google/generative-ai`) |
+| **AI / LLM** | Google Gemini (`gemini-3.6-flash` via `@google/generative-ai`) |
 | **Icons & Media** | Material Symbols Outlined, Canvas Confetti |
 
 ---

@@ -57,7 +57,7 @@ Replace the placeholders below with your own project's details — this is what 
 At the grassroots level of Kerala's Local Self-Government Department (LSGD) hierarchy (Grama Panchayats and Municipalities), local civic communication is fragmented across phone calls and WhatsApp messages. This leads to lost accountability, zero follow-up tracking, and high friction for citizens. Traditional grievance portals are complex, form-heavy, and disconnected from the ward representative's operational workflow.
 
 ### Proposed Solution
-Ente Ward is a Malayalam-first, hyper-localized private civic governance platform. It features **Ward Sahayakan (വാർഡ് സഹായി)** — an autonomous action agent powered by Google Gemini (gemini-2.5-flash) that understands everyday Malayalam, Manglish, and English. The agent retrieves resident and ward context, selects authorized backend tools, and executes real database transactions in Supabase to register and track complaints. Elected representatives receive these issues in an operational Action Hub, record actions taken, attach photographic evidence of repairs, and resolve issues, generating a live, transparent timeline for residents.
+Ente Ward is a Malayalam-first, hyper-localized private civic governance platform. It features **Ward Sahayakan (വാർഡ് സഹായി)** — an autonomous action agent powered by Google Gemini (gemini-3.6-flash) that understands everyday Malayalam, Manglish, and English. The agent retrieves resident and ward context, selects authorized backend tools, and executes real database transactions in Supabase to register and track complaints. Elected representatives receive these issues in an operational Action Hub, record actions taken, attach photographic evidence of repairs, and resolve issues, generating a live, transparent timeline for residents.
 
 ### Key Features
 * **Ward Sahayakan (Real Action Agent):** Understands Malayalam/Manglish, checks authenticated ward context, calls authorized tools (`create_issue`, `get_my_issues`, `get_ward_contacts`, `get_government_contacts`, `get_ward_statistics`), and logs agent runs to Supabase.
@@ -72,7 +72,7 @@ Ente Ward is a Malayalam-first, hyper-localized private civic governance platfor
 | Frontend | React 19, TypeScript, Vite |
 | Backend  | Supabase (PostgreSQL 15+, PostgREST, Row-Level Security) |
 | Database | Supabase PostgreSQL |
-| AI/ML    | Google Gemini (`gemini-2.5-flash`) via `@google/generative-ai` |
+| AI/ML    | Google Gemini (`gemini-3.6-flash`) via `@google/generative-ai` |
 | Security | Supabase Auth (Argon2 / Bcrypt encryption), Role-Based Access |
 | Styling  | Vanilla CSS Design System + Tailwind Utility Tokens |
 
