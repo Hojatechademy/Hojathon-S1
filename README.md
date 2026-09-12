@@ -11,7 +11,7 @@ Submitted to **Hojathon**, an agentic AI hackathon. Built in a 4-hour window.
 
 **Team ID:** 12
 
-**Team Name:** ALMAS CP
+**Team Name:** Agri-Corp
 
 **Team Members:**
 
@@ -29,7 +29,7 @@ AgriPilot
 
 ### Team
 
-Team 12, ALMAS CP — a solo team. See [Team Information](#team-information) above.
+Team 12, Agri-Corp. See [Team Information](#team-information) above.
 
 ### Problem Statement
 
