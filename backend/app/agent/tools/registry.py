@@ -4,7 +4,7 @@ from .buyers import BuyerSearchInput, find_buyers
 from .forecast import ForecastInput, forecast_market
 from .gi import GIInput, verify_gi
 from .logistics import LogisticsInput, optimize_route
-from .notifications import NotificationInput, send_notification
+from .notification import NotificationInput, send_notification
 from .profit import ProfitInput, calculate_profit
 from .quality import QualityInput, check_quality
 from .weather import get_weather
