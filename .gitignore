@@ -1,15 +1,35 @@
-# =========================================
-# Hojathon — Generic, stack-agnostic .gitignore
-# =========================================
-# This file protects against accidentally committing secrets and
-# common OS/editor junk. It does not assume any specific language,
-# framework, or tool. Add stack-specific rules for your own project
-# as needed inside your fork.
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
 
-# ---- Secrets & credentials ----
+# Virtual environment
+.venv/
+
+# Environment variables / secrets
 .env
 .env.*
 !.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Additional secrets and credentials
 *.pem
 *.key
 *.cert
@@ -19,7 +39,7 @@
 *.p12
 *.pfx
 
-# ---- OS-generated files ----
+# Additional OS-generated files
 .DS_Store
 .DS_Store?
 ._*
