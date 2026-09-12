@@ -1,98 +1,58 @@
 # Setup Guide
 
-Hojathon does **not** prescribe any technology stack. This file is a generic template — replace every section below with the actual instructions for your project, using whatever language, framework, or tools your team chose.
+This project uses Next.js, React, TypeScript, shadcn/ui, Supabase, and Gemini. The application implementation will be built in this fork; this document defines the judge-ready setup contract.
 
-Judges should be able to follow your instructions and run your project **without needing to guess** how it works. Be specific and complete.
-
----
+The current foundation is intentionally minimal and does not yet include the complete patient workspace or Follow-up Agent modules.
 
 ## Prerequisites
 
-List anything a judge needs installed or available before they can set up your project.
+- Git
+- Node.js 20 or later and npm
+- Internet access
+- A valid Gemini API key
+- Access to the shared Supabase project
 
-Example:
-
-* A code editor
-* Git
-* Internet access (if your project calls external APIs)
-
-## Required Software & Versions
-
-List the exact software and versions your project needs.
-
-Example:
-
-| Software | Version |
-| -------- | ------- |
-| [Your language/runtime] | [version] |
-| [Your database] | [version] |
-| [Other tool] | [version] |
-
-## Dependencies
-
-Explain how to install your project's dependencies.
-
-Example:
-
-```bash
-[your dependency install command]
-```
-
-## Environment Variables
-
-List every environment variable your project needs, with a description (but **never** commit real secret values).
-
-Example:
+## Environment variables
 
 | Variable | Description |
-| -------- | ----------- |
-| `API_KEY` | Key for [service name] |
-| `DATABASE_URL` | Connection string for your database |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Shared Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser-safe Supabase publishable/anon key |
+| `GEMINI_API_KEY` | Server-side Gemini key; required for the AI Agent |
+| `GEMINI_MODEL` | Optional Gemini model override; defaults to `gemini-2.0-flash` |
 
-Provide an `.env.example` file in your project (without real secrets) if applicable.
-
-## API Keys / Configuration
-
-Explain which external services/APIs your project uses, and how a judge can obtain their own keys if needed to run it, or how you've provided safe demo access.
-
-## Database Setup
-
-If your project uses a database, explain how to set it up, including any migrations or seed data.
-
-If your project does not use a database, remove this section.
+Copy `.env.example` to `.env.local`, then fill in real local values. Never commit `.env.local`, API keys, passwords, tokens, or service-role credentials.
 
 ## Installation
 
-Step-by-step instructions to get your project's code and dependencies ready to run.
-
-Example:
-
 ```bash
-git clone <your-fork-url>
-cd <your-project-folder>
-[install commands]
+git clone https://github.com/mohammadkaifktraihsoft-ai/Hojathon-S1.git
+cd Hojathon-S1
+npm install
+copy .env.example .env.local
 ```
 
-## Running the Project
+On macOS/Linux, use `cp .env.example .env.local` instead of `copy`.
 
-Step-by-step instructions to actually start and use your project.
+## Shared Supabase project
 
-Example:
+Both developers use one shared Supabase project for the database, authentication, RLS policies, and project configuration. Do not create separate developer projects. Apply migrations to that shared project only.
+
+Developer 1 owns Supabase operations required by the Patient Workspace. Developer 2 owns Supabase operations required by the Follow-up Agent and Actions module. Schema, migrations, RLS, shared contracts, and authentication assumptions require coordination before changes.
+
+Gemini is accessed only by the server-side Next.js agent layer. Privileged operations must use server-side functions/actions. Never expose a service-role credential to client code.
+
+## Running
 
 ```bash
-[run command]
+npm run dev
 ```
 
-Explain what a judge should see or do once it's running.
+The judge should sign in, inspect the follow-up workspace, ask the agent about a missed appointment, and verify an approved task/reminder action persists.
 
 ## Testing
 
-If your project has tests, explain how to run them.
-
-Example:
-
 ```bash
-[test command]
+npm run typecheck
+npm run build
 ```
-
-If your project does not have automated tests, you may remove this section, but consider explaining how you manually verified your project works.

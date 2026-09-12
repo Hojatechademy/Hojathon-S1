@@ -4,7 +4,7 @@
 
 **Team Name:**
 
-**Project Name:**
+**Project Name:** Care Follow-up Agent
 
 ---
 

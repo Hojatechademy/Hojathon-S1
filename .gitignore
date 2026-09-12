@@ -10,6 +10,10 @@
 .env
 .env.*
 !.env.example
+node_modules/
+.next/
+out/
+*.tsbuildinfo
 *.pem
 *.key
 *.cert
