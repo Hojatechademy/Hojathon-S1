@@ -2,9 +2,9 @@
 
 **Team ID:**
 
-**Team Name:**
+**Team Name:**Syntax
 
-**Project Name:**
+**Project Name:**Ente Ward
 
 ---
 
@@ -14,16 +14,16 @@ Teams can have **1, 2, or 3 members**. Member 2 and Member 3 are optional.
 
 ### Member 1
 
-**Name:**
+**Name:**Mohammed Shibin PT
 
 ### Member 2
 
-*(Optional)*
+_(Optional)_
 
-**Name:**
+**Name:**Muhammed Siyad Mp
 
 ### Member 3
 
-*(Optional)*
+_(Optional)_
 
 **Name:**

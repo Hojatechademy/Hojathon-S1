@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Ente Ward (എന്റെ വാർഡ്) - Welcome & Access</title>
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <!-- Inter, Geist & Manjari fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Manjari:wght@400;700&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#0b4634",
+            "primary-dark": "#062e22",
+            "primary-light": "#125b42",
+            mint: "#ecfdf5",
+            "mint-border": "#a7f3d0",
+            secondary: "#006a63",
+            charcoal: "#141b2b",
+            "surface-bg": "#f9f9ff",
+            outline: "#707974",
+            "outline-light": "#e2e8f0"
+          },
+          fontFamily: {
+            sans: ["Geist", "Inter", "sans-serif"],
+            malayalam: ["Manjari", "sans-serif"]
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(8px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%': { opacity: '0.85', transform: 'scale(1.04)' }
+            }
+          },
+          animation: {
+            fadeIn: 'fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            pulseSubtle: 'pulseSubtle 3s ease-in-out infinite'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAF9] text-charcoal antialiased min-h-full flex flex-col justify-between selection:bg-[#B6EFD5] selection:text-primary font-sans relative overflow-x-hidden">
+
+  <!-- Subtle Ambient Background Pattern -->
+  <div class="fixed inset-0 pointer-events-none opacity-40 z-0">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-100/60 blur-3xl"></div>
+    <div class="absolute top-1/2 right-0 w-80 h-80 rounded-full bg-teal-100/50 blur-3xl"></div>
+    <div class="absolute -bottom-20 left-1/3 w-80 h-80 rounded-full bg-emerald-50/70 blur-3xl"></div>
+  </div>
+
+  <!-- TOP HEADER / BRAND BAR -->
+  <header class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <!-- Logo Mark with subtle AI spark -->
+      <div class="relative w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold shadow-sm ring-2 ring-primary/10">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+        <span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#10B981] border-2 border-white animate-pulse"></span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-primary">Ente Ward</span>
+          <span class="text-sm font-semibold text-outline font-malayalam">(എന്റെ വാർഡ്)</span>
+          <span class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-mint border border-mint-border text-[11px] font-bold text-primary">
+            <span class="material-symbols-outlined text-xs text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+            AI Powered
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-outline-light text-xs font-medium text-charcoal shadow-xs">
+        <span class="material-symbols-outlined text-sm text-outline">translate</span>
+        <span class="hidden sm:inline">English / </span><span class="font-malayalam">മലയാളം</span>
+      </div>
+      <div class="px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-primary hidden md:flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Kadakampally GP · Ward 7</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN INTERACTIVE CONTAINER -->
+  <main class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 my-auto flex flex-col justify-center">
+
+    <!-- =======================================================
+         VIEW 1: PRIMARY ROLE SELECTION WELCOME SCREEN
+         ======================================================= -->
+    <div id="roleSelectionView" class="space-y-10 animate-fadeIn">
+      <!-- Welcome Headline -->
+      <div class="text-center space-y-3 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-outline-light shadow-xs text-xs font-medium text-primary">
+          <span class="material-symbols-outlined text-xs text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+          <span>Community · Transparency · Local Action</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-charcoal tracking-tight leading-tight">
+          Your ward. One conversation.<br class="hidden sm:inline"/> Real action.
+        </h1>
+        <p class="text-lg sm:text-xl font-semibold text-primary font-malayalam">
+          നിങ്ങളുടെ വാർഡ്. ഒരു സംഭാഷണം. യഥാർത്ഥ നടപടി.
+        </p>
+        <p class="text-sm sm:text-base text-outline max-w-lg mx-auto">
+          Choose how you want to access Ente Ward. / എന്റെ വാർഡിലേക്ക് പ്രവേശിക്കാൻ നിങ്ങളുടെ പങ്ക് തിരഞ്ഞെടുക്കുക.
+        </p>
+      </div>
+
+      <!-- Two Primary Role Selection Cards (Centerpiece) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+        
+        <!-- CARD 1: RESIDENT (താമസക്കാരൻ) -->
+        <div onclick="selectRole('resident')" 
+             role="button" 
+             tabindex="0"
+             onkeydown="if(event.key==='Enter'||event.key===' ') selectRole('resident')"
+             class="group relative p-7 sm:p-8 rounded-2xl bg-white border-2 border-transparent hover:border-primary shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer flex flex-col justify-between hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary/40">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-mint border border-mint-border text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">groups</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] text-[11px] font-bold text-[#065F46] uppercase tracking-wider">Citizen Access</span>
+            </div>
+            <div>
+              <div class="flex items-baseline gap-2">
+                <h2 class="text-2xl font-bold text-charcoal group-hover:text-primary transition-colors">Resident</h2>
+                <span class="text-base font-semibold text-outline font-malayalam">(താമസക്കാരൻ)</span>
+              </div>
+              <p class="text-sm text-outline mt-2.5 leading-relaxed">
+                Report local problems, track your complaints, discover ward information and talk to Ward Sahayakan.
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-outline-light flex items-center justify-between">
+            <span class="text-xs font-medium text-outline">Geofenced Ward Access</span>
+            <button type="button" class="px-4 py-2.5 rounded-xl bg-primary group-hover:bg-primary-light text-white font-semibold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition-all">
+              <span>Continue as Resident</span>
+              <span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: REPRESENTATIVE (പ്രതിനിധി) -->
+        <div onclick="selectRole('representative')" 
+             role="button" 
+             tabindex="0"
+             onkeydown="if(event.key==='Enter'||event.key===' ') selectRole('representative')"
+             class="group relative p-7 sm:p-8 rounded-2xl bg-white border-2 border-transparent hover:border-secondary shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer flex flex-col justify-between hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-secondary/40">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-[#E6FFFA] border border-[#9BF2E8] text-secondary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">badge</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-[#E6FFFA] border border-[#7FD5CC] text-[11px] font-bold text-[#00504A] uppercase tracking-wider">Elected Member</span>
+            </div>
+            <div>
+              <div class="flex items-baseline gap-2">
+                <h2 class="text-2xl font-bold text-charcoal group-hover:text-secondary transition-colors">Representative</h2>
+                <span class="text-base font-semibold text-outline font-malayalam">(പ്രതിനിധി)</span>
+              </div>
+              <p class="text-sm text-outline mt-2.5 leading-relaxed">
+                Manage your ward, respond to issues, support residents and keep your community informed.
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-outline-light flex items-center justify-between">
+            <span class="text-xs font-medium text-outline">Verified Credentials</span>
+            <button type="button" class="px-4 py-2.5 rounded-xl bg-secondary group-hover:bg-[#00504A] text-white font-semibold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition-all">
+              <span>Continue as Representative</span>
+              <span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Trust Indicator Strip -->
+      <div class="p-3.5 rounded-xl bg-white/70 border border-outline-light flex items-center justify-between text-xs text-outline">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-emerald-700 text-sm">security</span>
+          <span>End-to-end encrypted civic resolution flow</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="hidden sm:inline">Kadakampally Grama Panchayat</span>
+          <span class="font-medium text-primary font-malayalam">വാർഡ് 7 · ചാക്ക</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================
+         VIEW 2: RESIDENT LOGIN FORM
+         ======================================================= -->
+    <div id="residentLoginView" class="w-full max-w-md mx-auto hidden animate-fadeIn">
+      <div class="p-8 rounded-2xl bg-white border border-outline-light shadow-xl space-y-6">
+        <button onclick="showView('roleSelectionView')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-outline hover:text-primary transition-colors focus:outline-none">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          <span>Back to choose account type</span>
+        </button>
+
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-mint text-primary text-xs font-semibold border border-mint-border">
+            <span class="material-symbols-outlined text-xs">person</span> Resident Portal
+          </div>
+          <h2 class="text-2xl font-bold text-charcoal">Welcome back.</h2>
+          <p class="text-sm font-semibold text-primary font-malayalam">തിരികെ സ്വാഗതം</p>
+          <p class="text-xs text-outline">Sign in to your Ente Ward account.</p>
+        </div>
+
+        <!-- Inline Error Simulation Banner -->
+        <div id="residentErrorBanner" class="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5 hidden">
+          <span class="material-symbols-outlined text-base text-red-600 shrink-0">error</span>
+          <div>
+            <span class="font-bold">Sign in issue:</span> Email or password is incorrect.
+          </div>
+        </div>
+
+        <form class="space-y-4" onsubmit="handleLoginSubmit(event, 'Resident')">
+          <div>
+            <label class="block text-xs font-bold uppercase text-outline mb-1.5">Mobile Number or Email</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">mail</span>
+              <input id="resEmail" type="text" value="anoop.ward7@enteward.in" required 
+                     class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-light text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-bold uppercase text-outline">Password</label>
+              <a href="#" onclick="alert('Password reset link sent to your verified mobile.'); return false;" class="text-xs font-semibold text-primary hover:underline">Forgot Password?</a>
+            </div>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">lock</span>
+              <input id="resPassword" type="password" value="••••••••••••" required 
+                     class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-light text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+            </div>
+          </div>
+
+          <!-- Trust & Ward Structure Note -->
+          <div class="p-3 rounded-xl bg-[#F8FAF9] text-xs text-outline flex items-start gap-2 border border-outline-light">
+            <span class="material-symbols-outlined text-primary text-sm shrink-0">shield</span>
+            <span class="leading-relaxed">Resident accounts are managed through the trusted ward structure and GP electoral boundary.</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <button type="button" onclick="toggleError('residentErrorBanner')" class="text-[11px] text-outline underline hover:text-red-700">Simulate auth error</button>
+            <span class="text-[11px] text-outline">Ward 7 · Kadakampally</span>
+          </div>
+
+          <button id="resSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-primary hover:bg-primary-light text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all">
+            <span>Sign In as Resident</span>
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- =======================================================
+         VIEW 3: REPRESENTATIVE LOGIN FORM
+         ======================================================= -->
+    <div id="representativeLoginView" class="w-full max-w-md mx-auto hidden animate-fadeIn">
+      <div class="p-8 rounded-2xl bg-white border border-outline-light shadow-xl space-y-6">
+        <button onclick="showView('roleSelectionView')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-outline hover:text-secondary transition-colors focus:outline-none">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          <span>Back to choose account type</span>
+        </button>
+
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#E6FFFA] text-secondary text-xs font-semibold border border-[#9BF2E8]">
+            <span class="material-symbols-outlined text-xs">badge</span> Representative Access
+          </div>
+          <h2 class="text-2xl font-bold text-charcoal">Representative access</h2>
+          <p class="text-sm font-semibold text-secondary font-malayalam">പ്രതിനിധി പ്രവേശനം</p>
+          <p class="text-xs text-outline">Sign in to manage your assigned ward.</p>
+        </div>
+
+        <!-- Inline Error Banner -->
+        <div id="repErrorBanner" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-2.5 hidden">
+          <span class="material-symbols-outlined text-base text-amber-700 shrink-0">lock_person</span>
+          <div>
+            <span class="font-bold">Access restricted:</span> Representative access is unavailable for this account.
+          </div>
+        </div>
+
+        <form class="space-y-4" onsubmit="handleLoginSubmit(event, 'Representative')">
+          <div>
+            <label class="block text-xs font-bold uppercase text-outline mb-1.5">Official UID or Email</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">account_circle</span>
+              <input id="repEmail" type="text" value="lathika.rep7@kadakampally.enteward.in" required 
+                     class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-light text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all"/>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-bold uppercase text-outline">Passcode / Key</label>
+              <a href="#" onclick="alert('Contact Kerala Civic Grid Administrator to reset authorization key.'); return false;" class="text-xs font-semibold text-secondary hover:underline">Forgot Password?</a>
+            </div>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">vpn_key</span>
+              <input id="repPassword" type="password" value="••••••••••••" required 
+                     class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-light text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all"/>
+            </div>
+          </div>
+
+          <!-- Trust Note as required by Spec Section 7 -->
+          <div class="p-3 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] text-xs text-[#065F46] flex items-start gap-2">
+            <span class="material-symbols-outlined text-base shrink-0">verified_user</span>
+            <span class="leading-relaxed"><strong>Trust Policy:</strong> Representative accounts are created by Ente Ward administrators.</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <button type="button" onclick="toggleError('repErrorBanner')" class="text-[11px] text-outline underline hover:text-amber-800">Simulate auth warning</button>
+            <span class="text-[11px] font-mono text-outline">SEC-KL-2020-W7</span>
+          </div>
+
+          <button id="repSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-secondary hover:bg-[#00504A] text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all">
+            <span>Sign In to Ward Action Hub</span>
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- =======================================================
+         VIEW 4: SUBTLE PLATFORM ADMINISTRATION LOGIN
+         ======================================================= -->
+    <div id="adminLoginView" class="w-full max-w-md mx-auto hidden animate-fadeIn">
+      <div class="p-8 rounded-2xl bg-white border border-outline-light shadow-xl space-y-6">
+        <button onclick="showView('roleSelectionView')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-outline hover:text-charcoal transition-colors focus:outline-none">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          <span>Back to Ente Ward</span>
+        </button>
+
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] text-xs font-semibold border border-[#FDE68A]">
+            <span class="material-symbols-outlined text-xs">shield_lock</span> Staff Access
+          </div>
+          <h2 class="text-2xl font-bold text-charcoal">Platform Administration</h2>
+          <p class="text-sm font-semibold text-[#92400E] font-malayalam">അഡ്മിനിസ്ട്രേഷൻ</p>
+          <p class="text-xs text-outline">Authorized Ente Ward administrators only.</p>
+        </div>
+
+        <form class="space-y-4" onsubmit="handleLoginSubmit(event, 'Administrator')">
+          <div>
+            <label class="block text-xs font-bold uppercase text-outline mb-1.5">Admin Credential</label>
+            <input type="email" value="admin@enteward.civic.grid" required 
+                   class="w-full px-4 py-2.5 rounded-xl border border-outline-light text-sm focus:ring-1 focus:ring-charcoal focus:border-charcoal"/>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-outline mb-1.5">Hardware / Security Key</label>
+            <input type="password" value="••••••••••••••••" required 
+                   class="w-full px-4 py-2.5 rounded-xl border border-outline-light text-sm focus:ring-1 focus:ring-charcoal focus:border-charcoal"/>
+          </div>
+
+          <div class="p-3 rounded-xl bg-gray-50 border border-gray-200 text-xs text-outline">
+            Civic Grid node management and representative provisioning console.
+          </div>
+
+          <button id="adminSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-charcoal hover:bg-black text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all">
+            <span>Sign In as Administrator</span>
+            <span class="material-symbols-outlined text-sm">terminal</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =======================================================
+       DISCREET FOOTER (SPEC SECTION 8 & 10)
+       Intentionally understated, placed at the very bottom
+       ======================================================= -->
+  <footer class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-6 border-t border-outline-light/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-outline">
+    <div class="flex items-center gap-2">
+      <span class="font-medium text-charcoal">Ente Ward Civic Tech</span>
+      <span>•</span>
+      <span class="text-[11px]">Private civic technology platform. Not affiliated with any government department.</span>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <a href="#" onclick="alert('Ente Ward Helpdesk: support@enteward.org'); return false;" class="hover:text-charcoal transition-colors">Help</a>
+      <span>•</span>
+      <a href="#" onclick="alert('Privacy Guarantee: Encrypted citizen identity within Ward boundary.'); return false;" class="hover:text-charcoal transition-colors">Privacy</a>
+      <span>•</span>
+      <!-- Understated Platform Administration Access -->
+      <button onclick="showView('adminLoginView')" class="hover:text-charcoal text-outline font-medium transition-colors underline-offset-2 hover:underline">
+        Platform Administration (അഡ്മിനിസ്ട്രേഷൻ)
+      </button>
+    </div>
+  </footer>
+
+  <!-- SIMPLE INTERACTION SCRIPT -->
+  <script>
+    function showView(viewId) {
+      const views = ['roleSelectionView', 'residentLoginView', 'representativeLoginView', 'adminLoginView'];
+      views.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+      const activeEl = document.getElementById(viewId);
+      if (activeEl) {
+        activeEl.classList.remove('hidden');
+      }
+    }
+
+    function selectRole(role) {
+      if (role === 'resident') {
+        showView('residentLoginView');
+      } else if (role === 'representative') {
+        showView('representativeLoginView');
+      }
+    }
+
+    function toggleError(bannerId) {
+      const el = document.getElementById(bannerId);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function handleLoginSubmit(event, roleName) {
+      event.preventDefault();
+      const btn = event.target.querySelector('button[type="submit"]');
+      const origText = btn.innerHTML;
+      btn.innerHTML = `<span class="material-symbols-outlined text-sm animate-spin">progress_activity</span><span>Signing in...</span>`;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+        alert(`Authenticated successfully as ${roleName}! In a production deployment, this transitions directly into the ${roleName} dashboard.`);
+      }, 700);
+    }
+  </script>
+</body>
+</html>

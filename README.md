@@ -26,21 +26,18 @@ There's no required stack. Build your agent with any language, any framework, an
 
 ## Team Information
 
-Fill this in as soon as your team is formed.
+**Team ID:** [TODO: Add official Team ID]
 
-**Team ID:**
-
-**Team Name:**
+**Team Name:** Syntax
 
 **Team Members:**
 
-1. Name
-2. Name
-3. Name
+1. Mohammed Shibin PT
+2. Muhammed Siyad MP
 
-**Project Name:**
+**Project Name:** Ente Ward (എന്റെ വാർഡ്)
 
-> Teams may have **1, 2, or 3 members**.
+> Complete project documentation is available in **[`docs/PROJECT_README.md`](docs/PROJECT_README.md)**.
 
 ---
 
@@ -49,47 +46,59 @@ Fill this in as soon as your team is formed.
 Replace the placeholders below with your own project's details — this is what judges will actually read.
 
 ### Project Name
+**Ente Ward (എന്റെ വാർഡ്)** — *"Your ward. One conversation. Real action."*
 
 ### Team
+* **Team ID:** [TODO: Add official Team ID]
+* **Team Name:** Syntax
+* **Members:** Mohammed Shibin PT, Muhammed Siyad MP
 
 ### Problem Statement
-
-What problem are you solving, and why does it call for an agent rather than a static script or a plain UI?
+At the grassroots level of Kerala's Local Self-Government Department (LSGD) hierarchy (Grama Panchayats and Municipalities), local civic communication is fragmented across phone calls and WhatsApp messages. This leads to lost accountability, zero follow-up tracking, and high friction for citizens. Traditional grievance portals are complex, form-heavy, and disconnected from the ward representative's operational workflow.
 
 ### Proposed Solution
-
-Explain your solution and how your agent approaches the problem.
+Ente Ward is a Malayalam-first, hyper-localized private civic governance platform. It features **Ward Sahayakan (വാർഡ് സഹായി)** — an autonomous action agent powered by Google Gemini (gemini-3.6-flash) that understands everyday Malayalam, Manglish, and English. The agent retrieves resident and ward context, selects authorized backend tools, and executes real database transactions in Supabase to register and track complaints. Elected representatives receive these issues in an operational Action Hub, record actions taken, attach photographic evidence of repairs, and resolve issues, generating a live, transparent timeline for residents.
 
 ### Key Features
-
-* Feature 1
-* Feature 2
-* Feature 3
+* **Ward Sahayakan (Real Action Agent):** Understands Malayalam/Manglish, checks authenticated ward context, calls authorized tools (`create_issue`, `get_my_issues`, `get_ward_contacts`, `get_government_contacts`, `get_ward_statistics`), and logs agent runs to Supabase.
+* **Representative Action Hub:** Dedicated operational triage dashboard for the ward member to acknowledge complaints, upload photographic evidence of repairs, and update statuses.
+* **Username + Password Authentication:** Accessible identity layer without requiring email inputs, backed securely by Supabase Auth with zero plaintext password storage.
+* **Strict Ward-Level Security Isolation:** Data is strictly isolated by ward boundary; representatives and residents cannot access or alter another ward's private data.
+* **Bilingual Notice Board & Directories:** Verified Grama Sabha schedules, Haritha Karma Sena collection calendars, Kerala welfare schemes (LIFE Mission, Karunya KASP), and public contact directories.
 
 ### Technology Stack
-
-Describe whatever stack you chose. None of the categories below are required — leave out or add rows as needed.
-
 | Category | Technology |
 | -------- | ---------- |
-| Frontend |            |
-| Backend  |            |
-| Database |            |
-| AI/ML    |            |
-| APIs     |            |
-| Other    |            |
+| Frontend | React 19, TypeScript, Vite |
+| Backend  | Supabase (PostgreSQL 15+, PostgREST, Row-Level Security) |
+| Database | Supabase PostgreSQL |
+| AI/ML    | Google Gemini (`gemini-3.6-flash`) via `@google/generative-ai` |
+| Security | Supabase Auth (Argon2 / Bcrypt encryption), Role-Based Access |
+| Styling  | Vanilla CSS Design System + Tailwind Utility Tokens |
 
 ### How It Works
-
-Explain your agent's architecture: what tools or APIs it can call, how it plans and decides what to do next, and what a full run through your system looks like. Add diagrams if they help.
+```
+Resident ➜ Ward Sahayakan ➜ Goal Understanding ➜ Ward Context Check ➜ Tool Selection ➜ Supabase Mutation ➜ Representative Action Hub ➜ Status Update & Photo Evidence ➜ Resident Live Timeline
+```
+For the complete, in-depth architectural breakdown, see **[`docs/PROJECT_README.md`](docs/PROJECT_README.md)**.
 
 ### Setup & Installation
-
-Replace this section with your project's actual setup instructions.
+```bash
+git clone https://github.com/mshibin04/Hojathon-S1.git
+cd Hojathon-S1
+npm install
+cp .env.example .env.local
+# Add your VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, and VITE_GEMINI_API_KEY
+```
 
 ### Running the Project
-
-Explain exactly how judges can run and use the project.
+```bash
+npm run dev
+# Open http://localhost:5173
+```
+* Complete detailed documentation: **[`docs/PROJECT_README.md`](docs/PROJECT_README.md)**
+* Judge FAQ: **[`docs/JUDGE_FAQ.md`](docs/JUDGE_FAQ.md)**
+* Final PR Description: **[`docs/FINAL_PR_DESCRIPTION.md`](docs/FINAL_PR_DESCRIPTION.md)**
 
 ---
 
