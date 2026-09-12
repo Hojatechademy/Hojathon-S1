@@ -1,0 +1,50 @@
+{
+  "name": "serviceready-kerala",
+  "version": "0.1.0",
+  "description": "Phase 1: local desktop app that prepares an income-certificate case and fills the real government portal in a visible local browser.",
+  "private": true,
+  "main": "dist-electron/src/main/index.js",
+  "scripts": {
+    "clean": "node -e \"const fs=require('fs');for(const d of ['dist-electron','dist-renderer'])fs.rmSync(d,{recursive:true,force:true})\"",
+    "clean:main": "node -e \"require('fs').rmSync('dist-electron',{recursive:true,force:true})\"",
+    "dev:renderer": "vite",
+    "build:renderer": "vite build",
+    "build:main": "npm run clean:main && tsc -p tsconfig.main.json && npm run build:preload",
+    "build:preload": "esbuild src/preload/index.ts --bundle --platform=node --format=cjs --external:electron --outfile=dist-electron/preload.js",
+    "build": "npm run build:renderer && npm run build:main",
+    "dev": "concurrently -k -n RENDERER,ELECTRON -c blue,green \"npm:dev:renderer\" \"npm run dev:electron\"",
+    "dev:electron": "wait-on tcp:5173 && npm run build:main && cross-env ELECTRON_RENDERER_URL=http://localhost:5173 electron .",
+    "start": "npm run build && electron .",
+    "playwright:install": "playwright install chromium",
+    "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.preload.json --noEmit && tsc -p tsconfig.json --noEmit",
+    "test": "cross-env DEMO_FAST_MODE=1 node --import tsx --test \"tests/**/*.test.ts\"",
+    "test:portal": "cross-env DEMO_FAST_MODE=1 node --import tsx --test tests/integration/mock-portal.test.ts",
+    "fixtures:generate": "tsx scripts/generate-fixtures.ts",
+    "portal:install": "npm --prefix edistrict-kerala install",
+    "portal:dev": "npm --prefix edistrict-kerala run dev -- --port 5175 --strictPort",
+    "demo:auto": "npm run build && cross-env AUTO_RUN_DEMO=1 electron ."
+  },
+  "dependencies": {
+    "@google/genai": "^2.22.0",
+    "dotenv": "^17.4.2",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.47.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^31.0.0",
+    "esbuild": "^0.28.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsx": "^4.23.13",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "wait-on": "^7.2.0"
+  }
+}

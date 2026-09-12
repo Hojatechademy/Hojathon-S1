@@ -1,46 +1,136 @@
-# =========================================
-# Hojathon — Generic, stack-agnostic .gitignore
-# =========================================
-# This file protects against accidentally committing secrets and
-# common OS/editor junk. It does not assume any specific language,
-# framework, or tool. Add stack-specific rules for your own project
-# as needed inside your fork.
+# ============================================================
+# Dependencies — NEVER push these (root + all subprojects)
+# ============================================================
+node_modules/
+**/node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# ---- Secrets & credentials ----
+# ============================================================
+# Build / dist output (root + all subprojects)
+# ============================================================
+dist/
+**/dist/
+dist-electron/
+dist-renderer/
+dist-ssr/
+build/
+**/build/
+out/
+**/out/
+release/
+**/release/
+*.tsbuildinfo
+*.tgz
+*.tar.gz
+
+# Electron packager / builder
+*.exe
+*.dmg
+*.AppImage
+*.snap
+*.msi
+*.deb
+*.rpm
+
+# Vite / esbuild / tsc caches
+.vite/
+**/.vite/
+*.local
+
+# ============================================================
+# Environment & secrets — NEVER push real keys
+# Applies at root AND inside sampel-bot/sample-bot1/edistrict-kerala
+# ============================================================
 .env
 .env.*
 !.env.example
+**/.env
+**/.env.*
+!**/.env.example
 *.pem
 *.key
-*.cert
-*.crt
-*secret*
-*credentials*
-*.p12
-*.pfx
 
-# ---- OS-generated files ----
+# ============================================================
+# Logs
+# ============================================================
+logs/
+**/logs/
+*.log
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ============================================================
+# Playwright / test artefacts
+# ============================================================
+test-results/
+**/test-results/
+playwright-report/
+**/playwright-report/
+blob-report/
+**/blob-report/
+playwright/.cache/
+**/playwright/.cache/
+coverage/
+**/coverage/
+.nyc_output/
+*.lcov
+
+# ============================================================
+# OS files
+# ============================================================
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
+**/.DS_Store
 Thumbs.db
-desktop.ini
+**/Thumbs.db
+Desktop.ini
 
-# ---- Editor / IDE metadata ----
-.vscode/
+# ============================================================
+# Editors / IDEs
+# ============================================================
+.vscode/*
+!.vscode/extensions.json
 .idea/
-*.sublime-project
-*.sublime-workspace
+**/.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 *.swp
 *.swo
 *~
 
-# ---- Temporary / log files ----
-*.log
-*.tmp
-*.temp
-*.bak
-*.cache
+# ============================================================
+# Python (edistrict-kerala tools.py and friends)
+# ============================================================
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+**/.venv/
+venv/
+**/venv/
+ENV/
+env/
+
+# ============================================================
+# Misc local files
+# ============================================================
+.cache/
+**/.cache/
+.parcel-cache/
+.turbo/
+.vercel/
+.netlify/
+*.rar
