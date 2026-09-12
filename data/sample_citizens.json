@@ -1,0 +1,90 @@
+[
+  {
+    "id": "persona_farmer_raghavan",
+    "title": "🌾 Raghavan Nair (Small Farmer, Wayanad)",
+    "description": "Small farmer from Wayanad with 1.8 acres of coffee/paddy land. Low annual income, looking for farm subsidies, fertilizer aid, or interest-free credit.",
+    "input_modality": "text",
+    "raw_input": "എന്റെ പേര് രാഘവൻ നായർ. വയനാട് ബത്തേരിയിലാണ് താമസം. 48 വയസ്സായി. 1.8 ഏക്കർ സ്ഥലത്ത് കൃഷി ചെയ്യുന്നുണ്ട്. വാർഷിക വരുമാനം ഏകദേശം 85,000 രൂപയാണ്. കൃഷി ചിലവിനും വളം വാങ്ങാനും സർക്കാർ സബ്സിഡിയോ പലിശയില്ലാത്ത വായ്പയോ ലഭ്യമാണോ?",
+    "raw_input_manglish": "Ente peru Raghavan Nair. Wayanad Bathery aanu thaamasam. 48 vayassayi. 1.8 acre sthalath krishi cheyyunnund. Varshika varumanam 85,000 roopa. Krishi chilavinum valam vangaanum sarkkar subsidiyo loan o kitiyo?",
+    "expected_matches": ["subhiksha_pm_kisan", "kerala_kcc", "kasp_karunya"],
+    "profile_preview": {
+      "name": "Raghavan Nair",
+      "age": 48,
+      "gender": "Male",
+      "state": "Kerala",
+      "district": "Wayanad",
+      "occupation": "farmer",
+      "annual_income": 85000,
+      "caste_category": "General",
+      "landholding_acres": 1.8,
+      "urban_rural": "Rural",
+      "intent": "scheme_discovery"
+    }
+  },
+  {
+    "id": "persona_vendor_bindu",
+    "title": "🛒 Bindu Suresh (Kudumbashree Vendor, Ernakulam)",
+    "description": "Female street vendor and Kudumbashree member from Ernakulam running an evening food cart. Seeking micro-credit loan and health cover.",
+    "input_modality": "text",
+    "raw_input": "നമസ്കാരം, എന്റെ പേര് ബിന്ദു സുരേഷ്. എറണാകുളം തമ്മനത്താണ് താമസം. എനിക്ക് 36 വയസ്സായി. ഭർത്താവ് കൂലിപ്പണിക്കാരനാണ്. ഞാൻ ചെറിയൊരു തട്ടുകട നടത്തുന്നുണ്ട്. ഞങ്ങളുടെ കുടുംബത്തിന്റെ വാർഷിക വരുമാനം ഒരു ലക്ഷം രൂപയാണ്. കട വിപുലീകരിക്കാൻ കുടുംബശ്രീ വഴിയോ സർക്കാരിൽ നിന്നോ കുറഞ്ഞ പലിശയ്ക്ക് ലോൺ വേണം.",
+    "raw_input_manglish": "Namaskaram, ente peru Bindu Suresh. Ernakulam Thammanam aanu thaamasam. Enikku 36 vayassayi. Njan oru thattukada nadathunnu. Kudumbathinte varshika varumanam 1 lakh roopa. Kudumbashree vazhiyo sarkaril ninno kuranja palishayil loan venam.",
+    "expected_matches": ["kudumbashree_loan", "kasp_karunya", "life_mission"],
+    "profile_preview": {
+      "name": "Bindu Suresh",
+      "age": 36,
+      "gender": "Female",
+      "state": "Kerala",
+      "district": "Ernakulam",
+      "occupation": "street vendor",
+      "annual_income": 100000,
+      "caste_category": "OBC",
+      "landholding_acres": 0.0,
+      "urban_rural": "Urban",
+      "intent": "scheme_discovery"
+    }
+  },
+  {
+    "id": "persona_student_anjali",
+    "title": "🎓 Anjali Pradeep (Plus-One Student, Alappuzha)",
+    "description": "16-year-old Plus-One student from coastal Alappuzha. Father is a traditional fisherman, looking for state merit education scholarship.",
+    "input_modality": "text",
+    "raw_input": "സർ, എന്റെ പേര് അഞ്ജലി പ്രദീപ്. ആലപ്പുഴ അമ്പലപ്പുഴ സ്വദേശിനിയാണ്. 16 വയസ്സ്. സർക്കാർ ഹയർ സെക്കണ്ടറി സ്കൂളിൽ പ്ലസ് വണ്ണിൽ പഠിക്കുകയാണ്. അച്ഛൻ മത്സ്യത്തൊഴിലാളിയാണ്. കുടുംബത്തിന്റെ വാർഷിക വരുമാനം 90,000 രൂപയാണ്. തുടർപഠനത്തിന് എന്തെങ്കിലും സർക്കാർ സ്കോളർഷിപ്പ് ലഭിക്കുമോ?",
+    "raw_input_manglish": "Sir, ente peru Anjali Pradeep. Alappuzha Ambalappuzha aanu. 16 vayassu. Govt schoolil Plus One padikkunnu. Achan fisherman aanu. Kudumbathinte varshika varumanam 90,000 roopa. Thudarpadanathinu scholarship kittumo?",
+    "expected_matches": ["vidyakiranam_scholarship", "kasp_karunya"],
+    "profile_preview": {
+      "name": "Anjali Pradeep",
+      "age": 16,
+      "gender": "Female",
+      "state": "Kerala",
+      "district": "Alappuzha",
+      "occupation": "student",
+      "annual_income": 90000,
+      "caste_category": "OBC",
+      "landholding_acres": 0.0,
+      "urban_rural": "Rural",
+      "intent": "scholarship"
+    }
+  },
+  {
+    "id": "persona_grievance_gopalan",
+    "title": "⚖️ Gopalan Mash (Pension Grievance, Thrissur)",
+    "description": "67-year-old retired laborer from Thrissur whose Sevana social security pension stopped 6 months ago without explanation. Needs CM Cell grievance petition.",
+    "input_modality": "text",
+    "raw_input": "എന്റെ പേര് ഗോപാലൻ, 67 വയസ്സായി, തൃശ്ശൂർ കൊടകരയാണ് സ്ഥലം. കഴിഞ്ഞ 6 മാസമായി എനിക്ക് കിട്ടിക്കൊണ്ടിരുന്ന വാർദ്ധക്യ പെൻഷൻ യാതൊരു കാരണവുമില്ലാതെ മുടങ്ങിയിരിക്കുകയാണ്. പഞ്ചായത്ത് ഓഫീസിലും ബാങ്കിലും പലതവണ പോയിട്ടും ആരും തിരിഞ്ഞുനോക്കുന്നില്ല. എനിക്ക് വേറെ വരുമാനമില്ല. മുഖ്യമന്ത്രിയുടെ സെല്ലിലേക്ക് ഔദ്യോഗിക പരാതി അയക്കണം.",
+    "raw_input_manglish": "Ente peru Gopalan, 67 vayassayi, Thrissur Kodakara aanu sthalam. Kazhinja 6 maasamayi kitti kondirunna vardhakya pension mutangi kidakkukayanu. Panchayat officil poyittum aarum thirinju nokkunnilla. Chief Ministerte cellil otta formal complaint ayakkanam.",
+    "expected_matches": ["cmdrf_grievance", "sevana_pension"],
+    "profile_preview": {
+      "name": "Gopalan",
+      "age": 67,
+      "gender": "Male",
+      "state": "Kerala",
+      "district": "Thrissur",
+      "occupation": "senior citizen",
+      "annual_income": 0,
+      "caste_category": "General",
+      "landholding_acres": 0.0,
+      "urban_rural": "Rural",
+      "intent": "grievance_petition"
+    }
+  }
+]

@@ -1,0 +1,13 @@
+# SahayAI Dependencies
+# Note: Uses high-performance in-memory Vector Store (Numpy-based cosine & semantic similarity)
+# to ensure zero-friction, native compatibility with Python 3.14 on Windows.
+google-genai>=2.0.0
+langgraph>=1.2.0
+fpdf2>=2.8.0
+pydantic>=2.10.0
+streamlit>=1.40.0
+pillow>=10.0.0
+python-dotenv>=1.0.0
+requests>=2.30.0
+numpy>=1.22.0
+pypdf>=5.0.0
