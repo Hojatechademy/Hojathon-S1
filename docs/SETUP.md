@@ -32,9 +32,13 @@ copy .env.example .env.local
 
 On macOS/Linux, use `cp .env.example .env.local` instead of `copy`.
 
-## External services and database
+## Shared Supabase project
 
-Gemini is accessed only by the server-side Next.js agent layer. Supabase provides Auth, PostgreSQL, and RLS. Apply the project migrations created during implementation setup to the shared Supabase project. Do not create a second project.
+Both developers use one shared Supabase project for the database, authentication, RLS policies, and project configuration. Do not create separate developer projects. Apply migrations to that shared project only.
+
+Developer 1 owns Supabase operations required by the Patient Workspace. Developer 2 owns Supabase operations required by the Follow-up Agent and Actions module. Schema, migrations, RLS, shared contracts, and authentication assumptions require coordination before changes.
+
+Gemini is accessed only by the server-side Next.js agent layer. Privileged operations must use server-side functions/actions. Never expose a service-role credential to client code.
 
 ## Running
 

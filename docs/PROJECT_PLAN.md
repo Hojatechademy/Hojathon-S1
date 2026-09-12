@@ -34,7 +34,11 @@ Own authentication, protected dashboard, patient context reads, task/appointment
 
 Own the Gemini-backed orchestration, context retrieval, four tools, validation, authorization, Supabase mutations, the sole Agent Panel implementation, testing, and documentation. Branch: `feature/follow-up-agent`.
 
-Shared changes require coordination: data contracts, migration/RLS, environment variable names, package files, and API/action-result shapes.
+## Supabase role separation
+
+Both developers use one shared Supabase project, database, authentication setup, and RLS policies. Developer 1 owns the Supabase reads and writes required by the Patient Workspace; Developer 2 owns the Supabase reads and writes required by the Follow-up Agent and Actions module. Neither developer modifies unrelated module data logic.
+
+Schema, migrations, RLS policies, shared database contracts, authentication assumptions, environment variable names, and package files are shared areas. Coordinate before changing them, avoid duplicate database logic, and keep access module-focused. Privileged operations must remain in the existing Next.js server-side pattern; never expose a service-role credential to client code.
 
 ## Implementation schedule
 

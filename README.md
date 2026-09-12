@@ -60,7 +60,9 @@ cd Hojathon-S1
 npm install
 ```
 
-Copy `.env.example` to `.env.local` and fill in the Supabase URL, Supabase publishable key, and `GEMINI_API_KEY`. `GEMINI_MODEL` is optional. Never commit `.env.local` or real credentials.
+Copy `.env.example` to `.env.local` and fill in the shared Supabase URL, shared Supabase publishable key, and `GEMINI_API_KEY`. `GEMINI_MODEL` is optional. Both developers use the same Supabase project; never create separate developer projects. Never commit `.env.local` or real credentials.
+
+Supabase ownership is module-focused: Developer 1 owns Patient Workspace data operations, Developer 2 owns Follow-up Agent data operations, and schema/migrations/RLS/shared contracts are coordinated changes. Privileged operations remain server-side and service-role credentials are never exposed to the browser.
 
 Required variables are documented in [docs/SETUP.md](docs/SETUP.md). The AI Agent requires a valid `GEMINI_API_KEY`; the server should show a clear configuration message if it is missing.
 
