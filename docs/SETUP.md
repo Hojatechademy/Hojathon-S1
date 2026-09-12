@@ -1,98 +1,85 @@
 # Setup Guide
 
-Hojathon does **not** prescribe any technology stack. This file is a generic template — replace every section below with the actual instructions for your project, using whatever language, framework, or tools your team chose.
-
-Judges should be able to follow your instructions and run your project **without needing to guess** how it works. Be specific and complete.
+Judges should be able to follow these instructions and run the project without needing to guess how it works.
 
 ---
 
 ## Prerequisites
 
-List anything a judge needs installed or available before they can set up your project.
-
-Example:
-
-* A code editor
+* Python 3.10 or later
+* pip
 * Git
-* Internet access (if your project calls external APIs)
+* Internet access (the agent calls the Google Gemini API)
+* A free Google Gemini API key (see [API Keys / Configuration](#api-keys--configuration) below)
 
 ## Required Software & Versions
 
-List the exact software and versions your project needs.
-
-Example:
-
 | Software | Version |
 | -------- | ------- |
-| [Your language/runtime] | [version] |
-| [Your database] | [version] |
-| [Other tool] | [version] |
+| Python   | 3.10+   |
+
+No database or other services are required.
 
 ## Dependencies
 
-Explain how to install your project's dependencies.
-
-Example:
+All dependencies are listed in [`requirements.txt`](../requirements.txt):
 
 ```bash
-[your dependency install command]
+pip install -r requirements.txt
 ```
+
+This installs `google-genai` (Gemini SDK), `python-dotenv` (loads the API key from `.env`), and `streamlit` (only needed for the optional web UI).
 
 ## Environment Variables
 
-List every environment variable your project needs, with a description (but **never** commit real secret values).
-
-Example:
-
 | Variable | Description |
 | -------- | ----------- |
-| `API_KEY` | Key for [service name] |
-| `DATABASE_URL` | Connection string for your database |
+| `GEMINI_API_KEY` | API key for the Google Gemini API, used to interpret free-text symptoms and decide follow-up questions. |
 
-Provide an `.env.example` file in your project (without real secrets) if applicable.
+An [`.env.example`](../.env.example) file is provided at the repo root (no real secret values). Copy it to `.env` and fill in your own key — `.env` is already listed in `.gitignore` and must never be committed.
 
 ## API Keys / Configuration
 
-Explain which external services/APIs your project uses, and how a judge can obtain their own keys if needed to run it, or how you've provided safe demo access.
+This project uses the **Google Gemini API** (`google-genai` SDK) as its only external service. Get a free key from [Google AI Studio](https://aistudio.google.com/apikey) and place it in `.env` as `GEMINI_API_KEY=your_key_here`.
 
-## Database Setup
+The free tier has a limited daily request quota per model. If you hit a `429 RESOURCE_EXHAUSTED` error while testing, run with `--mock` (CLI) or the "Use mock agent" checkbox (web UI) instead — this exercises the entire conversation loop, red-flag rules engine, and hospital routing with canned responses and zero API calls, which is how this project's own development and testing was done to conserve quota. `src/gemini_agent.py` currently targets `gemini-3.5-flash-lite`; if that model becomes unavailable, check `client.models.list()` for the current equivalent on your key.
 
-If your project uses a database, explain how to set it up, including any migrations or seed data.
-
-If your project does not use a database, remove this section.
+Hospital ED notification and callback scheduling (`src/hospital_routing.py`) are **simulated** — no real hospital API is called. This is called out explicitly in the app's own summary output and code comments.
 
 ## Installation
 
-Step-by-step instructions to get your project's code and dependencies ready to run.
-
-Example:
-
 ```bash
-git clone <your-fork-url>
-cd <your-project-folder>
-[install commands]
+git clone https://github.com/<your-username>/<your-fork>.git
+cd Hojathon-S1
+pip install -r requirements.txt
+cp .env.example .env   # then add your GEMINI_API_KEY
 ```
 
 ## Running the Project
 
-Step-by-step instructions to actually start and use your project.
-
-Example:
+**CLI (terminal):**
 
 ```bash
-[run command]
+python src/main.py
 ```
 
-Explain what a judge should see or do once it's running.
+Describe your symptoms when prompted (try: *"I've had a headache since yesterday and I feel a bit dizzy."*), then answer each follow-up question as it's asked. The agent prints its reasoning live (facts extracted, each red-flag check, the question it decides to ask next) before producing a final summary. For an Emergency scenario that also exercises hospital routing, try: *"This is the worst headache of my life, it started suddenly and I feel dizzy."*
+
+**Web UI (browser):**
+
+```bash
+streamlit run src/app.py
+```
+
+Opens a local page (usually `http://localhost:8501`) with the same flow: a text box for the initial description, one follow-up question at a time, the same reasoning trace rendered on the page, and Yes/No buttons instead of typed confirmation for hospital notification.
+
+**Quota-free testing:** add `--mock` to the CLI command, or check "Use mock agent (no API calls)" in the web UI sidebar before starting, to run the full flow with canned LLM responses instead of real Gemini calls.
 
 ## Testing
 
-If your project has tests, explain how to run them.
+There is no automated test suite. The project was verified manually and with ad-hoc scripts during development:
 
-Example:
-
-```bash
-[test command]
-```
-
-If your project does not have automated tests, you may remove this section, but consider explaining how you manually verified your project works.
+* The red-flag rules engine (`rules_engine.py`) was unit-tested directly (e.g. confirming a sudden+severe headache resolves to Emergency, a mild+gradual one to Self-care).
+* The full conversation loop, scope check, and hospital routing (including both the "yes" and "no" confirmation branches) were run end-to-end in `--mock` mode, which requires no API key usage.
+* The Streamlit UI was tested headlessly with Streamlit's `AppTest` utility, simulating the same interactions a judge would perform in a browser (typing the initial description, answering follow-ups, clicking Yes/No), for both mock and real Gemini responses.
+* The full Emergency scenario (worst headache of life → hospital found → confirmed → ED notified → callback scheduled) was confirmed against the real Gemini API in both the CLI and the web UI.
