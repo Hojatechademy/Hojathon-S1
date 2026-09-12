@@ -1,10 +1,10 @@
 # Team Information
 
-**Team ID:**
+**Team ID:** 12
 
-**Team Name:**
+**Team Name:** Agri-Corp
 
-**Project Name:**
+**Project Name:** AgriPilot
 
 ---
 
@@ -14,16 +14,16 @@ Teams can have **1, 2, or 3 members**. Member 2 and Member 3 are optional.
 
 ### Member 1
 
-**Name:**
+**Name:** Almas CP
 
 ### Member 2
 
 *(Optional)*
 
-**Name:**
+**Name:** —
 
 ### Member 3
 
 *(Optional)*
 
-**Name:**
+**Name:** —

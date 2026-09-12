@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/*
+  Accessibility decisions baked in here rather than repeated per component:
+
+  - Root font size is a percentage, not a fixed px value, so it scales up from
+    whatever the user has set in their browser instead of overriding it.
+    112.5% gives an 18px base for a default browser, which suits outdoor
+    reading and older eyes.
+  - One fixed light theme with high contrast. No automatic dark mode: this is
+    used on a phone in daylight, and a single palette lets us guarantee
+    contrast ratios rather than maintaining two sets.
+  - Focus rings are defined globally so every interactive element is keyboard
+    visible without opting in.
+*/
+
+html {
+  font-size: 112.5%;
+  -webkit-text-size-adjust: 100%;
+}
+
+:root {
+  --background: #f6f7f2;
+  --surface: #ffffff;
+  --foreground: #1a1c19;
+  --muted: #4a5247;
+  /* Decorative edges on cards and panels. */
+  --border: #c9cfc4;
+  /*
+    Boundary colour for real controls - selects, text inputs, checkbox rows.
+    Kept dark enough to clear the 3:1 non-text contrast requirement against both
+    white and the page background, which the lighter --border does not.
+  */
+  --control: #7e857a;
+  --brand: #1f6b3a;
+  --brand-strong: #16512c;
+  --focus: #05408a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-control: var(--control);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Visible, high-contrast focus indicator on anything keyboard-reachable. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Respect users who have asked the OS to reduce motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Honour Windows / browser forced-colours mode instead of fighting it. */
+@media (forced-colors: active) {
+  .decision-card,
+  .data-tile {
+    border: 1px solid CanvasText;
+  }
+}
+
+/*
+  Visible only to screen readers, but reachable by keyboard when focused -
+  used by the skip link.
+*/
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border-width: 0;
+}

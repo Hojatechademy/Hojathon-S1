@@ -1,0 +1,45 @@
+[
+  { "crop": "Wheat", "region": "Punjab", "pricePerQuintal": 2275, "trend": "up" },
+  { "crop": "Wheat", "region": "Madhya Pradesh", "pricePerQuintal": 2180, "trend": "stable" },
+  { "crop": "Wheat", "region": "Uttar Pradesh", "pricePerQuintal": 2210, "trend": "up" },
+
+  { "crop": "Rice", "region": "Punjab", "pricePerQuintal": 2100, "trend": "stable" },
+  { "crop": "Rice", "region": "West Bengal", "pricePerQuintal": 2045, "trend": "down" },
+  { "crop": "Rice", "region": "Andhra Pradesh", "pricePerQuintal": 2160, "trend": "up" },
+
+  { "crop": "Maize", "region": "Karnataka", "pricePerQuintal": 1980, "trend": "up" },
+  { "crop": "Maize", "region": "Bihar", "pricePerQuintal": 1890, "trend": "stable" },
+  { "crop": "Maize", "region": "Madhya Pradesh", "pricePerQuintal": 1925, "trend": "up" },
+
+  { "crop": "Cotton", "region": "Gujarat", "pricePerQuintal": 6850, "trend": "up" },
+  { "crop": "Cotton", "region": "Maharashtra", "pricePerQuintal": 6620, "trend": "stable" },
+  { "crop": "Cotton", "region": "Punjab", "pricePerQuintal": 6740, "trend": "down" },
+
+  { "crop": "Sugarcane", "region": "Uttar Pradesh", "pricePerQuintal": 355, "trend": "stable" },
+  { "crop": "Sugarcane", "region": "Maharashtra", "pricePerQuintal": 340, "trend": "down" },
+
+  { "crop": "Soybean", "region": "Madhya Pradesh", "pricePerQuintal": 4620, "trend": "down" },
+  { "crop": "Soybean", "region": "Maharashtra", "pricePerQuintal": 4720, "trend": "stable" },
+  { "crop": "Soybean", "region": "Rajasthan", "pricePerQuintal": 4550, "trend": "down" },
+
+  { "crop": "Mustard", "region": "Rajasthan", "pricePerQuintal": 5480, "trend": "up" },
+  { "crop": "Mustard", "region": "Haryana", "pricePerQuintal": 5390, "trend": "stable" },
+
+  { "crop": "Chickpea", "region": "Madhya Pradesh", "pricePerQuintal": 5325, "trend": "up" },
+  { "crop": "Chickpea", "region": "Rajasthan", "pricePerQuintal": 5260, "trend": "stable" },
+  { "crop": "Chickpea", "region": "Maharashtra", "pricePerQuintal": 5410, "trend": "up" },
+
+  { "crop": "Groundnut", "region": "Gujarat", "pricePerQuintal": 6180, "trend": "stable" },
+  { "crop": "Groundnut", "region": "Andhra Pradesh", "pricePerQuintal": 6050, "trend": "down" },
+
+  { "crop": "Bajra", "region": "Rajasthan", "pricePerQuintal": 2340, "trend": "up" },
+  { "crop": "Bajra", "region": "Haryana", "pricePerQuintal": 2280, "trend": "stable" },
+
+  { "crop": "Onion", "region": "Maharashtra", "pricePerQuintal": 1650, "trend": "up" },
+  { "crop": "Onion", "region": "Karnataka", "pricePerQuintal": 1580, "trend": "up" },
+  { "crop": "Onion", "region": "Gujarat", "pricePerQuintal": 1490, "trend": "stable" },
+
+  { "crop": "Tomato", "region": "Karnataka", "pricePerQuintal": 1320, "trend": "down" },
+  { "crop": "Tomato", "region": "Maharashtra", "pricePerQuintal": 1410, "trend": "down" },
+  { "crop": "Tomato", "region": "Andhra Pradesh", "pricePerQuintal": 1275, "trend": "stable" }
+]

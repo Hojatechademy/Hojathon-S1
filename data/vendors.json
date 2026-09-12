@@ -1,0 +1,200 @@
+[
+  {
+    "id": "v1",
+    "name": "AgroSeed Co.",
+    "category": "seeds",
+    "product": "Wheat HD-3086 certified seeds",
+    "crop": "Wheat",
+    "pricePerKg": 45,
+    "location": "Ludhiana, Punjab"
+  },
+  {
+    "id": "v2",
+    "name": "GreenGrow Fertilizers",
+    "category": "fertilizer",
+    "product": "Urea 46% N (45 kg bag)",
+    "crop": "any",
+    "pricePerBag": 280,
+    "location": "Ludhiana, Punjab"
+  },
+  {
+    "id": "v3",
+    "name": "Punjab Seed Bhandar",
+    "category": "seeds",
+    "product": "Paddy PR-126 seeds",
+    "crop": "Rice",
+    "pricePerKg": 62,
+    "location": "Patiala, Punjab"
+  },
+  {
+    "id": "v4",
+    "name": "Krishi Kendra Supplies",
+    "category": "seeds",
+    "product": "Maize hybrid DKC-9108 seeds",
+    "crop": "Maize",
+    "pricePerKg": 310,
+    "location": "Belagavi, Karnataka"
+  },
+  {
+    "id": "v5",
+    "name": "Bharat Agri Inputs",
+    "category": "seeds",
+    "product": "Soybean JS-9560 seeds",
+    "crop": "Soybean",
+    "pricePerKg": 95,
+    "location": "Indore, Madhya Pradesh"
+  },
+  {
+    "id": "v6",
+    "name": "Rajasthan Beej Kendra",
+    "category": "seeds",
+    "product": "Mustard Pusa Bold seeds",
+    "crop": "Mustard",
+    "pricePerKg": 120,
+    "location": "Jaipur, Rajasthan"
+  },
+  {
+    "id": "v7",
+    "name": "Nutrifarm Agro",
+    "category": "fertilizer",
+    "product": "DAP 18-46-0 (50 kg bag)",
+    "crop": "any",
+    "pricePerBag": 1350,
+    "location": "Nashik, Maharashtra"
+  },
+  {
+    "id": "v8",
+    "name": "Nutrifarm Agro",
+    "category": "fertilizer",
+    "product": "MOP Potash (50 kg bag)",
+    "crop": "any",
+    "pricePerBag": 1700,
+    "location": "Nashik, Maharashtra"
+  },
+  {
+    "id": "v9",
+    "name": "BioShield Organics",
+    "category": "fertilizer",
+    "product": "Neem oil bio-pesticide (5 L can)",
+    "crop": "any",
+    "pricePerCan": 890,
+    "location": "Coimbatore, Tamil Nadu"
+  },
+  {
+    "id": "v10",
+    "name": "BioShield Organics",
+    "category": "fertilizer",
+    "product": "Vermicompost (40 kg bag)",
+    "crop": "any",
+    "pricePerBag": 420,
+    "location": "Coimbatore, Tamil Nadu"
+  },
+  {
+    "id": "v11",
+    "name": "Sharma Farm Equipment",
+    "category": "equipment",
+    "product": "Seed drill (9-row, tractor mounted) - rental per day",
+    "crop": "any",
+    "pricePerDay": 1200,
+    "location": "Karnal, Haryana"
+  },
+  {
+    "id": "v12",
+    "name": "Sharma Farm Equipment",
+    "category": "equipment",
+    "product": "Rotavator 5 ft - rental per day",
+    "crop": "any",
+    "pricePerDay": 900,
+    "location": "Karnal, Haryana"
+  },
+  {
+    "id": "v13",
+    "name": "AquaFlow Irrigation",
+    "category": "equipment",
+    "product": "Drip irrigation kit (1 acre)",
+    "crop": "any",
+    "pricePerUnit": 24500,
+    "location": "Ahmedabad, Gujarat"
+  },
+  {
+    "id": "v14",
+    "name": "AquaFlow Irrigation",
+    "category": "equipment",
+    "product": "Sprinkler set (1 acre, 20 nozzles)",
+    "crop": "any",
+    "pricePerUnit": 16800,
+    "location": "Ahmedabad, Gujarat"
+  },
+  {
+    "id": "v15",
+    "name": "FarmTech Tools",
+    "category": "equipment",
+    "product": "Battery knapsack sprayer 16 L",
+    "crop": "any",
+    "pricePerUnit": 2650,
+    "location": "Pune, Maharashtra"
+  },
+  {
+    "id": "v16",
+    "name": "Deccan Cotton Seeds",
+    "category": "seeds",
+    "product": "Cotton BT hybrid seeds (450 g packet)",
+    "crop": "Cotton",
+    "pricePerPacket": 864,
+    "location": "Rajkot, Gujarat"
+  },
+  {
+    "id": "v17",
+    "name": "Sabzi Beej Store",
+    "category": "seeds",
+    "product": "Onion Nasik Red seeds",
+    "crop": "Onion",
+    "pricePerKg": 1450,
+    "location": "Nashik, Maharashtra"
+  },
+  {
+    "id": "v18",
+    "name": "Sabzi Beej Store",
+    "category": "seeds",
+    "product": "Tomato hybrid Arka Rakshak seeds",
+    "crop": "Tomato",
+    "pricePerKg": 3200,
+    "location": "Bengaluru, Karnataka"
+  },
+  {
+    "id": "v19",
+    "name": "Rajasthan Beej Kendra",
+    "category": "seeds",
+    "product": "Bajra hybrid HHB-67 seeds",
+    "crop": "Bajra",
+    "pricePerKg": 210,
+    "location": "Jaipur, Rajasthan"
+  },
+  {
+    "id": "v20",
+    "name": "Dal Beej Suppliers",
+    "category": "seeds",
+    "product": "Chickpea JG-14 seeds",
+    "crop": "Chickpea",
+    "pricePerKg": 130,
+    "location": "Bhopal, Madhya Pradesh"
+  },
+  {
+    "id": "v21",
+    "name": "Saurashtra Oilseeds",
+    "category": "seeds",
+    "product": "Groundnut GG-20 seed kernels",
+    "crop": "Groundnut",
+    "pricePerKg": 105,
+    "location": "Junagadh, Gujarat"
+  },
+  {
+    "id": "v22",
+    "name": "Ganna Nursery Co-op",
+    "category": "seeds",
+    "product": "Sugarcane Co-0238 setts (per 100)",
+    "crop": "Sugarcane",
+    "pricePerPacket": 380,
+    "location": "Meerut, Uttar Pradesh"
+  }
+]
