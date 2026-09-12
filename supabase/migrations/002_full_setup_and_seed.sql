@@ -133,3 +133,40 @@ on conflict (id) do update set
   timing = excluded.timing,
   available_slots = excluded.available_slots,
   status = excluded.status;
+
+-- 12. Auto-Seed Workspace Data for First User (If Any User Exists)
+do $$ 
+declare
+  target_user_id uuid;
+begin
+  select id into target_user_id from auth.users limit 1;
+  
+  if target_user_id is not null then
+    -- Ensure profile
+    insert into public.patient_profiles (id, display_name)
+    values (target_user_id, 'Demo Patient')
+    on conflict (id) do nothing;
+
+    -- Seed Follow-up Actions
+    insert into public.follow_up_tasks (patient_id, title, description, due_at, status)
+    values 
+      (target_user_id, 'Schedule Cardiology Follow-up Checkup', 'Follow up with Dr. Elena Vance regarding recent test results.', now() + interval '3 days', 'pending'),
+      (target_user_id, 'Complete Fasting Lipid Panel Lab Work', 'Routine follow-up lab to be drawn before cardiology visit.', now() + interval '5 days', 'in_progress'),
+      (target_user_id, 'Daily Blood Pressure & Vitals Log', 'Log morning and evening blood pressure measurements.', now() - interval '1 day', 'completed')
+    on conflict do nothing;
+
+    -- Seed Appointments
+    insert into public.appointments (patient_id, title, starts_at, location, status)
+    values
+      (target_user_id, 'Cardiology Post-Discharge Consultation', now() - interval '2 days', 'Heart & Vascular Pavilion, Suite 302', 'missed'),
+      (target_user_id, 'Primary Care Wellness Follow-up', now() + interval '7 days', 'Downtown Health Clinic, Room 210', 'scheduled')
+    on conflict do nothing;
+
+    -- Seed Reminders
+    insert into public.reminders (patient_id, remind_at, status)
+    values
+      (target_user_id, now() + interval '1 day', 'pending')
+    on conflict do nothing;
+  end if;
+end $$;
+

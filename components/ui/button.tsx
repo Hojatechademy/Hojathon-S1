@@ -8,16 +8,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-teal-700 text-white shadow-sm hover:bg-teal-800 focus-visible:ring-teal-600",
+          "bg-teal-700 text-white shadow-sm hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-700 focus-visible:ring-teal-600",
         destructive:
-          "bg-rose-600 text-white shadow-sm hover:bg-rose-700 focus-visible:ring-rose-600",
+          "bg-rose-600 text-white shadow-sm hover:bg-rose-700 dark:bg-rose-700 dark:hover:bg-rose-600 focus-visible:ring-rose-600",
         outline:
-          "border border-slate-300 bg-white text-slate-800 shadow-sm hover:bg-slate-50 focus-visible:ring-teal-600",
+          "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:ring-teal-600",
         secondary:
-          "bg-slate-100 text-slate-900 shadow-sm hover:bg-slate-200 focus-visible:ring-slate-400",
+          "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-sm hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:ring-slate-400",
         ghost:
-          "text-slate-700 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400",
-        link: "text-teal-700 underline-offset-4 hover:underline focus-visible:ring-teal-600",
+          "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white focus-visible:ring-slate-400",
+        link: "text-teal-700 dark:text-teal-400 underline-offset-4 hover:underline focus-visible:ring-teal-600",
       },
       size: {
         default: "h-11 px-4 py-2",

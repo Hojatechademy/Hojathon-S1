@@ -42,30 +42,30 @@ export function DoctorsView({ doctors }: DoctorsViewProps) {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-teal-200/90 bg-gradient-to-r from-teal-50/80 via-white to-teal-50/30 p-6 sm:p-8 shadow-xs">
+      <div className="relative overflow-hidden rounded-2xl border border-teal-200/90 bg-gradient-to-r from-teal-50/80 via-white to-teal-50/30 p-6 sm:p-8 shadow-xs dark:border-slate-800 dark:from-teal-950/40 dark:via-slate-900 dark:to-teal-950/20">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-teal-100/80 px-2.5 py-0.5 text-xs font-semibold text-teal-800">
-              <Building2 className="h-3.5 w-3.5 text-teal-700" />
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-teal-100/80 px-2.5 py-0.5 text-xs font-semibold text-teal-800 dark:bg-teal-950/80 dark:text-teal-300">
+              <Building2 className="h-3.5 w-3.5 text-teal-700 dark:text-teal-400" />
               <span>Hospital Physician Directory</span>
             </div>
-            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl">
+            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl dark:text-white">
               Available Doctors & Clinic Timings
             </h2>
-            <p className="text-xs text-slate-600 max-w-2xl leading-relaxed">
+            <p className="text-xs text-slate-600 max-w-2xl leading-relaxed dark:text-slate-400">
               Find attending clinicians, verify consultation hours, and inspect real-time appointment availability across hospital specialties.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 text-xs text-slate-800 bg-white/90 px-4 py-2.5 rounded-xl border border-slate-200/80 shadow-xs">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+          <div className="flex items-center gap-2.5 text-xs text-slate-800 bg-white/90 px-4 py-2.5 rounded-xl border border-slate-200/80 shadow-xs dark:bg-slate-800/90 dark:border-slate-700 dark:text-slate-200">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <UserCheck className="h-4 w-4" />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-slate-900 leading-none">
+              <span className="font-bold text-slate-900 dark:text-white leading-none">
                 {availableCount} Available Today
               </span>
-              <span className="text-[10px] text-slate-500 mt-0.5">Across {departments.length - 1} departments</span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Across {departments.length - 1} departments</span>
             </div>
           </div>
         </div>
@@ -79,13 +79,13 @@ export function DoctorsView({ doctors }: DoctorsViewProps) {
               placeholder="Search by physician name, specialty, or department..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-11 bg-white border-slate-200 focus-visible:ring-teal-600 shadow-2xs"
+              className="pl-10 h-11 bg-white border-slate-200 focus-visible:ring-teal-600 shadow-2xs dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -94,8 +94,8 @@ export function DoctorsView({ doctors }: DoctorsViewProps) {
         </div>
 
         {/* Department Chips */}
-        <div className="mt-4 flex flex-wrap items-center gap-1.5 pt-3 border-t border-teal-100/70">
-          <span className="text-xs font-semibold text-slate-500 mr-1 flex items-center gap-1">
+        <div className="mt-4 flex flex-wrap items-center gap-1.5 pt-3 border-t border-teal-100/70 dark:border-slate-800">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1">
             <Filter className="h-3 w-3 text-slate-400" /> Department:
           </span>
           {departments.map((dept) => (
@@ -105,8 +105,8 @@ export function DoctorsView({ doctors }: DoctorsViewProps) {
               onClick={() => setSelectedDepartment(dept)}
               className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                 selectedDepartment === dept
-                  ? "bg-teal-700 text-white shadow-xs"
-                  : "bg-white text-slate-600 border border-slate-200/90 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-teal-700 text-white shadow-xs dark:bg-teal-600"
+                  : "bg-white text-slate-600 border border-slate-200/90 hover:bg-slate-50 hover:text-slate-900 dark:bg-slate-900 dark:text-slate-400 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:text-slate-100"
               }`}
             >
               {dept === "all" ? "All Departments" : dept}

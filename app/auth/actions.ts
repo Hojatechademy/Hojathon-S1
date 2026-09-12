@@ -59,15 +59,28 @@ export async function signUp(prevState: any, formData: FormData) {
   });
 
   if (error) {
+    if (error.message.toLowerCase().includes("rate limit")) {
+      return {
+        error: "Supabase email rate limit reached (3-4 emails/hr limit). Fix: In your Supabase Dashboard, go to Authentication → Providers → Email, and toggle OFF 'Confirm email'.",
+      };
+    }
     return { error: error.message };
   }
 
-  // Create initial profile if user was created immediately (e.g. auto-confirm enabled)
+  // Create initial profile if user was created
   if (data.user) {
     await supabase.from("patient_profiles").upsert({
       id: data.user.id,
       display_name: displayName || email.split("@")[0] || "Patient",
     });
+  }
+
+  // If email confirmation is enabled in Supabase, data.session will be null
+  if (data.user && !data.session) {
+    return {
+      success: true,
+      message: "Registration successful! If you cannot sign in immediately, please verify your email or disable 'Confirm email' in your Supabase Dashboard.",
+    };
   }
 
   revalidatePath("/", "layout");
@@ -99,7 +112,13 @@ export async function signInAsDemoPatient() {
   });
 
   if (error) {
-    // If user doesn't exist, sign up
+    if (error.message.toLowerCase().includes("email not confirmed")) {
+      return {
+        error: "Demo user requires email confirmation. In Supabase Dashboard → Authentication → Providers → Email, disable 'Confirm email' to enable instant demo access.",
+      };
+    }
+
+    // Only attempt signup if user does not exist
     const signUpResult = await supabase.auth.signUp({
       email: demoEmail,
       password: demoPassword,
@@ -111,6 +130,11 @@ export async function signInAsDemoPatient() {
     });
 
     if (signUpResult.error) {
+      if (signUpResult.error.message.toLowerCase().includes("rate limit")) {
+        return {
+          error: "Supabase email rate limit reached. In Supabase Dashboard → Authentication → Providers → Email, toggle OFF 'Confirm email' and save.",
+        };
+      }
       return { error: `Demo sign-in failed: ${signUpResult.error.message}` };
     }
 

@@ -82,21 +82,39 @@ export const HOSPITAL_DOCTORS: Doctor[] = [
   },
 ];
 
-export async function getHospitalDoctors(): Promise<Doctor[]> {
+let cachedDoctors: Doctor[] | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
+
+export async function getHospitalDoctors(supabaseClient?: any): Promise<Doctor[]> {
+  const now = Date.now();
+  if (cachedDoctors && now - cacheTimestamp < CACHE_TTL_MS) {
+    return cachedDoctors;
+  }
+
   try {
-    const supabase = await createClient();
+    const supabase = supabaseClient || (await createClient());
     if (!supabase) return HOSPITAL_DOCTORS;
 
-    const { data, error } = await supabase
+    // Timeout after 600ms so navigation is instantaneous and resilient to slow cold-starts
+    const queryPromise = supabase
       .from("hospital_doctors")
       .select("*")
       .order("name", { ascending: true });
 
+    const timeoutPromise = new Promise<{ data: null; error: Error }>((resolve) =>
+      setTimeout(() => resolve({ data: null, error: new Error("Doctor query timeout") }), 600)
+    );
+
+    const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
+
     if (error || !data || data.length === 0) {
+      cachedDoctors = HOSPITAL_DOCTORS;
+      cacheTimestamp = now;
       return HOSPITAL_DOCTORS;
     }
 
-    return data.map((d: any) => ({
+    const mappedDoctors: Doctor[] = data.map((d: any) => ({
       id: d.id,
       name: d.name,
       specialty: d.specialty,
@@ -109,6 +127,10 @@ export async function getHospitalDoctors(): Promise<Doctor[]> {
       status: d.status,
       avatarInitials: d.avatar_initials || d.name.slice(0, 2),
     }));
+
+    cachedDoctors = mappedDoctors;
+    cacheTimestamp = now;
+    return mappedDoctors;
   } catch {
     return HOSPITAL_DOCTORS;
   }

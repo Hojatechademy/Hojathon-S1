@@ -24,22 +24,24 @@ export default async function DoctorsPage() {
     redirect("/login");
   }
 
-  const { data: profile } = await supabase
-    .from("patient_profiles")
-    .select("display_name")
-    .eq("id", user.id)
-    .maybeSingle();
+  // Run user profile lookup and hospital doctors fetch in parallel
+  const [profileResult, doctors] = await Promise.all([
+    supabase
+      .from("patient_profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .maybeSingle(),
+    getHospitalDoctors(supabase),
+  ]);
 
   const displayName =
-    profile?.display_name ||
+    profileResult.data?.display_name ||
     user.user_metadata?.display_name ||
     user.email?.split("@")[0] ||
     "Patient";
 
-  const doctors = await getHospitalDoctors();
-
   return (
-    <div className="min-h-screen bg-slate-50/70">
+    <div className="min-h-screen bg-slate-50/70 dark:bg-slate-950 transition-colors">
       <PatientHeader displayName={displayName} email={user.email} />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
