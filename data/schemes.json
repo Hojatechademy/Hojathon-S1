@@ -1,0 +1,290 @@
+[
+  {
+    "id": "kasp_karunya",
+    "name": "Karunya Arogya Suraksha Padhathi (KASP) / Ayushman Bharat Kerala",
+    "malayalam_name": "കാരുണ്യ ആരോഗ്യ സുരക്ഷാ പദ്ധതി (KASP)",
+    "category": "Healthcare & Medical Cover",
+    "ministry": "State Health Agency (SHA), Health & Family Welfare Dept, Govt of Kerala",
+    "summary": "Comprehensive health insurance scheme providing ₹5,00,000 cashless secondary and tertiary hospitalization cover per family per year across Kerala and empanelled hospitals.",
+    "malayalam_summary": "കേരളത്തിലെ എല്ലാ അർഹരായ കുടുംബങ്ങൾക്കും പ്രതിവർഷം 5 ലക്ഷം രൂപയുടെ സൗജന്യ കാഷ്‌ലെസ്സ് ചികിത്സ ഉറപ്പാക്കുന്ന ആരോഗ്യ ഇൻഷുറൻസ് പദ്ധതി.",
+    "benefit_description": "₹5,00,000 cashless hospital treatment per family per year covering critical illness, surgeries, ICU, medicines and post-discharge care.",
+    "malayalam_benefit": "കുടുംബത്തിന് പ്രതിവർഷം 5 ലക്ഷം രൂപ വരെയുള്ള സൗജന്യ ആശുപത്രി ചികിത്സയും ശസ്ത്രക്രിയ സഹായവും.",
+    "benefit_amount_inr": 500000,
+    "eligibility_criteria": {
+      "min_age": null,
+      "max_age": null,
+      "gender": "All",
+      "occupations": ["unorganized worker", "farmer", "daily wage laborer", "fisherman", "auto driver", "homemaker", "all"],
+      "max_annual_income": 300000,
+      "caste_categories": ["All", "SC", "ST", "OBC", "General", "BPL"],
+      "landholding_required": false,
+      "max_landholding_acres": null,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala", "All India"],
+      "special_conditions": [
+        "Priority/AAY (Yellow/Pink) or BPL Ration card holders in Kerala.",
+        "Beneficiaries registered under RSBY or SECC data."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card (ആധാർ കാർഡ്)",
+      "Kerala Ration Card (റേഷൻ കാർഡ് - മുൻഗണനാ വിഭാഗം)",
+      "Active Mobile Number for e-KYC"
+    ],
+    "application_process": "Enroll at nearest Akshaya Center, Government Taluk/District Hospital or KASP Kiosk.",
+    "grievance_contact": "SHA Kerala Toll Free Helpline: 1056 / 1800-425-1056"
+  },
+  {
+    "id": "life_mission",
+    "name": "LIFE Mission Kerala (Livelihood Inclusion and Financial Empowerment)",
+    "malayalam_name": "ലൈഫ് മിഷൻ സമ്പൂർണ്ണ ഭവന പദ്ധതി",
+    "category": "Housing & Rehabilitation",
+    "ministry": "Local Self Government Department (LSGD), Government of Kerala",
+    "summary": "Flagship comprehensive housing mission to provide safe, secure, and permanent pucca houses to all homeless and landless families across Kerala.",
+    "malayalam_summary": "കേരളത്തിലെ ഭവനരഹിതരും ഭൂരഹിതരുമായ മുഴുവൻ കുടുംബങ്ങൾക്കും സുരക്ഷിതമായ അടച്ചുറപ്പുള്ള വീട് നിർമ്മിച്ചു നൽകുന്ന പദ്ധതി.",
+    "benefit_description": "Financial assistance of ₹4,00,000 in 4 milestone installments for house construction on own land, or free flats in LIFE housing complexes for landless.",
+    "malayalam_benefit": "സ്വന്തമായി ഭൂമിയുള്ളവർക്ക് വീട് നിർമ്മിക്കാൻ 4 ലക്ഷം രൂപ സാമ്പത്തിക സഹായം.",
+    "benefit_amount_inr": 400000,
+    "eligibility_criteria": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": "All",
+      "occupations": ["all", "daily wage laborer", "agricultural worker", "artisan", "destitute"],
+      "max_annual_income": 100000,
+      "caste_categories": ["All", "SC", "ST", "Minority", "General", "BPL"],
+      "landholding_required": false,
+      "max_landholding_acres": 0.5,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala"],
+      "special_conditions": [
+        "Must not own a concrete or habitable pucca house anywhere in Kerala.",
+        "Priority given to widows, single women, destitute, PwD, and coastal fishermen families."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card of household head",
+      "Kerala Ration Card (Non-Priority or BPL)",
+      "Village Officer Income Certificate (വരുമാന സർട്ടിഫിക്കറ്റ്)",
+      "Land Ownership Document (Tandapper/Tax Receipt) or Landless certificate",
+      "Bank Account Passbook (Aadhaar linked)"
+    ],
+    "application_process": "Apply online via life.kerala.gov.in or through Grama/Municipality Panchayat Akshaya Helpdesk.",
+    "grievance_contact": "LIFE Mission Helpdesk: 0471-2517170 / LSGD Grievance Cell"
+  },
+  {
+    "id": "sevana_pension",
+    "name": "Kerala Sevana Direct Social Security & Welfare Pension (Indira Gandhi / Old Age / Farmer)",
+    "malayalam_name": "സേവന സാമൂഹ്യ സുരക്ഷാ പെൻഷൻ (വാർദ്ധക്യ / കർഷക / വിധവ പെൻഷൻ)",
+    "category": "Social Security & Direct Benefit Transfer",
+    "ministry": "Finance & Local Self Government Department, Government of Kerala",
+    "summary": "Monthly DBT direct welfare pension of ₹1,600 delivered directly to bank accounts or home delivery via primary cooperative banks for seniors, farmers, and destitute.",
+    "malayalam_summary": "മുതിർന്ന പൗരന്മാർക്കും കർഷകർക്കും വിധവകൾക്കും പ്രതിമാസം ₹1,600 വീതം അക്കൗണ്ടിലോ വീട്ടിലോ നേരിട്ടെത്തിക്കുന്ന ക്ഷേമ പെൻഷൻ.",
+    "benefit_description": "₹1,600 per month (₹19,200 annually) directly credited to citizen's bank account with biometric muster verification.",
+    "malayalam_benefit": "പ്രതിമാസം ₹1,600 വീതം സ്ഥിര വരുമാനം നൽകുന്നു.",
+    "benefit_amount_inr": 19200,
+    "eligibility_criteria": {
+      "min_age": 60,
+      "max_age": null,
+      "gender": "All",
+      "occupations": ["senior citizen", "farmer", "agricultural laborer", "unorganized worker", "destitute"],
+      "max_annual_income": 100000,
+      "caste_categories": ["All"],
+      "landholding_required": false,
+      "max_landholding_acres": 2.5,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala"],
+      "special_conditions": [
+        "Age 60 or above (for old-age pension) or 60+ with 10 years farming history (for farmer pension).",
+        "Must not be receiving statutory government service pension or EPF pension above limit.",
+        "Family income must not exceed ₹1,00,000 per year."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card (ആധാർ കാർഡ്)",
+      "Kerala Ration Card",
+      "Age Proof / School Certificate / Medical Officer Certificate",
+      "Bank Account Passbook / Cooperative Bank Account details",
+      "Village Officer Income Certificate"
+    ],
+    "application_process": "Submit application to Grama Panchayat or Municipality Secretary via Akshaya Kendra with annual mustering.",
+    "grievance_contact": "Sevana Pension Cell, Thiruvananthapuram: 0471-2327521"
+  },
+  {
+    "id": "kudumbashree_loan",
+    "name": "Kudumbashree Micro-Credit & Livelihood Support (അയൽക്കൂട്ട വായ്പ)",
+    "malayalam_name": "കുടുംബശ്രീ മൈക്രോ ഫിനാൻസ് & ജീവന സ്വയംതൊഴിൽ വായ്പ",
+    "category": "Women Empowerment & Livelihood",
+    "ministry": "State Poverty Eradication Mission (Kudumbashree), Govt of Kerala",
+    "summary": "Subsidized micro-credit, linkage loans, and enterprise seed funding for women self-help groups (NHGs/Ayalkootam) to launch catering, tailoring, street vending, and micro-enterprises.",
+    "malayalam_summary": "സ്ത്രീകൾക്ക് ചെറുകിട സംരംഭങ്ങൾ തുടങ്ങാനും തട്ടുകട, തയ്യൽ, കൃഷി എന്നിവ നടത്താനും കുറഞ്ഞ പലിശയിൽ ബാങ്ക് ലിങ്കേജ് വായ്പയും സബ്‌സിഡിയും.",
+    "benefit_description": "Collateral-free subsidized loan up to ₹2,50,000 with interest subvention (effective 4-7% per annum) and matching revolving grants.",
+    "malayalam_benefit": "ഈടില്ലാതെ ₹2,50,000 വരെ കുറഞ്ഞ പലിശ നിരക്കിലുള്ള ബാങ്ക് വായ്പയും സബ്സിഡിയും.",
+    "benefit_amount_inr": 250000,
+    "eligibility_criteria": {
+      "min_age": 18,
+      "max_age": 65,
+      "gender": "Female",
+      "occupations": ["street vendor", "homemaker", "tailor", "artisan", "food vendor", "small retailer", "all"],
+      "max_annual_income": 300000,
+      "caste_categories": ["All"],
+      "landholding_required": false,
+      "max_landholding_acres": null,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala"],
+      "special_conditions": [
+        "Applicant must be an active member of Kudumbashree Neighborhood Group (NHG / Ayalkootam).",
+        "Engaged in or planning a livelihood micro-enterprise."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card",
+      "Kudumbashree Ayalkootam Membership Passbook / ADS Recommendation",
+      "Bank Account details of NHG or Individual",
+      "Voter ID / Ration Card"
+    ],
+    "application_process": "Apply through your local Kudumbashree ADS (Area Development Society) or CDS office.",
+    "grievance_contact": "Kudumbashree State Mission: 0471-2554714"
+  },
+  {
+    "id": "subhiksha_pm_kisan",
+    "name": "Subhiksha Keralam & PM Kisan Samman Nidhi Kerala",
+    "malayalam_name": "സുഭിക്ഷ കേരളം & പ്രധാനമന്ത്രി കിസാൻ പദ്ധതി",
+    "category": "Agriculture & Farmer Support",
+    "ministry": "Department of Agriculture Development and Farmers' Welfare, Govt of Kerala & MoA",
+    "summary": "Direct financial assistance of ₹6,000 per year (PM-KISAN) combined with state incentives for paddy, banana, vegetable and tuber cultivation under Subhiksha Keralam.",
+    "malayalam_summary": "കർഷകർക്ക് പ്രതിവർഷം ₹6,000 നേരിട്ട് അക്കൗണ്ടിലെത്തുന്ന കേന്ദ്ര-സംസ്ഥാന പദ്ധതിയും വിത്ത്-വളം സബ്സിഡിയും.",
+    "benefit_description": "₹6,000 direct income support in 3 installments + crop insurance, seed subsidies, and zero-interest cultivation incentives.",
+    "malayalam_benefit": "പ്രതിവർഷം ₹6,000 ഡി.ബി.ടി സാമ്പത്തിക സഹായവും സൗജന്യ വിത്ത്-വളം പിന്തുണയും.",
+    "benefit_amount_inr": 6000,
+    "eligibility_criteria": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": "All",
+      "occupations": ["farmer", "agricultural laborer", "cultivator", "dairy farmer"],
+      "max_annual_income": null,
+      "caste_categories": ["All"],
+      "landholding_required": true,
+      "max_landholding_acres": null,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala", "All India"],
+      "special_conditions": [
+        "Must hold cultivable land in Kerala with valid Thandapper / Land tax receipt.",
+        "Tenant farmers eligible under Joint Liability Groups (JLGs) for state crop assistance."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card",
+      "Land Tax Receipt (കരമടച്ച രസീത്) / Thandapper certificate",
+      "Bank Account Passbook (Aadhaar Seeded)",
+      "Active Mobile Number"
+    ],
+    "application_process": "Register via AIMS Kerala portal (aims.kerala.gov.in) or visit nearest Krishi Bhavan / Akshaya.",
+    "grievance_contact": "Krishi Bhavan Helpline / PM-KISAN Portal: 155261"
+  },
+  {
+    "id": "kerala_kcc",
+    "name": "Kerala Kisan Credit Card (KCC) Subsidized Farm Loan",
+    "malayalam_name": "കിസാൻ ക്രെഡിറ്റ് കാർഡ് (KCC) പലിശരഹിത വായ്പ",
+    "category": "Agriculture Credit",
+    "ministry": "Kerala Bank / NABARD & Ministry of Agriculture",
+    "summary": "Subsidized agricultural and dairy farming credit up to ₹3,00,000 at 4% interest (with prompt repayment incentive) through Kerala Bank and Cooperative Societies.",
+    "malayalam_summary": "കർഷകർക്കും ക്ഷീരകർഷകർക്കും 4% കുറഞ്ഞ പലിശയിൽ ₹3,00,000 വരെ കൃഷി വായ്പ.",
+    "benefit_description": "Revolving credit limit up to ₹3 Lakhs, collateral-free up to ₹1.6 Lakhs, with interest subvention.",
+    "malayalam_benefit": "കൃഷി ആവശ്യങ്ങൾക്ക് 1.6 ലക്ഷം രൂപ വരെ ഈടില്ലാതെ കുറഞ്ഞ പലിശയിൽ ലോൺ.",
+    "benefit_amount_inr": 300000,
+    "eligibility_criteria": {
+      "min_age": 18,
+      "max_age": 75,
+      "gender": "All",
+      "occupations": ["farmer", "dairy farmer", "cultivator", "plantation worker"],
+      "max_annual_income": null,
+      "caste_categories": ["All"],
+      "landholding_required": false,
+      "max_landholding_acres": null,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala", "All India"],
+      "special_conditions": [
+        "Open to land-owning farmers, tenant farmers, and dairy/poultry farmers in Kerala."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card",
+      "Land Tax Receipt or Krishi Bhavan Certificate",
+      "Bank Account with Kerala Bank or Nationalized Bank",
+      "Passport-sized Photograph"
+    ],
+    "application_process": "Apply at Primary Agricultural Credit Society (PACS), Kerala Bank, or Commercial Bank branch.",
+    "grievance_contact": "Kerala Bank Grievance Redressal / NABARD Kerala: 0471-2460111"
+  },
+  {
+    "id": "vidyakiranam_scholarship",
+    "name": "Kerala Vidyakiranam / Post-Matric Merit Scholarship",
+    "malayalam_name": "വിദ്യാകിരണം & പോസ്റ്റ് മെട്രിക് സ്കോളർഷിപ്പ് പദ്ധതി",
+    "category": "Education & Student Aid",
+    "ministry": "Directorate of Collegiate Education / SC-ST Development Dept, Govt of Kerala",
+    "summary": "Financial support and annual education scholarship for students of economically weaker sections, fishermen, and marginalized communities pursuing secondary or higher studies.",
+    "malayalam_summary": "സാമ്പത്തികമായി പിന്നോക്കം നിൽക്കുന്ന മിടുക്കരായ വിദ്യാർത്ഥികൾക്ക് പഠന സഹായവും സ്കോളർഷിപ്പും.",
+    "benefit_description": "Annual scholarship grant from ₹6,000 to ₹15,000 per year directly credited to student's bank account.",
+    "malayalam_benefit": "വർഷം തോറും ₹6,000 മുതൽ ₹15,000 വരെ വിദ്യാഭ്യാസ ധനസഹായം.",
+    "benefit_amount_inr": 15000,
+    "eligibility_criteria": {
+      "min_age": 14,
+      "max_age": 22,
+      "gender": "All",
+      "occupations": ["student"],
+      "max_annual_income": 250000,
+      "caste_categories": ["All", "OBC", "SC", "ST", "General", "BPL"],
+      "landholding_required": false,
+      "max_landholding_acres": null,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala", "All India"],
+      "special_conditions": [
+        "Must be enrolled in Class 9, 10, Plus Two, or Degree in a recognized school/college in Kerala.",
+        "Minimum 50% marks in previous examinations (relaxation for SC/ST)."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card of student",
+      "Previous Year Marksheet / School ID",
+      "Village Officer Income Certificate",
+      "Caste / Community Certificate (if claiming quota)",
+      "Bank Account Passbook in Student's Name"
+    ],
+    "application_process": "Apply online via dcescholarship.kerala.gov.in or National Scholarship Portal (NSP).",
+    "grievance_contact": "Directorate of Collegiate Education Helpdesk: 0471-2306580"
+  },
+  {
+    "id": "cmdrf_grievance",
+    "name": "Kerala Chief Minister's Public Grievance Redressal Cell (CM-PGRC / Akshaya E-Grievance)",
+    "malayalam_name": "മുഖ്യമന്ത്രിയുടെ പൊതുജന പരാതി പരിഹാര സെൽ (CM-PGRC / അക്ഷയ)",
+    "category": "Citizen Grievance & Official Representation",
+    "ministry": "General Administration Department (GAD), Government of Kerala & CPGRAMS",
+    "summary": "Official statutory grievance escalation to District Collector, Taluk Tehsildar, or Department Secretary for delayed pension, blocked benefits, land survey issues, or bureaucratic inaction.",
+    "malayalam_summary": "തടസ്സപ്പെട്ട പെൻഷൻ, റേഷൻ കാർഡ് പ്രശ്നങ്ങൾ, ഉദ്യോഗസ്ഥ അനാസ്ഥ എന്നിവയ്ക്ക് ജില്ലാ കളക്ടർക്കും വകുപ്പ് മേധാവിക്കും ഔദ്യോഗിക പരാതി നൽകാനുള്ള സംവിധാനം.",
+    "benefit_description": "Formal administrative petition with unique Grievance Tracking Number (docket ID), mandatory 15-to-30 day response timeline, and personal hearing right.",
+    "malayalam_benefit": "15-30 ദിവസത്തിനകം നടപടി ഉറപ്പാക്കുന്ന ഔദ്യോഗിക പരാതി ഫയലിംഗ് നമ്പർ.",
+    "benefit_amount_inr": null,
+    "eligibility_criteria": {
+      "min_age": null,
+      "max_age": null,
+      "gender": "All",
+      "occupations": ["all"],
+      "max_annual_income": null,
+      "caste_categories": ["All"],
+      "landholding_required": false,
+      "max_landholding_acres": null,
+      "urban_rural": "All",
+      "applicable_states": ["Kerala", "All India"],
+      "special_conditions": [
+        "Any citizen in Kerala facing administrative delays, unjustified pension stoppage, or refusal of legitimate public service."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card / Voter ID",
+      "Previous Application / Pension Book Number (if applicable)",
+      "Detailed factual statement of grievance in Malayalam or English"
+    ],
+    "application_process": "Submit petition online at cmo.kerala.gov.in, via any Akshaya Center, or Taluk Janasamparka meeting.",
+    "grievance_contact": "CM Grievance Toll-Free: 1076 / 0471-2333812"
+  }
+]

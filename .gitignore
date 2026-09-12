@@ -1,46 +1,28 @@
-# =========================================
-# Hojathon — Generic, stack-agnostic .gitignore
-# =========================================
-# This file protects against accidentally committing secrets and
-# common OS/editor junk. It does not assume any specific language,
-# framework, or tool. Add stack-specific rules for your own project
-# as needed inside your fork.
+﻿# Git Ignore for SahayAI
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# ---- Secrets & credentials ----
+# Environments & Virtual Environments
 .env
-.env.*
-!.env.example
-*.pem
-*.key
-*.cert
-*.crt
-*secret*
-*credentials*
-*.p12
-*.pfx
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# ---- OS-generated files ----
+# Streamlit
+.streamlit/secrets.toml
+
+# Operating System Files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# ---- Editor / IDE metadata ----
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-*.swp
-*.swo
-*~
-
-# ---- Temporary / log files ----
-*.log
+# Scratch / Temporary test files
+scratch/test*.py
+scratch/test*.pdf
+temp/
 *.tmp
-*.temp
-*.bak
-*.cache
