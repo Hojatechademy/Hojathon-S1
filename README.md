@@ -1,163 +1,79 @@
-# Hojathon
+# StudyPilot
 
-Build agents that don't just respond — they act.
+StudyPilot is an agentic AI study coach for students preparing for an exam or learning a technical or academic subject. A student provides a goal, and the planned workflow creates an initial study plan, uses a diagnostic quiz to assess knowledge, identifies weak topics, adapts the plan, generates targeted practice, and tracks progress.
 
-Hojathon is an agentic AI hackathon. Teams build systems that can reason, plan, call tools or APIs, and carry out multi-step tasks on their own — not just chatbots that answer a single prompt. This repository is the official starter and submission template: fork it, build your project inside your fork, and submit your final work back here through a Pull Request.
+This is a focused 6-hour hackathon MVP. It uses one primary agent with a small number of planned tools, with decisions and tool use visible in the demo. The architecture intentionally stays simple: no multi-agent system, database, authentication, complex RAG, MCP, or unnecessary external integrations.
 
-There's no required stack. Build your agent with any language, any framework, any model provider or orchestration approach — LangChain, a custom agent loop, raw API calls, whatever gets the job done. This repo itself contains no code. It's just the structure and docs every team needs so judges can actually run and evaluate what you built.
+## Repository
 
----
+- React + Vite frontend in `frontend/`
+- Python + FastAPI backend in `backend/`
+- Backend health check at `GET /health`
 
-## Getting Started
+## Planned MVP
 
-1. **Fork this repository** — click "Fork" at the top of this page, then click the green **"Create fork"** button on the page that follows to confirm.
-2. **Clone your fork** to your computer:
-   ```bash
-   git clone https://github.com/<your-username>/<your-fork>.git
-   ```
-3. **Read through this README and the [`docs/`](docs/) folder in full** before you write any code, so you understand the rules, the workflow, and what your final submission needs to include.
-4. **Add your teammates as collaborators** on your fork (GitHub → Settings → Collaborators) so everyone can push directly.
-5. **Build your project** inside your fork, using whatever stack fits your idea.
-6. **Commit and push regularly** — don't wait until the deadline to save your work.
-7. **Fill in the project documentation** (see [Project Documentation](#project-documentation) below and the [`docs/`](docs/) folder).
-8. **Open your final Pull Request** back to this repository before the deadline.
+**Goal -> initial plan -> diagnostic quiz -> evaluate performance -> identify weak topics -> adapt plan -> targeted practice -> update progress**
 
----
+The agent is planned to use tools for topic content, quiz generation, answer evaluation, progress retrieval and updates, and study-plan updates. These features are documented as the product direction and are not implemented yet.
 
-## Team Information
+## Run the Foundation
 
-Fill this in as soon as your team is formed.
+### Frontend
 
-**Team ID:**
-
-**Team Name:**
-
-**Team Members:**
-
-1. Name
-2. Name
-3. Name
-
-**Project Name:**
-
-> Teams may have **1, 2, or 3 members**.
-
----
-
-## Project Documentation
-
-Replace the placeholders below with your own project's details — this is what judges will actually read.
-
-### Project Name
-
-### Team
-
-### Problem Statement
-
-What problem are you solving, and why does it call for an agent rather than a static script or a plain UI?
-
-### Proposed Solution
-
-Explain your solution and how your agent approaches the problem.
-
-### Key Features
-
-* Feature 1
-* Feature 2
-* Feature 3
-
-### Technology Stack
-
-Describe whatever stack you chose. None of the categories below are required — leave out or add rows as needed.
-
-| Category | Technology |
-| -------- | ---------- |
-| Frontend |            |
-| Backend  |            |
-| Database |            |
-| AI/ML    |            |
-| APIs     |            |
-| Other    |            |
-
-### How It Works
-
-Explain your agent's architecture: what tools or APIs it can call, how it plans and decides what to do next, and what a full run through your system looks like. Add diagrams if they help.
-
-### Setup & Installation
-
-Replace this section with your project's actual setup instructions.
-
-### Running the Project
-
-Explain exactly how judges can run and use the project.
-
----
-
-## Participant Rules
-
-* Teams must contain **1–3 members**.
-* Teams may use **any technology stack**.
-* Teams should commit their work regularly.
-* Do **not** commit passwords, API keys, tokens, or other secrets.
-* The final state of the repository at the submission deadline will be considered for judging.
-* The final Pull Request must be submitted before the official deadline.
-* Participants are responsible for ensuring their project can be evaluated.
-
----
-
-## GitHub Workflow
-
-```
-Official Hojathon Repository
-        ↓
-      Fork
-        ↓
-   Team's Fork
-        ↓
-  Build Project
-        ↓
-  Commit & Push
-        ↓
- Complete README
-        ↓
-   Final PR
-        ↓
-   Organizers
-        ↓
-    Judges
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-Don't open a Pull Request for every change. Work normally inside your own fork, committing and pushing as often as you like — only open a Pull Request to the official repository when you're ready to make your **final submission**.
+### Backend
 
----
-
-## Final Pull Request
-
-When your project is ready, open a Pull Request from your fork's default branch into the official Hojathon repository.
-
-**PR title format:**
-
-```
-[TEAM-ID] Project Name
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-**Example:**
+### Health Check
 
+```bash
+curl http://localhost:8000/health
 ```
-[TEAM-042] Smart Campus Assistant
+
+Expected response:
+
+```json
+{"status":"ok"}
 ```
 
-**The PR description must contain:**
+## Run the frontend
 
-* Team ID
-* Team name
-* Team members
-* Project name
-* Problem statement
-* Solution
-* Technology stack
-* Demo URL
-* Demo video
-* Special instructions for judges
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-See [`docs/SUBMISSION.md`](docs/SUBMISSION.md) for the full submission checklist and process, and use the [Pull Request template](.github/PULL_REQUEST_TEMPLATE.md) when you open your final PR.
+## Run the backend
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+## Health check
+
+```bash
+curl http://localhost:8000/health
+```
+
+Expected response:
+
+```json
+{"status":"ok"}
+```
