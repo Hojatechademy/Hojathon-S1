@@ -55,7 +55,7 @@ planting. Each of those steps depends on the outcome of the one before it. That 
 the agent.
 
 Equally, it is not a chatbot. A single prompt asking an LLM "should I plant rice in
-Ludhiana?" gets a plausible-sounding answer built on nothing. Every number this system
+Palakkad?" gets a plausible-sounding answer built on nothing. Every number this system
 shows a farmer is computed from a real API response.
 
 ### Proposed Solution
@@ -149,13 +149,19 @@ An irrigation-intensive crop facing short rainfall is flagged explicitly, and th
 only recommend alternatives from a list of lower-water crops passed to it — it cannot
 invent one that will not grow there.
 
-**Real output**, rice in Ludhiana in September:
+**Real output**, rice in Palakkad, September 2026 — a live forecast, so the figures move
+day to day:
 
-> Rice needs 129.2mm of rainfall over the next 14 days but the forecast shows only 8.6mm,
-> which is just 7% of what the crop requires. Rice is irrigation-intensive and with 5 days
-> forecast to exceed 35C, water stress will be severe.
+> Rice is irrigation-intensive and the forecast rainfall of 81.8mm is only 63% of the
+> 129.2mm this crop wants over the next 14 days, leaving a 47.4mm shortfall. The
+> temperatures are perfect, staying between 22.1C and 32.4C which fits rice's 20-35C
+> range, and market prices are trending upward at Rs 2160 per quintal. You will need
+> reliable irrigation to bridge the rainfall gap throughout the 130-day growing season.
 
-It then offered Bajra and Mustard as alternatives and suppressed the purchase list.
+Verdict: *Plant with Caution*. Note what it did **not** do — it did not reject rice over a
+37% shortfall, because temperatures were ideal and the crop is viable with irrigation. On a
+drier fortnight the same figures push it to *Don't Plant*, and the purchase suggestions
+disappear with it.
 
 #### Agent 2 — Disease Detection · `POST /api/diagnose`
 
@@ -287,10 +293,12 @@ npm run dev        # http://localhost:3000
 
 Three tabs, each one agent. A suggested run-through:
 
-1. **Should I plant?** — allow location, or pick a district from the dropdown. Choose
-   **Rice** and submit. Expect *Don't Plant*, with the rainfall shortfall quantified and
-   lower-water alternatives offered. Then try **Bajra** at the same location for a
-   contrasting result and a purchase list with a working *Propose order* step.
+1. **Should I plant?** — allow location, or pick any of Kerala's 14 districts from the
+   dropdown. Choose **Rice** and submit. Expect the rainfall shortfall quantified against
+   what rice needs, and a purchase list with a working *Propose order* step. Then try a
+   low-water crop such as **Chickpea** at the same district to see the decision and the
+   suggested inputs change. The verdict depends on the live forecast, so it moves day to
+   day — what stays constant is that the numbers behind it are shown to you.
 2. **My plant looks sick** — upload a photo of a diseased leaf. Expect a named diagnosis,
    the visible signs it was based on, and numbered treatment steps with rates. Try a
    blurry or non-plant photo to see it decline to guess.

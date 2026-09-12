@@ -125,14 +125,21 @@ Open <http://localhost:3000>. There are three tabs, one per agent.
 
 **1. Should I plant?**
 
-Allow the location prompt, or pick a district from the dropdown if you would rather not
-share it — the dropdown is a full alternative, not a degraded path. Choose **Rice** and
-submit.
+Allow the location prompt, or pick one of Kerala's 14 districts from the dropdown if you
+would rather not share it — the dropdown is a full alternative, not a degraded path.
+Choose **Rice** and submit.
 
-Expect **Don't Plant**, with the rainfall shortfall quantified against what rice needs,
-lower-water alternatives offered, and the purchase list suppressed. Then run **Bajra** at
-the same location for a contrasting decision, a purchase list, and a working *Propose
-order* step.
+Expect the rainfall shortfall quantified against what rice needs, temperatures compared to
+its ideal band, and a purchase list with a working *Propose order* step. Then run a
+low-water crop such as **Chickpea** at the same district for a contrasting decision.
+
+The verdict depends on the live forecast and so changes day to day. If a run comes back
+*Don't Plant*, the purchase suggestions should disappear and lower-water alternatives should
+appear in their place — that branch is the agent acting on its own decision.
+
+If your GPS fix is outside Kerala, the app keeps your real coordinates and fetches the
+forecast for them, but says plainly that it cannot match you to a district rather than
+snapping you to the nearest one hundreds of kilometres away.
 
 **2. My plant looks sick**
 

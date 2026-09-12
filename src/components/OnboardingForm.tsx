@@ -2,14 +2,20 @@
 
 import { useId, useRef, useState } from "react";
 import { Spinner } from "./Spinner";
-import { districts, findDistrict, nearestDistrict } from "@/lib/districts";
+import {
+  type District,
+  districts,
+  findDistrict,
+  nearestDistrict,
+} from "@/lib/districts";
 
 export interface AdvisoryFormValues {
   lat: number;
   lon: number;
   crop: string;
-  locationLabel: string;
-  region: string;
+  /** Omitted when the fix is outside Kerala, so no district is claimed for it. */
+  locationLabel?: string;
+  region?: string;
 }
 
 interface OnboardingFormProps {
@@ -21,7 +27,14 @@ interface OnboardingFormProps {
 type LocationState =
   | { kind: "none" }
   | { kind: "locating" }
-  | { kind: "gps"; lat: number; lon: number; label: string; region: string }
+  | {
+      kind: "gps";
+      lat: number;
+      lon: number;
+      /** Null when the fix is too far from any listed district to name one. */
+      district: District | null;
+      distanceKm: number;
+    }
   | { kind: "denied"; reason: string };
 
 const OTHER_CROP = "__other__";
@@ -69,17 +82,24 @@ export function OnboardingForm({ crops, busy, onSubmit }: OnboardingFormProps) {
           kind: "gps",
           lat: latitude,
           lon: longitude,
-          label: `Your location near ${near.name}, ${near.state}`,
-          region: near.state,
+          // Outside Kerala we keep the real coordinates but name no district,
+          // rather than snapping the farmer to one hundreds of km away.
+          district: near.withinCoverage ? near.district : null,
+          distanceKm: near.distanceKm,
         });
         setDistrictId("");
       },
-      () => {
-        setLocation({
-          kind: "denied",
-          reason:
-            "We could not get your location. No problem, please choose your district from the list below.",
-        });
+      (error) => {
+        // The three failure causes need different advice, so they get different
+        // messages. "Try again" is useless if the farmer denied permission.
+        const reason =
+          error.code === error.PERMISSION_DENIED
+            ? "You did not allow location access. No problem, please choose your district from the list below."
+            : error.code === error.TIMEOUT
+              ? "Finding your location took too long. Try again outdoors, or choose your district from the list below."
+              : "Your location could not be found, which often happens indoors. Please choose your district from the list below.";
+
+        setLocation({ kind: "denied", reason });
         districtRef.current?.focus();
       },
       { timeout: 10_000, maximumAge: 300_000 },
@@ -90,13 +110,17 @@ export function OnboardingForm({ crops, busy, onSubmit }: OnboardingFormProps) {
     event.preventDefault();
 
     const district = districtId ? findDistrict(districtId) : undefined;
-    const place =
+    const place: Omit<AdvisoryFormValues, "crop"> | null =
       location.kind === "gps"
         ? {
             lat: location.lat,
             lon: location.lon,
-            locationLabel: location.label,
-            region: location.region,
+            // Both left undefined outside Kerala. The forecast still works from
+            // the coordinates; the server then labels it with those instead.
+            locationLabel: location.district
+              ? `${location.district.name}, ${location.district.state}`
+              : undefined,
+            region: location.district?.state,
           }
         : district
           ? {
@@ -134,7 +158,9 @@ export function OnboardingForm({ crops, busy, onSubmit }: OnboardingFormProps) {
     location.kind === "locating"
       ? "Finding your location, please wait."
       : location.kind === "gps"
-        ? `Location found: ${location.label}.`
+        ? location.district
+          ? `Location found, near ${location.district.name}. We will use the forecast for your exact spot.`
+          : `Location found, but it is about ${location.distanceKm} km outside Kerala, so we cannot match it to a district. We will still use the forecast for your exact spot.`
         : location.kind === "denied"
           ? location.reason
           : "";
@@ -185,7 +211,8 @@ export function OnboardingForm({ crops, busy, onSubmit }: OnboardingFormProps) {
           id={ids.locationStatus}
           aria-live="polite"
           className={
-            location.kind === "denied"
+            location.kind === "denied" ||
+            (location.kind === "gps" && !location.district)
               ? "font-semibold text-red-900"
               : "text-muted"
           }
@@ -201,7 +228,7 @@ export function OnboardingForm({ crops, busy, onSubmit }: OnboardingFormProps) {
 
         <div className="space-y-2">
           <label htmlFor={ids.district} className="block text-lg font-semibold">
-            Choose your district
+            Choose your district in Kerala
           </label>
           <select
             id={ids.district}
@@ -215,9 +242,11 @@ export function OnboardingForm({ crops, busy, onSubmit }: OnboardingFormProps) {
             className="min-h-14 w-full rounded-xl border-2 border-control bg-surface px-4 text-lg"
           >
             <option value="">Not selected</option>
+            {/* State omitted from each option: all 14 are Kerala, so repeating
+                it 14 times is just more for the farmer to read past. */}
             {districts.map((district) => (
               <option key={district.id} value={district.id}>
-                {district.name}, {district.state}
+                {district.name}
               </option>
             ))}
           </select>
