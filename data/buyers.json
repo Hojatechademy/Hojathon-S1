@@ -1,0 +1,142 @@
+[
+  {
+    "id": "b1",
+    "name": "Doaba Grain Traders",
+    "type": "wholesaler",
+    "buysCrops": ["Wheat", "Rice", "Maize"],
+    "region": "Punjab",
+    "minQuantityQuintals": 20,
+    "contactLabel": "Ludhiana grain market, stall 14",
+    "notes": "Pays within 3 days of weighing."
+  },
+  {
+    "id": "b2",
+    "name": "Sutlej Flour Mills",
+    "type": "processor",
+    "buysCrops": ["Wheat", "Maize"],
+    "region": "Punjab",
+    "minQuantityQuintals": 50,
+    "contactLabel": "Mill gate purchase, Khanna",
+    "notes": "Premium for low moisture grain."
+  },
+  {
+    "id": "b3",
+    "name": "Haryana Agro Cooperative",
+    "type": "cooperative",
+    "buysCrops": ["Wheat", "Mustard", "Bajra"],
+    "region": "Haryana",
+    "minQuantityQuintals": 10,
+    "contactLabel": "Karnal collection centre",
+    "notes": "Small lots accepted from member farmers."
+  },
+  {
+    "id": "b4",
+    "name": "Ganga Rice Exporters",
+    "type": "exporter",
+    "buysCrops": ["Rice"],
+    "region": "Uttar Pradesh",
+    "minQuantityQuintals": 100,
+    "contactLabel": "Meerut procurement desk",
+    "notes": "Wants long grain, sorted and dried."
+  },
+  {
+    "id": "b5",
+    "name": "Bengal Paddy Board Agents",
+    "type": "wholesaler",
+    "buysCrops": ["Rice"],
+    "region": "West Bengal",
+    "minQuantityQuintals": 25,
+    "contactLabel": "Bardhaman mandi, gate 2",
+    "notes": "Daily lifting during harvest season."
+  },
+  {
+    "id": "b6",
+    "name": "Malwa Soya Processors",
+    "type": "processor",
+    "buysCrops": ["Soybean", "Groundnut"],
+    "region": "Madhya Pradesh",
+    "minQuantityQuintals": 40,
+    "contactLabel": "Indore crushing unit",
+    "notes": "Rate linked to oil content."
+  },
+  {
+    "id": "b7",
+    "name": "Rajasthan Oilseed Mandi Agents",
+    "type": "wholesaler",
+    "buysCrops": ["Mustard", "Chickpea", "Bajra"],
+    "region": "Rajasthan",
+    "minQuantityQuintals": 15,
+    "contactLabel": "Jaipur mandi commission agent",
+    "notes": "Buys mixed lots, grades on the spot."
+  },
+  {
+    "id": "b8",
+    "name": "Saurashtra Cotton Ginners",
+    "type": "processor",
+    "buysCrops": ["Cotton", "Groundnut"],
+    "region": "Gujarat",
+    "minQuantityQuintals": 30,
+    "contactLabel": "Rajkot ginning factory",
+    "notes": "Deducts for trash content above 4%."
+  },
+  {
+    "id": "b9",
+    "name": "Deccan Pulses Company",
+    "type": "wholesaler",
+    "buysCrops": ["Chickpea", "Soybean"],
+    "region": "Maharashtra",
+    "minQuantityQuintals": 20,
+    "contactLabel": "Pune wholesale market",
+    "notes": "Prefers uniform, cleaned grain."
+  },
+  {
+    "id": "b10",
+    "name": "Nashik Vegetable Aggregators",
+    "type": "wholesaler",
+    "buysCrops": ["Onion", "Tomato"],
+    "region": "Maharashtra",
+    "minQuantityQuintals": 10,
+    "contactLabel": "Nashik APMC yard",
+    "notes": "Lifts same day, own transport."
+  },
+  {
+    "id": "b11",
+    "name": "Bengaluru Fresh Supply Co.",
+    "type": "processor",
+    "buysCrops": ["Tomato", "Onion", "Maize"],
+    "region": "Karnataka",
+    "minQuantityQuintals": 15,
+    "contactLabel": "Bengaluru packhouse",
+    "notes": "Contract rates for weekly supply."
+  },
+  {
+    "id": "b12",
+    "name": "Krishna Delta Traders",
+    "type": "wholesaler",
+    "buysCrops": ["Rice", "Groundnut", "Cotton"],
+    "region": "Andhra Pradesh",
+    "minQuantityQuintals": 25,
+    "contactLabel": "Guntur market yard",
+    "notes": "Advance payment against samples."
+  },
+  {
+    "id": "b13",
+    "name": "Bihar Makka Collectors",
+    "type": "cooperative",
+    "buysCrops": ["Maize", "Wheat"],
+    "region": "Bihar",
+    "minQuantityQuintals": 10,
+    "contactLabel": "Patna collection point",
+    "notes": "Group transport for small farmers."
+  },
+  {
+    "id": "b14",
+    "name": "UP Sugar Mill Purchase Cell",
+    "type": "processor",
+    "buysCrops": ["Sugarcane"],
+    "region": "Uttar Pradesh",
+    "minQuantityQuintals": 100,
+    "contactLabel": "Meerut mill weighbridge",
+    "notes": "Slot booking needed before delivery."
+  }
+]

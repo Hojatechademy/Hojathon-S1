@@ -1,69 +1,79 @@
-import Image from "next/image";
+import { AdvisoryFlow } from "@/components/AdvisoryFlow";
+import { AppTabs } from "@/components/AppTabs";
+import { DiagnoseFlow } from "@/components/DiagnoseFlow";
+import { MarketFlow } from "@/components/MarketFlow";
+import { knownCrops, regions } from "@/lib/data";
 
+const ICONS = {
+  // Sprouting seedling.
+  advisory:
+    "M12 22v-7c-4 0-7-2.5-7-6.5C5 5 8 3 12 3s7 2 7 5.5c0 4-3 6.5-7 6.5v7h-0Zm0-9c2.8 0 5-1.7 5-4.5S14.8 5 12 5 7 6.2 7 8.5 9.2 13 12 13Z",
+  // Leaf with a magnifier.
+  diagnose:
+    "M4 4c8 0 12 3 12 9 0 1-.2 2-.5 2.8l3.2 3.2-1.4 1.4-3.2-3.2C13.3 17.7 12.2 18 11 18 5.6 18 4 12.7 4 4Zm2.3 2.3C6.7 12 8 16 11 16c.7 0 1.3-.1 1.9-.4C12.1 11 9.8 7.9 6.3 6.3Z",
+  // Price tag.
+  market:
+    "M10.6 2H21a1 1 0 0 1 1 1v10.4a1 1 0 0 1-.3.7l-8 8a1 1 0 0 1-1.4 0L2.9 12.7a1 1 0 0 1 0-1.4l8-8a1 1 0 0 1 .7-.3Zm6.4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z",
+};
+
+/**
+ * Server component: reads the crop list from the mock dataset and hands it to the
+ * client flow, so the JSON files stay on the server side of the boundary.
+ */
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <a
+        href="#main"
+        className="sr-only-focusable absolute left-4 top-4 z-10 rounded-lg bg-brand px-4 py-3 font-semibold text-white"
+      >
+        Skip to main content
+      </a>
+
+      <header className="border-b border-line bg-surface">
+        <div className="mx-auto max-w-3xl px-4 py-5">
+          <p className="font-semibold text-brand-strong">Farmer Assistant</p>
+          <h1 className="text-3xl font-bold">Help with your crop</h1>
+          <p className="mt-1 text-muted">
+            Ask whether to plant something, show us a sick plant, or get help selling
+            what you have grown. We use the real weather forecast for your area and
+            explain every answer in plain words.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </header>
+
+      <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+        <AppTabs
+          tabs={[
+            {
+              id: "advisory",
+              label: "Should I plant?",
+              iconPath: ICONS.advisory,
+              panel: <AdvisoryFlow crops={knownCrops} />,
+            },
+            {
+              id: "diagnose",
+              label: "My plant looks sick",
+              iconPath: ICONS.diagnose,
+              panel: <DiagnoseFlow />,
+            },
+            {
+              id: "market",
+              label: "I want to sell",
+              iconPath: ICONS.market,
+              panel: <MarketFlow crops={knownCrops} regions={regions} />,
+            },
+          ]}
+        />
       </main>
-    </div>
+
+      <footer className="border-t border-line bg-surface">
+        <div className="mx-auto max-w-3xl px-4 py-5 text-muted">
+          Weather from Open-Meteo. Mandi prices and vendor listings are sample data
+          for this demo. Nothing here places an order or takes a payment, and photos
+          you send are not saved.
+        </div>
+      </footer>
+    </>
   );
 }

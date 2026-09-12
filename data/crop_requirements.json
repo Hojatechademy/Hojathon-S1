@@ -1,0 +1,110 @@
+[
+  {
+    "crop": "Wheat",
+    "waterNeed": "medium",
+    "seasonalRainfallMm": 450,
+    "idealTempMinC": 10,
+    "idealTempMaxC": 25,
+    "growingDurationDays": 120,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Rice",
+    "waterNeed": "high",
+    "seasonalRainfallMm": 1200,
+    "idealTempMinC": 20,
+    "idealTempMaxC": 35,
+    "growingDurationDays": 130,
+    "irrigationIntensive": true
+  },
+  {
+    "crop": "Maize",
+    "waterNeed": "medium",
+    "seasonalRainfallMm": 550,
+    "idealTempMinC": 18,
+    "idealTempMaxC": 32,
+    "growingDurationDays": 100,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Cotton",
+    "waterNeed": "high",
+    "seasonalRainfallMm": 800,
+    "idealTempMinC": 21,
+    "idealTempMaxC": 35,
+    "growingDurationDays": 170,
+    "irrigationIntensive": true
+  },
+  {
+    "crop": "Sugarcane",
+    "waterNeed": "very high",
+    "seasonalRainfallMm": 1600,
+    "idealTempMinC": 20,
+    "idealTempMaxC": 38,
+    "growingDurationDays": 330,
+    "irrigationIntensive": true
+  },
+  {
+    "crop": "Soybean",
+    "waterNeed": "medium",
+    "seasonalRainfallMm": 600,
+    "idealTempMinC": 20,
+    "idealTempMaxC": 32,
+    "growingDurationDays": 105,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Mustard",
+    "waterNeed": "low",
+    "seasonalRainfallMm": 300,
+    "idealTempMinC": 10,
+    "idealTempMaxC": 25,
+    "growingDurationDays": 130,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Chickpea",
+    "waterNeed": "low",
+    "seasonalRainfallMm": 350,
+    "idealTempMinC": 15,
+    "idealTempMaxC": 30,
+    "growingDurationDays": 110,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Groundnut",
+    "waterNeed": "medium",
+    "seasonalRainfallMm": 550,
+    "idealTempMinC": 22,
+    "idealTempMaxC": 33,
+    "growingDurationDays": 115,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Bajra",
+    "waterNeed": "low",
+    "seasonalRainfallMm": 350,
+    "idealTempMinC": 22,
+    "idealTempMaxC": 38,
+    "growingDurationDays": 85,
+    "irrigationIntensive": false
+  },
+  {
+    "crop": "Onion",
+    "waterNeed": "medium",
+    "seasonalRainfallMm": 500,
+    "idealTempMinC": 13,
+    "idealTempMaxC": 28,
+    "growingDurationDays": 130,
+    "irrigationIntensive": true
+  },
+  {
+    "crop": "Tomato",
+    "waterNeed": "medium",
+    "seasonalRainfallMm": 500,
+    "idealTempMinC": 18,
+    "idealTempMaxC": 30,
+    "growingDurationDays": 95,
+    "irrigationIntensive": true
+  }
+]

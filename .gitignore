@@ -32,6 +32,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# local test fixtures - keep the folder and its README, ignore the photos
+/test-images/*
+!/test-images/README.md
 
 # vercel
 .vercel
