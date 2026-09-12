@@ -54,7 +54,7 @@ function headers(): HeadersInit {
     "Content-Type": "application/json",
     // Optional attribution shown on OpenRouter's dashboard.
     "HTTP-Referer": process.env.OPENROUTER_SITE_URL ?? "http://localhost:3000",
-    "X-Title": process.env.OPENROUTER_SITE_NAME ?? "Farmer Assistant",
+    "X-Title": process.env.OPENROUTER_SITE_NAME ?? "AgriPilot",
   };
 }
 

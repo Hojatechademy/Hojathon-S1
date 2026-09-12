@@ -1,6 +1,6 @@
 # Setup Guide
 
-Setup and run instructions for **Farmer Assistant**.
+Setup and run instructions for **AgriPilot**.
 
 If you only want the fastest path: install Node 22, `npm install`, put an OpenRouter key in
 `.env.local`, run `npm run verify`, then `npm run dev`. The rest of this document explains

@@ -1,4 +1,4 @@
-# Farmer Assistant
+# AgriPilot
 
 Three cooperating AI agents that help a smallholder farmer decide **what to plant**,
 **diagnose a sick crop from a photo**, and **sell the harvest**.
@@ -9,18 +9,15 @@ Submitted to **Hojathon**, an agentic AI hackathon. Built in a 4-hour window.
 
 ## Team Information
 
-> **TODO before submission:** fill in the four fields below and the matching fields in
-> [`docs/TEAM.md`](docs/TEAM.md). Nothing else in this README needs changing.
+**Team ID:** 12
 
-**Team ID:**
-
-**Team Name:**
+**Team Name:** ALMAS CP
 
 **Team Members:**
 
-1.
+1. Almas CP
 
-**Project Name:** Farmer Assistant
+**Project Name:** AgriPilot
 
 ---
 
@@ -28,11 +25,11 @@ Submitted to **Hojathon**, an agentic AI hackathon. Built in a 4-hour window.
 
 ### Project Name
 
-Farmer Assistant
+AgriPilot
 
 ### Team
 
-See [Team Information](#team-information) above.
+Team 12, ALMAS CP — a solo team. See [Team Information](#team-information) above.
 
 ### Problem Statement
 

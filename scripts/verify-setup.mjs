@@ -1,5 +1,5 @@
 /**
- * Pre-flight check for the Farmer Assistant build.
+ * Pre-flight check for the AgriPilot build.
  *
  * Run with:  npm run verify
  * (which is: node --env-file=.env.local scripts/verify-setup.mjs)
@@ -39,7 +39,7 @@ function orHeaders() {
     Authorization: `Bearer ${API_KEY}`,
     'Content-Type': 'application/json',
     'HTTP-Referer': process.env.OPENROUTER_SITE_URL ?? 'http://localhost:3000',
-    'X-Title': process.env.OPENROUTER_SITE_NAME ?? 'Farmer Assistant',
+    'X-Title': process.env.OPENROUTER_SITE_NAME ?? 'AgriPilot',
   };
 }
 
@@ -154,7 +154,7 @@ async function checkVisionCall() {
 }
 
 async function main() {
-  console.log('Farmer Assistant - setup verification\n');
+  console.log('AgriPilot - setup verification\n');
 
   await checkOpenMeteo();
   await checkModelSlugs();

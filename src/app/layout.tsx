@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Farmer Assistant",
+  title: "AgriPilot",
   description:
     "Plain-language planting advice built on the real weather forecast for your farm, plus crop disease help and selling support.",
 };

@@ -32,7 +32,7 @@ export default function Home() {
 
       <header className="border-b border-line bg-surface">
         <div className="mx-auto max-w-3xl px-4 py-5">
-          <p className="font-semibold text-brand-strong">Farmer Assistant</p>
+          <p className="font-semibold text-brand-strong">AgriPilot</p>
           <h1 className="text-3xl font-bold">Help with your crop</h1>
           <p className="mt-1 text-muted">
             Ask whether to plant something, show us a sick plant, or get help selling
