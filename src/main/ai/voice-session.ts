@@ -19,6 +19,9 @@ function diag(msg: string): void {
   console.log(`[voice] ${msg}`);
 }
 
+/** BCP-47 hints for the ASR. Configurable via env var; defaults to the three languages this assistant actually supports. */
+const VOICE_LANGUAGE_CODES = (process.env.VOICE_LANGUAGE_CODES ?? "ta-IN,ml-IN,en-IN").split(",").map((s) => s.trim()).filter(Boolean);
+
 export type TranscriptListener = (text: string, final: boolean) => void;
 
 let session: Session | null = null;
@@ -74,8 +77,15 @@ async function connect(): Promise<Session> {
       },
       config: {
         responseModalities: [Modality.AUDIO],
-        inputAudioTranscription: {},
-        outputAudioTranscription: {}
+        // Without languageCodes, transcription falls back to full automatic
+        // detection, which is exactly where Tamil/Malayalam recognition
+        // gets unreliable (especially mixed with English mid-sentence).
+        // Explicit BCP-47 hints bias the ASR toward the languages this
+        // intake assistant actually expects, per contracts.ts's language rule.
+        inputAudioTranscription: { languageCodes: VOICE_LANGUAGE_CODES },
+        outputAudioTranscription: { languageCodes: VOICE_LANGUAGE_CODES },
+        systemInstruction:
+          "You are transcribing speech for a Kerala income-certificate intake form. The speaker may use Tamil, Malayalam, or English, including switching languages mid-sentence. Do not translate; transcribe what was actually said."
         // Deliberately no `tools` — this session cannot call any function.
       }
     }),

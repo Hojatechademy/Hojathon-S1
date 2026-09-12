@@ -22,7 +22,10 @@ import * as manifestStore from "./browser/manifest";
 import * as browserManager from "./browser/manager";
 import * as demoController from "./demo-controller";
 import { MOCK_PORTAL_URL, AUTO_RUN_DEMO } from "./config";
-import * as intakeOrchestrator from "./ai/openrouter-intake";
+// Primary text-intake backend — swap this one import to switch providers
+// (getDraft/resetDraft below are provider-agnostic, from intake-state.ts).
+import * as intakeOrchestrator from "./ai/intake-orchestrator";
+import { getDraft, resetDraft } from "./ai/intake-state";
 import { writeReviewedApplication } from "./ai/draft-to-application";
 import * as voiceSession from "./ai/voice-session";
 
@@ -48,18 +51,27 @@ export function registerIpcHandlers(getMainWindow: () => BrowserWindow | null): 
 
   ipcMain.handle(IpcChannels.aiGetDraft, (event) => {
     assertTrustedSender(event);
-    return intakeOrchestrator.getDraft();
+    return getDraft();
   });
 
   ipcMain.handle(IpcChannels.aiResetDraft, (event) => {
     assertTrustedSender(event);
-    return intakeOrchestrator.resetDraft();
+    intakeOrchestrator.resetSession(); // force a fresh Gemini Live session, not just a fresh local draft
+    return resetDraft();
   });
 
-  ipcMain.handle(IpcChannels.aiReviewAndPrepare, async (event, useDemoDocuments: unknown) => {
+  ipcMain.handle(IpcChannels.aiReviewAndPrepare, async (event, useDemoDocuments: unknown, manualAttachmentTokens: unknown) => {
     assertTrustedSender(event);
     if (typeof useDemoDocuments !== "boolean") throw new Error("useDemoDocuments must be a boolean.");
-    const jsonPath = writeReviewedApplication(intakeOrchestrator.getDraft(), useDemoDocuments);
+    let tokens: Record<string, string> | undefined;
+    if (manualAttachmentTokens !== undefined && manualAttachmentTokens !== null) {
+      if (typeof manualAttachmentTokens !== "object") throw new Error("manualAttachmentTokens must be an object.");
+      for (const [k, v] of Object.entries(manualAttachmentTokens as Record<string, unknown>)) {
+        if (typeof v !== "string") throw new Error(`manualAttachmentTokens.${k} must be a string.`);
+      }
+      tokens = manualAttachmentTokens as Record<string, string>;
+    }
+    const jsonPath = writeReviewedApplication(getDraft(), useDemoDocuments, tokens);
     return demoController.loadAndValidate(jsonPath);
   });
 

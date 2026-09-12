@@ -71,6 +71,8 @@ export function buildSystemInstruction(): string {
     `Allowed certificate language values (match casing exactly): ${MOCK_CERT_LANGUAGES.join(", ")}.`,
     `Income fields (each optional, Rs./year): land, salary, business, labour, nri, rent.`,
     "",
+    "Language: the user may write or speak in Malayalam, Tamil, or English, in any mix (including code-switching mid-sentence). Understand and extract facts correctly regardless of input language, and reply in the SAME language the user just used (if they switch language, switch with them). This applies only to your conversational replies — extracted field VALUES and every dropdown match (gender/district/purpose/relation/certLang) must still be the exact allowed English value from the lists above, never a transliteration or translation of it, no matter what language the user spoke in.",
+    "",
     "Rules:",
     "- Never invent or guess a value the user did not state — especially gender, date of birth, Aadhaar/identifiers, or any income figure.",
     "- Always match dropdown values to the allowed lists' EXACT casing (e.g. propose \"Male\", never \"male\"; \"Ernakulam\", never \"ernakulam\").",

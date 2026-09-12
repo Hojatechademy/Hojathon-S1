@@ -616,7 +616,7 @@ export interface RendererApi {
   aiSendMessage: (text: string) => Promise<SendMessageResult>;
   aiGetDraft: () => Promise<IntakeDraftSnapshot>;
   aiResetDraft: () => Promise<IntakeDraftSnapshot>;
-  aiReviewAndPrepare: (useDemoDocuments: boolean) => Promise<DemoReviewPayload>;
+  aiReviewAndPrepare: (useDemoDocuments: boolean, manualAttachmentTokens?: Record<string, string>) => Promise<DemoReviewPayload>;
   aiVoiceAvailable: () => Promise<boolean>;
   aiVoiceStart: () => Promise<void>;
   aiVoiceAudioChunk: (base64Pcm16kMono: string) => Promise<void>;

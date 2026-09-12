@@ -1,19 +1,136 @@
+# ============================================================
+# Dependencies — NEVER push these (root + all subprojects)
+# ============================================================
 node_modules/
+**/node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ============================================================
+# Build / dist output (root + all subprojects)
+# ============================================================
+dist/
+**/dist/
 dist-electron/
 dist-renderer/
-*.log
-.DS_Store
+dist-ssr/
+build/
+**/build/
+out/
+**/out/
+release/
+**/release/
+*.tsbuildinfo
+*.tgz
+*.tar.gz
+
+# Electron packager / builder
+*.exe
+*.dmg
+*.AppImage
+*.snap
+*.msi
+*.deb
+*.rpm
+
+# Vite / esbuild / tsc caches
+.vite/
+**/.vite/
+*.local
+
+# ============================================================
+# Environment & secrets — NEVER push real keys
+# Applies at root AND inside sampel-bot/sample-bot1/edistrict-kerala
+# ============================================================
 .env
 .env.*
 !.env.example
+**/.env
+**/.env.*
+!**/.env.example
+*.pem
+*.key
 
-# Cloned/pasted reference projects — not part of this app's deliverable.
-# edistrict-kerala is Vijay's own separately-hosted repo (own git history,
-# own package-lock.json); the sampel-bot*/sample-bot1 folders are reference
-# code (some copies include their own .env with real secrets, and node_modules).
-# Clone/set these up per README.md rather than tracking them here.
-edistrict-kerala/
-sampel-bot/
-sampel-bot1/
-sample-bot1/
-sampel-bot.rar
+# ============================================================
+# Logs
+# ============================================================
+logs/
+**/logs/
+*.log
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ============================================================
+# Playwright / test artefacts
+# ============================================================
+test-results/
+**/test-results/
+playwright-report/
+**/playwright-report/
+blob-report/
+**/blob-report/
+playwright/.cache/
+**/playwright/.cache/
+coverage/
+**/coverage/
+.nyc_output/
+*.lcov
+
+# ============================================================
+# OS files
+# ============================================================
+.DS_Store
+**/.DS_Store
+Thumbs.db
+**/Thumbs.db
+Desktop.ini
+
+# ============================================================
+# Editors / IDEs
+# ============================================================
+.vscode/*
+!.vscode/extensions.json
+.idea/
+**/.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# ============================================================
+# Python (edistrict-kerala tools.py and friends)
+# ============================================================
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+**/.venv/
+venv/
+**/venv/
+ENV/
+env/
+
+# ============================================================
+# Misc local files
+# ============================================================
+.cache/
+**/.cache/
+.parcel-cache/
+.turbo/
+.vercel/
+.netlify/
+*.rar

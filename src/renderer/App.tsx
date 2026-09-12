@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import type { DemoReviewPayload, BrowserEvent, DemoRunSummary, IntakeDraftSnapshot, ConversationEntry } from "@shared/contracts";
 import { MOCK_DOC_SPECS } from "@shared/contracts";
 import ActivityLog from "./components/ActivityLog";
+import Confetti from "./components/Confetti";
+import VoiceOverlay from "./components/VoiceOverlay";
 import { startVoiceCapture, MIN_VOICE_SAMPLES, VoiceCaptureHandle } from "./voice-capture";
 
 type RunState = "idle" | "running" | "paused" | "finished";
@@ -27,9 +29,12 @@ export default function App() {
   const [activityLine, setActivityLine] = useState<string | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
   const [useDemoDocuments, setUseDemoDocuments] = useState(true);
+  const [manualAttachments, setManualAttachments] = useState<Record<string, { token: string; name: string }>>({});
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   const [voiceAvailable, setVoiceAvailable] = useState<boolean | null>(null);
   const [recording, setRecording] = useState(false);
+  const [voiceProcessing, setVoiceProcessing] = useState(false);
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const voiceHandleRef = useRef<VoiceCaptureHandle | null>(null);
 
@@ -37,6 +42,7 @@ export default function App() {
   const [events, setEvents] = useState<BrowserEvent[]>([]);
   const [runState, setRunState] = useState<RunState>("idle");
   const [summary, setSummary] = useState<DemoRunSummary | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [runError, setRunError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const autoRunTriggered = useRef(false);
@@ -57,7 +63,12 @@ export default function App() {
       if (evt.type === "resumed") setRunState("running");
       if (evt.type === "finished") {
         setRunState("finished");
-        if (evt.summary) setSummary(evt.summary);
+        if (evt.summary) {
+          setSummary(evt.summary);
+          if (!evt.summary.stoppedEarly && evt.summary.unresolvedIssues.length === 0) {
+            setShowConfetti(true);
+          }
+        }
       }
       if (evt.type === "failed" || evt.type === "closed") setRunState("finished");
     });
@@ -136,6 +147,7 @@ export default function App() {
   async function handleMicClick() {
     if (recording) {
       setRecording(false);
+      setVoiceProcessing(true);
       const handle = voiceHandleRef.current;
       voiceHandleRef.current = null;
       const { samples } = (await handle?.stop()) ?? { samples: 0 };
@@ -146,6 +158,8 @@ export default function App() {
         await window.api.aiVoiceStop();
       } catch (e) {
         setVoiceError((e as Error).message);
+      } finally {
+        setVoiceProcessing(false);
       }
       return;
     }
@@ -192,13 +206,25 @@ export default function App() {
     setRunState("idle");
   }
 
+  async function handlePickDocument(fieldKey: string) {
+    const picked = await window.api.pickFiles();
+    if (picked.length === 0) return;
+    const { token, name } = picked[0];
+    setManualAttachments((prev) => ({ ...prev, [fieldKey]: { token, name } }));
+  }
+
   async function handleReviewAndFill() {
     setBusy(true);
     setRunError(null);
     setActivityLine("Preparing the portal…");
     try {
-      const r = await window.api.aiReviewAndPrepare(useDemoDocuments);
+      const tokens: Record<string, string> = {};
+      if (!useDemoDocuments) {
+        for (const [k, v] of Object.entries(manualAttachments)) tokens[k] = v.token;
+      }
+      const r = await window.api.aiReviewAndPrepare(useDemoDocuments, useDemoDocuments ? undefined : tokens);
       setReview(r);
+      setShowReviewModal(true);
       setEvents([]);
       setSummary(null);
       setRunState("idle");
@@ -232,12 +258,18 @@ export default function App() {
   const readiness = draft?.readiness;
   const missingCount = readiness ? readiness.missingRequired.length : null;
   const canStart = !!review?.validation.ok && !!review.validation.digest && runState === "idle";
+  const requiredDocKeys = MOCK_DOC_SPECS.filter((d) => d.required).map((d) => d.key);
+  const allRequiredDocsPicked = useDemoDocuments || requiredDocKeys.every((k) => !!manualAttachments[k]);
   const displayedConversation = pendingPrompt ? [...(draft?.conversation ?? []), pendingPrompt] : (draft?.conversation ?? []);
   const completedCount = draft ? Object.values(draft.fields).filter((field) => !!field.value).length : 0;
   const totalFieldCount = draft ? Object.keys(draft.fields).length : FIELD_GROUPS.reduce((sum, group) => sum + group.keys.length, 0);
 
   return (
     <div className="app">
+      {showConfetti && <Confetti onDone={() => setShowConfetti(false)} />}
+      {(recording || voiceProcessing) && (
+        <VoiceOverlay phase={recording ? "listening" : "processing"} transcript={composerText} onStop={handleMicClick} />
+      )}
       <header className="app-header">
         <div>
           <p className="eyebrow">ServiceReady Kerala</p>
@@ -362,79 +394,111 @@ export default function App() {
 
           <div className="field-group">
             <h4>Documents</h4>
-            <div className="field-row">
-              <span className="fk">Demo fixture set (6 files)</span>
-              <span className="fv">{useDemoDocuments ? "Selected" : "Not selected"}</span>
-            </div>
-            <div className="field-row"><span className="muted">Files are selected for the portal form — not uploaded to any server.</span></div>
+            {useDemoDocuments ? (
+              <>
+                <div className="field-row">
+                  <span className="fk">Demo fixture set (6 files)</span>
+                  <span className="fv">Selected</span>
+                </div>
+                <div className="field-row"><span className="muted">Files are selected for the portal form — not uploaded to any server.</span></div>
+              </>
+            ) : (
+              MOCK_DOC_SPECS.map((d) => {
+                const picked = manualAttachments[d.key];
+                return (
+                  <div key={d.key} className="field-row">
+                    <span className="fk">{d.label}{d.required && <span className="required-mark"> *</span>}</span>
+                    <span className="fv">
+                      {picked ? <span className="status-pill status-confirmed">{picked.name}</span> : <span className="muted">not selected</span>}{" "}
+                      <button className="link-button" onClick={() => handlePickDocument(d.key)}>{picked ? "Change" : "Select file"}</button>
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
 
-          <button className="primary-action" disabled={busy || missingCount === null || missingCount > 0} onClick={handleReviewAndFill}>
+          <button className="primary-action" disabled={busy || missingCount === null || missingCount > 0 || !allRequiredDocsPicked} onClick={handleReviewAndFill}>
             Review &amp; Fill Application
           </button>
           {missingCount !== null && missingCount > 0 && (
             <p className="muted">Answer the missing required items above before reviewing.</p>
           )}
+          {missingCount === 0 && !allRequiredDocsPicked && (
+            <p className="muted">Select all required documents above before reviewing.</p>
+          )}
 
-          {review && (
-            <>
-              <hr />
-              <h4>Reviewed application (revision {draft?.revision ?? "?"})</h4>
-              <table className="fields-table">
-                <thead><tr><th>Document</th><th>Status</th></tr></thead>
-                <tbody>
-                  {MOCK_DOC_SPECS.map((d) => {
-                    const resolved = review.validation.resolvedAttachments.find((a) => a.fieldKey === d.key);
-                    const issue = review.validation.issues.find((i) => i.fieldKey === d.key);
-                    return (
-                      <tr key={d.key}>
-                        <td>{d.label}</td>
-                        <td>{resolved ? <span className="status-pill status-confirmed">Selected, decodes</span> : issue ? <span className="status-pill status-conflicting">{issue.message}</span> : <span className="muted">not provided</span>}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+          {review && showReviewModal && (
+            <div className="modal-overlay" role="dialog" aria-modal="true">
+              <div className="modal-panel">
+                <div className="modal-header">
+                  <h4>Reviewed application (revision {draft?.revision ?? "?"})</h4>
+                  <button
+                    className="link-button"
+                    disabled={runState === "running"}
+                    title={runState === "running" ? "Wait for the run to finish or stop it first." : "Close"}
+                    onClick={() => setShowReviewModal(false)}
+                  >
+                    ✕ Close
+                  </button>
+                </div>
 
-              {review.validation.issues.length > 0 && (
-                <ul className="issue-list">
-                  {review.validation.issues.map((issue, i) => (
-                    <li key={i} className={issue.blocking ? "issue-blocking" : "issue-info"}>{issue.blocking ? "BLOCKING" : "notice"} — {issue.message}</li>
-                  ))}
-                </ul>
-              )}
+                <table className="fields-table">
+                  <thead><tr><th>Document</th><th>Status</th></tr></thead>
+                  <tbody>
+                    {MOCK_DOC_SPECS.map((d) => {
+                      const resolved = review.validation.resolvedAttachments.find((a) => a.fieldKey === d.key);
+                      const issue = review.validation.issues.find((i) => i.fieldKey === d.key);
+                      return (
+                        <tr key={d.key}>
+                          <td>{d.label}</td>
+                          <td>{resolved ? <span className="status-pill status-confirmed">Selected, decodes</span> : issue ? <span className="status-pill status-conflicting">{issue.message}</span> : <span className="muted">not provided</span>}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
 
-              {runError && <div className="error-banner">{runError}</div>}
+                {review.validation.issues.length > 0 && (
+                  <ul className="issue-list">
+                    {review.validation.issues.map((issue, i) => (
+                      <li key={i} className={issue.blocking ? "issue-blocking" : "issue-info"}>{issue.blocking ? "BLOCKING" : "notice"} — {issue.message}</li>
+                    ))}
+                  </ul>
+                )}
 
-              <div className="browser-controls" style={{ marginTop: 8 }}>
-                <button disabled={!canStart} onClick={() => handleStart()}>Start Demonstration</button>
-                <button disabled={runState !== "running"} onClick={handlePause}>Pause</button>
-                <button disabled={runState !== "paused"} onClick={handleResume}>Resume</button>
-                <button disabled={runState !== "running" && runState !== "paused"} onClick={handleStop}>Stop Run</button>
+                {runError && <div className="error-banner">{runError}</div>}
+
+                <div className="browser-controls" style={{ marginTop: 8 }}>
+                  <button disabled={!canStart} onClick={() => handleStart()}>Start Demonstration</button>
+                  <button disabled={runState !== "running"} onClick={handlePause}>Pause</button>
+                  <button disabled={runState !== "paused"} onClick={handleResume}>Resume</button>
+                  <button disabled={runState !== "running" && runState !== "paused"} onClick={handleStop}>Stop Run</button>
+                </div>
+                <p className="muted">Portal: {config?.mockPortalUrl} — State: {runState}</p>
+
+                <ActivityLog events={events} />
+
+                {summary && (
+                  <>
+                    <h4>Final verification result</h4>
+                    <p><b>{summary.finalMessage}</b></p>
+                    <table className="fields-table">
+                      <tbody>
+                        <tr><th>Fields verified</th><td>{summary.fieldsVerified}</td></tr>
+                        <tr><th>Fields mismatched</th><td>{summary.fieldsMismatched}</td></tr>
+                        <tr><th>Attachments selected</th><td>{summary.attachmentsSelected}</td></tr>
+                        <tr><th>Attachments missing</th><td>{summary.attachmentsMissing}</td></tr>
+                        <tr><th>Uploads acknowledged</th><td>{summary.uploadsAcknowledged} <span className="muted">(this mock portal never uploads)</span></td></tr>
+                      </tbody>
+                    </table>
+                    {summary.unresolvedIssues.length > 0 && (
+                      <ul className="issue-list">{summary.unresolvedIssues.map((s, i) => <li key={i} className="issue-blocking">{s}</li>)}</ul>
+                    )}
+                  </>
+                )}
               </div>
-              <p className="muted">Portal: {config?.mockPortalUrl} — State: {runState}</p>
-
-              <ActivityLog events={events} />
-
-              {summary && (
-                <>
-                  <h4>Final verification result</h4>
-                  <p><b>{summary.finalMessage}</b></p>
-                  <table className="fields-table">
-                    <tbody>
-                      <tr><th>Fields verified</th><td>{summary.fieldsVerified}</td></tr>
-                      <tr><th>Fields mismatched</th><td>{summary.fieldsMismatched}</td></tr>
-                      <tr><th>Attachments selected</th><td>{summary.attachmentsSelected}</td></tr>
-                      <tr><th>Attachments missing</th><td>{summary.attachmentsMissing}</td></tr>
-                      <tr><th>Uploads acknowledged</th><td>{summary.uploadsAcknowledged} <span className="muted">(this mock portal never uploads)</span></td></tr>
-                    </tbody>
-                  </table>
-                  {summary.unresolvedIssues.length > 0 && (
-                    <ul className="issue-list">{summary.unresolvedIssues.map((s, i) => <li key={i} className="issue-blocking">{s}</li>)}</ul>
-                  )}
-                </>
-              )}
-            </>
+            </div>
           )}
 
           <details className="dev-log">

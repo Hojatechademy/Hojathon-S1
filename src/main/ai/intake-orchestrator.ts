@@ -64,6 +64,11 @@ function settleTurn(turn: ActiveTurn, kind: "resolve" | "reject", value: SendMes
   else turn.reject(value as Error);
 }
 
+/** Forces the next sendMessage() to open a brand-new Live session — used when the draft is reset, so Gemini's own session memory can't leak stale facts into a "fresh" conversation. */
+export function resetSession(): void {
+  invalidateGeneration(liveGeneration, "manual reset");
+}
+
 /** Marks the given generation dead: any further event tagged with it is ignored, and forces a fresh connect() next time. */
 function invalidateGeneration(gen: number, reason: string): void {
   if (gen !== liveGeneration) return; // already superseded, nothing to do
