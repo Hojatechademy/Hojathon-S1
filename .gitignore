@@ -1,0 +1,19 @@
+node_modules/
+dist-electron/
+dist-renderer/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Cloned/pasted reference projects — not part of this app's deliverable.
+# edistrict-kerala is Vijay's own separately-hosted repo (own git history,
+# own package-lock.json); the sampel-bot*/sample-bot1 folders are reference
+# code (some copies include their own .env with real secrets, and node_modules).
+# Clone/set these up per README.md rather than tracking them here.
+edistrict-kerala/
+sampel-bot/
+sampel-bot1/
+sample-bot1/
+sampel-bot.rar

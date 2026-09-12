@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "portalId": "kerala_edistrict_income_certificate_SAMPLE",
+  "manifestVersion": "0.0.1-draft",
+  "serviceId": "income_certificate",
+  "jurisdiction": "kerala",
+  "officialStartUrl": "https://example.invalid/REPLACE_WITH_REAL_PORTAL_URL",
+  "allowedOrigins": ["https://example.invalid"],
+  "authenticationOrigins": [],
+  "verifiedAt": null,
+  "status": "draft",
+  "sources": [
+    {
+      "id": "src1",
+      "url": "https://example.invalid/REPLACE",
+      "title": "PLACEHOLDER - replace with the real portal source once inspected",
+      "checkedAt": "1970-01-01T00:00:00.000Z",
+      "evidenceNotes": "This entire manifest is a structural placeholder. No field, locator or page here has been observed on a real portal. Do not use for an actual run."
+    }
+  ],
+  "uncertainties": [
+    "Real portal URL, login flow, and field structure are not yet inspected.",
+    "This file exists only to show the required JSON shape to Vijay."
+  ],
+  "pages": [
+    {
+      "id": "sample_page",
+      "urlPattern": "/REPLACE*",
+      "readyLocator": { "strategy": "role", "role": "heading", "value": "REPLACE WITH REAL HEADING TEXT" },
+      "frameSelectors": [],
+      "fields": [
+        {
+          "key": "applicant_full_name",
+          "label": "Applicant full name",
+          "control": "text",
+          "locator": { "strategy": "label", "value": "REPLACE WITH REAL LABEL TEXT" },
+          "required": true,
+          "condition": null,
+          "options": [],
+          "documentType": null,
+          "limits": {},
+          "verification": "unverified",
+          "sourceRefs": ["src1"],
+          "readback": "value",
+          "notes": "PLACEHOLDER. Mark verification=observed only after confirming this locator against the live portal."
+        }
+      ],
+      "actions": [],
+      "stopBoundary": true
+    }
+  ]
+}

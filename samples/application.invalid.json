@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "service": "income_certificate",
+  "demoOnly": true,
+  "fields": {
+    "fullName": "Fictional Demo Applicant",
+    "gender": "Female",
+    "dob": "1990-05-14",
+    "fatherName": "Fictional Demo Guardian",
+    "relation": "Self",
+    "address": "12, Demo Test Lane, Sample Nagar P.O., Ernakulam",
+    "district": "Ernakulam",
+    "taluk": "Kanayannur",
+    "village": "Elamkulam",
+    "pincode": "682020",
+    "mobile": "9999999999",
+    "email": "demo.applicant@example.invalid",
+    "aadhaar": "999999999999",
+    "ration": "DEMO-RC-000123",
+    "purpose": "Bank Loan",
+    "certLang": "English",
+    "land": "0",
+    "salary": "180000",
+    "business": "0",
+    "labour": "0",
+    "nri": "0",
+    "rent": "0"
+  },
+  "attachments": [
+    {
+      "fieldKey": "ration",
+      "path": "./documents/ration-card.pdf"
+    },
+    {
+      "fieldKey": "income",
+      "path": "./documents/income-proof.pdf"
+    },
+    {
+      "fieldKey": "basictax",
+      "path": "./documents/basic-tax-receipt.pdf"
+    },
+    {
+      "fieldKey": "idproof",
+      "path": "./documents/id-proof.png"
+    },
+    {
+      "fieldKey": "affidavit",
+      "path": "./documents/affidavit.pdf"
+    }
+  ]
+}
