@@ -44,3 +44,7 @@ desktop.ini
 *.temp
 *.bak
 *.cache
+
+# ---- Python ----
+__pycache__/
+*.pyc

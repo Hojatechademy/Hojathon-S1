@@ -1,10 +1,10 @@
 # Team Information
 
-**Team ID:**
+**Team ID:** 77
 
-**Team Name:**
+**Team Name:** Mohammed Nihal
 
-**Project Name:**
+**Project Name:** Symptom-to-Care Navigator
 
 ---
 
@@ -14,16 +14,4 @@ Teams can have **1, 2, or 3 members**. Member 2 and Member 3 are optional.
 
 ### Member 1
 
-**Name:**
-
-### Member 2
-
-*(Optional)*
-
-**Name:**
-
-### Member 3
-
-*(Optional)*
-
-**Name:**
+**Name:** Mohammed Nihal
