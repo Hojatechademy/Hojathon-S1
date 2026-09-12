@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ExpertForge - Universal Autonomous Learning Platform</title>
+  <title>ExpertForge - Tactile Learning Engine</title>
 
-  <!-- Open-Source Google Fonts: Plus Jakarta Sans + Outfit + JetBrains Mono -->
+  <!-- Open-Source Fonts: Nunito (Duolingo-style friendly rounded) + Outfit + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Nunito:wght@500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN with Custom Color & Class Dark Mode Config -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,23 +18,31 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-            display: ['"Outfit"', '"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Nunito"', 'system-ui', 'sans-serif'],
+            display: ['"Outfit"', '"Nunito"', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            brand: {
-              50: '#f5f3ff',
-              100: '#ede9fe',
-              200: '#ddd6fe',
-              300: '#c4b5fd',
-              400: '#a78bfa',
-              500: '#8b5cf6',
-              600: '#7c3aed',
-              700: '#6d28d9',
-              800: '#5b21b6',
-              900: '#4c1d95',
-              950: '#2e1065',
+            duo: {
+              green: '#58CC02',
+              greenDark: '#46A302',
+              greenLight: '#D7FFB8',
+              yellow: '#FFC800',
+              yellowDark: '#E5A500',
+              yellowLight: '#FFF4D0',
+              blue: '#1CB0F6',
+              blueDark: '#1899D6',
+              blueLight: '#DDF4FF',
+              coral: '#FF4B4B',
+              coralDark: '#EA2B2B',
+              coralLight: '#FFDFE0',
+              stone: '#F5EFE6',
+              card: '#FFFCF7',
+              border: '#E5DECB',
+              darkBg: '#131F24',
+              darkCard: '#1B272D',
+              darkBorder: '#28383F',
+              darkElevated: '#22323A'
             }
           }
         }
@@ -51,7 +59,7 @@
   <!-- MediaPipe Hands & Camera Utils for Gesture Detection -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-  <!-- Direct Vector jsPDF Library -->
+  <!-- Vector jsPDF Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
@@ -60,674 +68,444 @@
     .rotate-y-180 { transform: rotateY(180deg); }
     .backface-hidden { backface-visibility: hidden; }
 
+    /* Tactile 3D button press physics */
+    .tactile-btn {
+      transition: all 0.08s ease-in-out;
+      user-select: none;
+    }
+    .tactile-btn:active {
+      transform: translateY(3px);
+      border-bottom-width: 1px !important;
+    }
+
     /* Custom smooth scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 9999px; }
-    .dark ::-webkit-scrollbar-thumb { background: #3730a3; }
+    ::-webkit-scrollbar-thumb { background: #D5CCA8; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #28383F; }
   </style>
 </head>
-<body class="bg-[#f8f9fe] text-slate-800 dark:bg-[#090814] dark:text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col relative transition-colors duration-300">
+<body class="bg-duo-stone text-slate-800 dark:bg-duo-darkBg dark:text-slate-100 min-h-screen font-sans antialiased selection:bg-duo-green selection:text-white flex flex-col relative transition-colors duration-200">
 
-  <!-- TOP NAV -->
-  <header class="border-b border-indigo-100/80 dark:border-purple-950/60 bg-white/80 dark:bg-[#0e0c24]/80 backdrop-blur-xl sticky top-0 z-40 transition-colors duration-300">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-18 py-3.5 flex items-center justify-between gap-4">
-      
-      <!-- Brand & Active Model Pill -->
-      <div class="flex items-center space-x-3 cursor-pointer select-none" onclick="goToView('home')">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-100 dark:ring-purple-900/40">
-          <i data-lucide="flame" class="w-5 h-5 text-white"></i>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xl font-extrabold tracking-tight font-display bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 dark:from-white dark:via-purple-200 dark:to-indigo-300 bg-clip-text text-transparent">
-              ExpertForge
-            </span>
-            <span id="active-model-tag" class="text-[10px] uppercase font-bold tracking-wider bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 px-2.5 py-0.5 rounded-full font-mono">
-              LLaMA-3.3-70B
-            </span>
-          </div>
-          <p class="text-[10px] text-slate-400 dark:text-slate-400 font-medium hidden sm:block">Universal Autonomous Learning Platform</p>
-        </div>
-      </div>
+  <!-- SIDE-CENTERED TACTILE NAVIGATION CONSOLE -->
+  <aside id="side-nav" class="fixed left-3 sm:left-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-3 p-2 sm:p-2.5 bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl shadow-lg">
+    
+    <!-- Brand Button -->
+    <button onclick="goToView('home')" class="tactile-btn w-12 h-12 rounded-2xl bg-duo-green border-2 border-b-4 border-duo-greenDark flex items-center justify-center text-white shadow-sm" title="ExpertForge Home">
+      <i data-lucide="zap" class="w-6 h-6 fill-white"></i>
+    </button>
 
-      <!-- Actions, Gamification Badges & Theme Switch -->
-      <div class="flex items-center gap-2.5 sm:gap-3.5">
+    <div class="w-7 h-0.5 bg-duo-border dark:bg-duo-darkBorder my-0.5 rounded-full"></div>
 
-        <!-- Gamification Pill (Streaks & XP) -->
-        <div class="hidden md:flex items-center gap-2 bg-indigo-50/70 dark:bg-purple-950/40 border border-indigo-100 dark:border-purple-900/50 px-3 py-1.5 rounded-2xl text-xs font-semibold">
-          <span class="flex items-center gap-1 text-amber-500"><i data-lucide="flame" class="w-3.5 h-3.5 fill-amber-500"></i> 7d Streak</span>
-          <span class="text-slate-300 dark:text-slate-700">|</span>
-          <span class="flex items-center gap-1 text-indigo-600 dark:text-indigo-400"><i data-lucide="gem" class="w-3.5 h-3.5"></i> 320 XP</span>
-        </div>
+    <!-- Home Navigation Button -->
+    <button onclick="goToView('home')" id="nav-btn-home" class="tactile-btn w-11 h-11 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-duo-green" title="Home Hub">
+      <i data-lucide="compass" class="w-5 h-5"></i>
+    </button>
 
-        <!-- Dark Mode Toggle Button -->
-        <button onclick="toggleDarkMode()" id="theme-toggle-btn" class="p-2.5 rounded-2xl bg-white dark:bg-purple-950/50 border border-indigo-100 dark:border-purple-900/60 text-slate-600 dark:text-purple-300 hover:text-indigo-600 dark:hover:text-white shadow-sm hover:shadow transition" title="Toggle Light / Dark Mode">
-          <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
-        </button>
+    <!-- Forge New Course Button -->
+    <button onclick="startForgeFlow()" id="nav-btn-forge" class="tactile-btn w-11 h-11 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-duo-blue" title="Forge Course">
+      <i data-lucide="plus" class="w-5 h-5 stroke-[3]"></i>
+    </button>
 
-        <!-- Dynamic Nav Actions Container -->
-        <div id="nav-actions" class="flex items-center gap-2"></div>
+    <!-- Saved Courses Library Button -->
+    <button onclick="goToView('courses')" id="nav-btn-courses" class="tactile-btn w-11 h-11 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-duo-yellowDark" title="Course Library">
+      <i data-lucide="book-marked" class="w-5 h-5"></i>
+    </button>
 
-        <!-- User Profile Avatar -->
-        <div class="hidden sm:flex items-center gap-2 pl-1">
-          <div class="w-9 h-9 rounded-full ring-2 ring-indigo-500/40 p-0.5 bg-gradient-to-tr from-purple-500 to-indigo-500">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="w-full h-full rounded-full object-cover" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+    <div class="w-7 h-0.5 bg-duo-border dark:bg-duo-darkBorder my-0.5 rounded-full"></div>
 
-  <!-- NON-INTRUSIVE GESTURE HUD BADGE (NO CAMERA FEED VISIBLE) -->
-  <div id="gesture-hud" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 hidden transition-all duration-300">
-    <div class="flex items-center gap-2.5 bg-white/95 dark:bg-[#151233]/95 border border-indigo-200 dark:border-purple-800/80 px-4 py-2 rounded-full shadow-xl backdrop-blur-md">
-      <div id="gesture-hud-indicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></div>
-      <span id="gesture-hud-text" class="text-xs font-bold text-slate-800 dark:text-slate-100 font-mono">
-        ☝️ Hold detected
+    <!-- Private Gestures Toggle Button -->
+    <button onclick="toggleGestureDetection()" id="side-gesture-btn" class="tactile-btn w-11 h-11 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-duo-green relative" title="Toggle Private Gestures">
+      <i data-lucide="hand" class="w-5 h-5"></i>
+      <span id="side-gesture-dot" class="hidden absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-duo-green animate-ping"></span>
+    </button>
+
+    <!-- Theme Switcher Button -->
+    <button onclick="toggleDarkMode()" id="theme-toggle-btn" class="tactile-btn w-11 h-11 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-duo-yellowDark" title="Light / Dark Mode">
+      <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+    </button>
+  </aside>
+
+  <!-- SIDE-ANCHORED GESTURE NOTIFICATION BADGE -->
+  <div id="gesture-hud" class="fixed top-6 left-20 sm:left-24 z-50 hidden transition-all duration-300">
+    <div class="flex items-center gap-2.5 bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder px-4 py-2 rounded-2xl shadow-lg">
+      <span class="w-2.5 h-2.5 rounded-full bg-duo-green animate-pulse"></span>
+      <span id="gesture-hud-text" class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-wide">
+        Gesture Active
       </span>
-      <div id="gesture-progress-bar-container" class="w-14 h-1.5 bg-slate-200 dark:bg-purple-950 rounded-full overflow-hidden">
-        <div id="gesture-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 w-0 transition-all duration-100"></div>
+      <div class="w-14 h-2 bg-duo-stone dark:bg-duo-darkBorder rounded-full overflow-hidden">
+        <div id="gesture-progress-bar" class="h-full bg-duo-green w-0 transition-all duration-100"></div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-6xl mx-auto px-5 sm:px-8 py-8 flex-1 w-full pb-32">
+  <!-- MAIN VIEWPORT CONTAINER -->
+  <main class="max-w-4xl mx-auto pl-20 sm:pl-28 pr-4 sm:pr-8 py-10 flex-1 w-full pb-32">
 
-    <!-- VIEW 1: EDUCATIONAL OPENING -->
-    <section id="view-home" class="space-y-10">
-      <!-- Hero Header -->
-      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pt-2">
-        <div class="space-y-3 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100/70 dark:bg-purple-950/70 border border-purple-200 dark:border-purple-800/60 text-purple-700 dark:text-purple-300 text-xs font-bold tracking-wide">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-            <span>Autonomous Masterclass Engine</span>
+    <!-- VIEW 1: HOME HUB -->
+    <section id="view-home" class="space-y-8">
+      <!-- Mascot / Hero Banner -->
+      <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-duo-yellow border-2 border-b-4 border-duo-yellowDark flex items-center justify-center text-4xl shrink-0 shadow-inner">
+          ⚡
+        </div>
+        <div class="space-y-2 text-center sm:text-left">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-duo-greenLight dark:bg-duo-darkElevated border border-duo-green text-duo-greenDark dark:text-duo-green text-[11px] font-black uppercase tracking-wider">
+            <span>Autonomous Masterclass</span>
           </div>
-          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight font-display text-slate-900 dark:text-white leading-[1.15]">
-            Invest in your <span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 bg-clip-text text-transparent">education.</span>
+          <h1 class="text-2xl sm:text-4xl font-black font-display tracking-tight text-slate-900 dark:text-white">
+            Level up your mind.
           </h1>
-          <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            Upload raw audio, PDF slides, Word notes, or whiteboard sketches. Receive a 4-question adaptive diagnostic, an interactive masterclass with 3D flashcards, an architectural mindmap, background AI gestures, and vector PDF dossiers.
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-semibold max-w-lg leading-relaxed">
+            Ingest lectures, slide decks, audio, and whiteboard notes. Transform raw knowledge into calibrated milestones, 3D flashcards, mindmaps, and dossiers.
           </p>
         </div>
-
-        <!-- Stat Pills -->
-        <div class="grid grid-cols-3 gap-3 w-full lg:w-auto">
-          <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-4 rounded-3xl text-center shadow-sm">
-            <span class="text-xs text-slate-400 block font-medium">Completed</span>
-            <span class="text-xl font-extrabold text-indigo-600 dark:text-indigo-400 font-display">84%</span>
-          </div>
-          <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-4 rounded-3xl text-center shadow-sm">
-            <span class="text-xs text-slate-400 block font-medium">Lessons</span>
-            <span class="text-xl font-extrabold text-purple-600 dark:text-purple-400 font-display">24/28</span>
-          </div>
-          <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-4 rounded-3xl text-center shadow-sm">
-            <span class="text-xs text-slate-400 block font-medium">Hours</span>
-            <span class="text-xl font-extrabold text-violet-600 dark:text-violet-400 font-display">42.5h</span>
-          </div>
-        </div>
       </div>
 
-      <!-- Category Filter Pills -->
-      <div class="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
-        <button class="px-4 py-2 rounded-2xl bg-indigo-600 text-white font-semibold text-xs flex items-center gap-2 shadow-md shadow-indigo-500/20 whitespace-nowrap">
-          <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> All Disciplines
-        </button>
-        <button class="px-4 py-2 rounded-2xl bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 text-slate-600 dark:text-slate-300 hover:border-indigo-400 font-medium text-xs flex items-center gap-2 whitespace-nowrap transition">
-          <i data-lucide="laptop" class="w-3.5 h-3.5 text-indigo-500"></i> Computer Science & Systems
-        </button>
-        <button class="px-4 py-2 rounded-2xl bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 text-slate-600 dark:text-slate-300 hover:border-indigo-400 font-medium text-xs flex items-center gap-2 whitespace-nowrap transition">
-          <i data-lucide="brain" class="w-3.5 h-3.5 text-purple-500"></i> AI & Large Language Models
-        </button>
-        <button class="px-4 py-2 rounded-2xl bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 text-slate-600 dark:text-slate-300 hover:border-indigo-400 font-medium text-xs flex items-center gap-2 whitespace-nowrap transition">
-          <i data-lucide="briefcase" class="w-3.5 h-3.5 text-violet-500"></i> Engineering Leadership
-        </button>
-      </div>
-
-      <!-- TWO PRIMARY ACTION CARDS -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <!-- ACTION 1: FORGE A COURSE -->
-        <div onclick="startForgeFlow()" class="group relative bg-gradient-to-br from-indigo-600 via-purple-600 to-violet-700 text-white p-8 rounded-[32px] cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/30 hover:-translate-y-1 overflow-hidden flex flex-col justify-between min-h-[300px]">
-          <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl group-hover:scale-125 transition duration-500"></div>
-
-          <div class="space-y-4 relative z-10">
-            <div class="flex items-center justify-between">
-              <div class="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur border border-white/20 text-white flex items-center justify-center group-hover:rotate-6 transition duration-300">
-                <i data-lucide="sparkles" class="w-7 h-7"></i>
-              </div>
-              <span class="text-[11px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur px-3 py-1 rounded-full text-white border border-white/25">
-                Multi-Modal Ingest
-              </span>
+      <!-- PRIMARY TACTILE ACTION CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        
+        <!-- CARD 1: FORGE COURSE -->
+        <div onclick="startForgeFlow()" class="tactile-btn group bg-duo-green hover:bg-[#52be02] border-2 border-b-4 border-duo-greenDark rounded-3xl p-7 text-white cursor-pointer shadow-sm flex flex-col justify-between min-h-[220px]">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white text-2xl">
+              🚀
             </div>
-
             <div>
-              <h3 class="text-2xl font-bold font-display tracking-tight text-white">Forge a Course</h3>
-              <p class="text-xs text-indigo-100 leading-relaxed mt-2 max-w-sm">
-                Ingest MP3 recordings, PDF lecture decks, Word DOCX summaries, or whiteboard photos into an adaptive masterclass with AI gesture assistance.
+              <h2 class="text-xl font-black font-display tracking-tight">Forge a Course</h2>
+              <p class="text-xs text-white/90 font-bold mt-1 leading-relaxed">
+                Upload audio, slide decks, or Word docs. Complete a 4-question diagnostic to synthesize your custom track.
               </p>
             </div>
-
-            <div class="flex flex-wrap gap-2 pt-1">
-              <span class="text-[10px] font-semibold bg-black/20 px-2.5 py-1 rounded-xl">🎧 Audio (Whisper)</span>
-              <span class="text-[10px] font-semibold bg-black/20 px-2.5 py-1 rounded-xl">📑 PDF Slides</span>
-              <span class="text-[10px] font-semibold bg-black/20 px-2.5 py-1 rounded-xl">📝 DOCX Notes</span>
-              <span class="text-[10px] font-semibold bg-black/20 px-2.5 py-1 rounded-xl">🖼️ Whiteboards</span>
-            </div>
           </div>
-
-          <div class="pt-6 relative z-10 flex items-center justify-between border-t border-white/15">
-            <span class="text-xs font-semibold tracking-wide text-indigo-100 flex items-center gap-1.5">
-              Launch Diagnostic Wizard
-            </span>
-            <div class="w-9 h-9 rounded-full bg-white text-indigo-600 flex items-center justify-center group-hover:translate-x-1 transition shadow">
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <div class="pt-4 flex items-center justify-between text-xs font-black uppercase tracking-wider">
+            <span>Start Ingest Wizard</span>
+            <div class="w-8 h-8 rounded-full bg-white text-duo-greenDark flex items-center justify-center">
+              <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
             </div>
           </div>
         </div>
 
-        <!-- ACTION 2: VIEW SAVED COURSES -->
-        <div onclick="goToView('courses')" class="group bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-8 rounded-[32px] cursor-pointer transition-all duration-300 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-1 flex flex-col justify-between min-h-[300px]">
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <div class="w-14 h-14 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-100 dark:border-purple-900/60 text-purple-600 dark:text-purple-400 flex items-center justify-center group-hover:scale-110 transition duration-300">
-                <i data-lucide="book-open" class="w-7 h-7"></i>
-              </div>
-              <span class="text-[11px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-purple-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-purple-900/50 px-3 py-1 rounded-full">
-                Saved Repository
-              </span>
+        <!-- CARD 2: SAVED COURSES -->
+        <div onclick="goToView('courses')" class="tactile-btn group bg-duo-card dark:bg-duo-darkCard hover:bg-[#fff9ef] dark:hover:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-7 cursor-pointer shadow-sm flex flex-col justify-between min-h-[220px]">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-duo-yellowLight dark:bg-duo-darkElevated border border-duo-yellow border-b-2 flex items-center justify-center text-2xl">
+              📚
             </div>
-
             <div>
-              <h3 class="text-2xl font-bold font-display tracking-tight text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition">Course Library</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-2 max-w-sm">
-                Revisit calibrated courses, practice interactive 3D flashcards, inspect conceptual mindmaps, trigger module practice MCQs, and export PDF dossiers.
+              <h2 class="text-xl font-black font-display tracking-tight text-slate-900 dark:text-white">Course Library</h2>
+              <p class="text-xs text-slate-600 dark:text-slate-400 font-bold mt-1 leading-relaxed">
+                Revisit saved modules, flip 3D flashcards, inspect conceptual mindmaps, and export verified PDF dossiers.
               </p>
             </div>
-
-            <div class="p-3.5 rounded-2xl bg-indigo-50/50 dark:bg-purple-950/30 border border-indigo-100 dark:border-purple-900/30 flex items-center justify-between text-xs">
-              <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
-                <span class="text-slate-600 dark:text-slate-300 font-medium">Ready for Revision</span>
-              </div>
-              <span class="font-bold text-indigo-600 dark:text-purple-400">PDF & Canvas Enabled</span>
-            </div>
           </div>
-
-          <div class="pt-6 flex items-center justify-between border-t border-slate-100 dark:border-purple-900/30">
-            <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-purple-400 transition">
-              Browse Course Catalog
-            </span>
-            <div class="w-9 h-9 rounded-full bg-slate-100 dark:bg-purple-900/50 text-slate-600 dark:text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition flex items-center justify-center shadow-sm">
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <div class="pt-4 flex items-center justify-between text-xs font-black uppercase tracking-wider text-duo-yellowDark dark:text-duo-yellow">
+            <span>Open Vault</span>
+            <div class="w-8 h-8 rounded-full bg-duo-stone dark:bg-duo-darkBorder text-slate-700 dark:text-slate-200 flex items-center justify-center">
+              <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- INSPIRATION SECTION -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-        <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-6 rounded-3xl space-y-4 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 font-display">Study Activity</span>
-            <span class="text-[11px] font-semibold text-indigo-600 dark:text-purple-400 bg-indigo-50 dark:bg-purple-950/50 px-2.5 py-0.5 rounded-full">This Week</span>
+      <!-- GESTURE SHORTCUT INFO PILL -->
+      <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-5 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-duo-blueLight dark:bg-duo-darkElevated border border-duo-blue flex items-center justify-center text-lg">
+            ✋
           </div>
-          <div class="flex items-baseline gap-2">
-            <span class="text-2xl font-extrabold text-slate-900 dark:text-white font-display">4.8h</span>
-            <span class="text-xs text-emerald-500 font-semibold">👍 Top 5% Focus</span>
-          </div>
-
-          <div class="flex items-end justify-between h-24 pt-4 px-1">
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-12 bg-indigo-200 dark:bg-purple-900/60 rounded-full"></div><span class="text-[10px] text-slate-400">M</span></div>
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-16 bg-indigo-300 dark:bg-purple-800/80 rounded-full"></div><span class="text-[10px] text-slate-400">T</span></div>
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-10 bg-indigo-200 dark:bg-purple-900/60 rounded-full"></div><span class="text-[10px] text-slate-400">W</span></div>
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-20 bg-purple-400 dark:bg-purple-600 rounded-full"></div><span class="text-[10px] text-slate-400">T</span></div>
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-14 bg-indigo-300 dark:bg-purple-800/80 rounded-full"></div><span class="text-[10px] text-slate-400">F</span></div>
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-22 bg-gradient-to-t from-indigo-600 to-purple-600 rounded-full ring-2 ring-indigo-400/40"></div><span class="text-[10px] font-bold text-indigo-600 dark:text-purple-400">S</span></div>
-            <div class="flex flex-col items-center gap-1.5"><div class="w-4 h-8 bg-indigo-100 dark:bg-purple-950 rounded-full"></div><span class="text-[10px] text-slate-400">S</span></div>
+          <div>
+            <h4 class="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">Tactile Hands-Free Gestures</h4>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 font-bold">Raise <strong>☝️ Index</strong> for simple analogies • Raise <strong>✋ Open Hand</strong> for module quiz</p>
           </div>
         </div>
-
-        <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-6 rounded-3xl space-y-4 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 font-display">Dual Gesture Sense</span>
-            <span class="text-xs font-mono text-purple-600 dark:text-purple-400">Background Cam</span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2 pt-2 text-center">
-            <div class="p-3 rounded-2xl bg-indigo-50/70 dark:bg-purple-950/40 border border-indigo-100 dark:border-purple-900/30 flex flex-col items-center gap-1">
-              <span class="text-2xl">☝️</span>
-              <span class="text-[10px] font-bold text-slate-700 dark:text-slate-200">Index Up</span>
-              <span class="text-[9px] text-slate-400">Explain Lesson</span>
-            </div>
-            <div class="p-3 rounded-2xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/30 flex flex-col items-center gap-1">
-              <span class="text-2xl">✋</span>
-              <span class="text-[10px] font-bold text-slate-700 dark:text-slate-200">Open Hand</span>
-              <span class="text-[9px] text-slate-400">Module MCQ Quiz</span>
-            </div>
-          </div>
-
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug pt-1">
-            Gestures run privately in the background without displaying video.
-          </p>
-        </div>
-
-        <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-6 rounded-3xl space-y-3.5 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 font-display">System Radar</span>
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          </div>
-          <div class="space-y-2 text-xs">
-            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-purple-950/30 border border-slate-100 dark:border-purple-900/20">
-              <span class="text-slate-600 dark:text-slate-400 flex items-center gap-1.5"><i data-lucide="mic" class="w-3.5 h-3.5 text-indigo-500"></i> Whisper Audio v3</span>
-              <span class="text-emerald-500 font-mono font-bold">Online</span>
-            </div>
-            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-purple-950/30 border border-slate-100 dark:border-purple-900/20">
-              <span class="text-slate-600 dark:text-slate-400 flex items-center gap-1.5"><i data-lucide="hand" class="w-3.5 h-3.5 text-purple-500"></i> MediaPipe Hands</span>
-              <span class="text-emerald-500 font-mono font-bold">Private Cam</span>
-            </div>
-            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-purple-950/30 border border-slate-100 dark:border-purple-900/20">
-              <span class="text-slate-600 dark:text-slate-400 flex items-center gap-1.5"><i data-lucide="cpu" class="w-3.5 h-3.5 text-violet-500"></i> LLaMA-3.3-70B</span>
-              <span class="text-indigo-600 dark:text-indigo-400 font-mono font-bold">Active</span>
-            </div>
-          </div>
-        </div>
+        <button onclick="toggleGestureDetection()" class="tactile-btn px-4 py-2 rounded-2xl bg-duo-blue border-2 border-b-4 border-duo-blueDark text-white text-xs font-black uppercase tracking-wider">
+          Toggle
+        </button>
       </div>
     </section>
 
     <!-- VIEW 2: MULTIMODAL FORGE WIZARD -->
-    <section id="view-forge" class="hidden max-w-2xl mx-auto space-y-6">
-      <button onclick="goToView('home')" class="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white flex items-center gap-1.5 transition">
-        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
+    <section id="view-forge" class="hidden space-y-6">
+      <button onclick="goToView('home')" class="text-xs font-black text-slate-500 dark:text-slate-400 hover:text-duo-green flex items-center gap-1.5 transition">
+        <i data-lucide="arrow-left" class="w-4 h-4 stroke-[3]"></i> Return to Hub
       </button>
 
-      <!-- Upload Step -->
-      <div id="forge-step-upload" class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-[32px] p-8 sm:p-10 space-y-6 shadow-xl">
-        <div class="text-center space-y-1.5">
-          <span class="text-[10px] font-bold text-indigo-600 dark:text-purple-400 uppercase tracking-widest bg-indigo-50 dark:bg-purple-950/50 px-3 py-1 rounded-full border border-indigo-100 dark:border-purple-900/40">
-            Stage 01 • Multimodal Ingestion
-          </span>
-          <h2 class="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white">Upload Lecture Material</h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Audio (MP3/WAV), Slide Decks (PDF), Documents (DOCX/TXT), or Whiteboards (PNG/JPG)</p>
+      <!-- Step 1: Upload Material -->
+      <div id="forge-step-upload" class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-7 sm:p-9 space-y-6 shadow-sm">
+        <div class="space-y-1">
+          <div class="inline-block px-3 py-0.5 rounded-full bg-duo-yellowLight dark:bg-duo-darkElevated border border-duo-yellow text-duo-yellowDark dark:text-duo-yellow text-[10px] font-black uppercase tracking-wider">
+            Stage 01 • Ingestion
+          </div>
+          <h2 class="text-2xl font-black font-display text-slate-900 dark:text-white">Upload Lecture Material</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400 font-bold">Audio (MP3/WAV), Slide Decks (PDF), Documents (DOCX/TXT), or Whiteboard Photos</p>
         </div>
 
         <div>
-          <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1.5">Lecture / Masterclass Title (Optional)</label>
-          <div class="relative">
-            <input id="input-lecture-title" type="text" placeholder="e.g. LLM Parameters & Architecture" class="w-full bg-slate-50 dark:bg-[#0c0b1e] border border-indigo-100 dark:border-purple-900/50 rounded-2xl px-4 py-3 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-indigo-500 dark:focus:border-purple-400 transition" />
-            <i data-lucide="pen-tool" class="w-4 h-4 absolute right-4 top-3 text-slate-400"></i>
-          </div>
+          <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Masterclass Title (Optional)</label>
+          <input id="input-lecture-title" type="text" placeholder="e.g. LLM Parameters & Architecture" class="w-full bg-duo-stone dark:bg-duo-darkBg border-2 border-duo-border dark:border-duo-darkBorder rounded-2xl px-4 py-3 text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-duo-green transition" />
         </div>
 
-        <div class="border-2 border-dashed border-indigo-200 dark:border-purple-900/60 hover:border-indigo-500 dark:hover:border-purple-400 rounded-3xl p-8 text-center space-y-4 transition bg-indigo-50/20 dark:bg-purple-950/20">
+        <!-- Dropzone -->
+        <div class="border-2 border-dashed border-duo-border dark:border-duo-darkBorder hover:border-duo-green rounded-3xl p-8 text-center space-y-3 transition bg-duo-stone/40 dark:bg-duo-darkElevated/30">
           <input type="file" id="universal-file-input" accept="audio/*,.pdf,.docx,.txt,image/*" class="hidden" onchange="handleUniversalUpload(event)" />
           
-          <div class="flex justify-center items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-100/70 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm"><i data-lucide="headphones" class="w-6 h-6"></i></div>
-            <div class="w-12 h-12 rounded-2xl bg-purple-100/70 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/40 flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-sm"><i data-lucide="file-text" class="w-6 h-6"></i></div>
-            <div class="w-12 h-12 rounded-2xl bg-violet-100/70 dark:bg-violet-950/60 border border-violet-200 dark:border-violet-800/40 flex items-center justify-center text-violet-600 dark:text-violet-400 shadow-sm"><i data-lucide="file-code" class="w-6 h-6"></i></div>
-            <div class="w-12 h-12 rounded-2xl bg-amber-100/70 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/40 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-sm"><i data-lucide="image" class="w-6 h-6"></i></div>
+          <div class="flex justify-center items-center gap-2">
+            <span class="text-2xl">🎧</span>
+            <span class="text-2xl">📄</span>
+            <span class="text-2xl">📝</span>
+            <span class="text-2xl">🖼️</span>
           </div>
 
-          <div>
-            <label for="universal-file-input" class="cursor-pointer text-sm font-bold text-indigo-600 dark:text-purple-400 hover:underline inline-flex items-center gap-1.5">
-              <span>Choose a lecture file from your device</span>
-              <i data-lucide="upload" class="w-4 h-4"></i>
-            </label>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" id="upload-filename-display">Accepts MP3, PDF, DOCX, TXT, PNG, JPG</p>
-          </div>
+          <label for="universal-file-input" class="tactile-btn inline-flex items-center gap-2 cursor-pointer px-5 py-2.5 rounded-2xl bg-duo-blue border-2 border-b-4 border-duo-blueDark text-white text-xs font-black uppercase tracking-wider">
+            <i data-lucide="upload" class="w-4 h-4 stroke-[3]"></i> Choose Lecture File
+          </label>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-bold" id="upload-filename-display">Accepts MP3, WAV, PDF, DOCX, TXT, PNG, JPG</p>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <span class="text-xs text-slate-400 block w-full text-center">Or quickly load pre-processed samples:</span>
-          <button onclick="loadDemoLecture('audio')" class="text-xs font-semibold bg-white dark:bg-[#0c0b1e] hover:bg-indigo-50 dark:hover:bg-purple-900/40 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-2xl border border-indigo-100 dark:border-purple-900/60 flex items-center gap-2 transition shadow-sm">
-            <i data-lucide="headphones" class="w-4 h-4 text-indigo-500"></i> Sample Audio Lecture
-          </button>
-          <button onclick="loadDemoLecture('slides')" class="text-xs font-semibold bg-white dark:bg-[#0c0b1e] hover:bg-purple-50 dark:hover:bg-purple-900/40 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-2xl border border-purple-100 dark:border-purple-900/60 flex items-center gap-2 transition shadow-sm">
-            <i data-lucide="presentation" class="w-4 h-4 text-purple-500"></i> Sample PDF Slides
-          </button>
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t-2 border-duo-border dark:border-duo-darkBorder">
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">Or load a pre-processed demo:</span>
+          <div class="flex gap-2">
+            <button onclick="loadDemoLecture('slides')" class="tactile-btn px-4 py-2 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-slate-700 dark:text-slate-200 text-xs font-black">
+              📊 Stanford Slides
+            </button>
+            <button onclick="loadDemoLecture('audio')" class="tactile-btn px-4 py-2 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-slate-700 dark:text-slate-200 text-xs font-black">
+              🎙️ Audio Lecture
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Processing Step -->
-      <div id="forge-step-processing" class="hidden bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-[32px] p-10 space-y-6 text-center shadow-xl">
-        <div class="relative w-16 h-16 mx-auto">
-          <div class="w-16 h-16 rounded-full border-4 border-indigo-100 dark:border-purple-950 border-t-indigo-600 dark:border-t-purple-500 animate-spin"></div>
-          <div class="absolute inset-0 flex items-center justify-center text-indigo-600 dark:text-purple-400 font-bold text-xs">
-            <i data-lucide="sparkles" class="w-6 h-6 animate-pulse"></i>
-          </div>
+      <!-- Step 2: Processing Spinner -->
+      <div id="forge-step-processing" class="hidden bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-10 space-y-4 text-center shadow-sm">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-duo-yellow border-2 border-b-4 border-duo-yellowDark flex items-center justify-center text-2xl animate-bounce">
+          ⚡
         </div>
-        
-        <div class="space-y-1.5">
-          <h3 id="processing-title" class="text-xl font-bold font-display text-slate-900 dark:text-white">Extracting Knowledge Primitives...</h3>
-          <p id="processing-subtitle" class="text-xs text-slate-500 dark:text-slate-400">Processing input content through Groq neural inference...</p>
+        <div class="space-y-1">
+          <h3 id="processing-title" class="text-lg font-black font-display text-slate-900 dark:text-white">Synthesizing Course Primitives...</h3>
+          <p id="processing-subtitle" class="text-xs font-bold text-slate-500 dark:text-slate-400">Analyzing lecture material via neural inference...</p>
         </div>
-        <div id="processing-transcript-preview" class="hidden text-left bg-slate-50 dark:bg-[#0c0b1e] p-4 rounded-2xl border border-indigo-100 dark:border-purple-900/50 font-mono text-[11px] text-slate-600 dark:text-slate-300 max-h-40 overflow-y-auto leading-relaxed"></div>
+        <div id="processing-transcript-preview" class="hidden text-left bg-duo-stone dark:bg-duo-darkBg p-4 rounded-2xl border-2 border-duo-border dark:border-duo-darkBorder font-mono text-[11px] text-slate-700 dark:text-slate-300 max-h-36 overflow-y-auto"></div>
       </div>
 
-      <!-- Diagnostic Step -->
-      <div id="forge-step-pretest" class="hidden bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-[32px] p-8 sm:p-10 space-y-6 shadow-xl">
-        <div class="flex items-start justify-between gap-4 pb-4 border-b border-indigo-50 dark:border-purple-950">
-          <div>
-            <span class="text-[10px] font-bold text-indigo-600 dark:text-purple-400 uppercase tracking-widest bg-indigo-50 dark:bg-purple-950/50 px-3 py-1 rounded-full border border-indigo-100 dark:border-purple-900/40">
-              Stage 02 • Skill Calibration
-            </span>
-            <h3 class="text-2xl font-bold font-display text-slate-900 dark:text-white mt-1.5">Pre-Course Diagnostic Test</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Answer these 4 questions so the Agent can calibrate module depth, flashcards, mindmap, and quiz.</p>
+      <!-- Step 3: Diagnostic Pre-Test -->
+      <div id="forge-step-pretest" class="hidden bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-7 sm:p-9 space-y-6 shadow-sm">
+        <div class="space-y-1 pb-3 border-b-2 border-duo-border dark:border-duo-darkBorder">
+          <div class="inline-block px-3 py-0.5 rounded-full bg-duo-greenLight dark:bg-duo-darkElevated border border-duo-green text-duo-greenDark dark:text-duo-green text-[10px] font-black uppercase tracking-wider">
+            Stage 02 • Skill Calibration
           </div>
-          <span class="text-xs font-mono font-bold bg-indigo-50 dark:bg-purple-950/60 text-indigo-600 dark:text-purple-300 px-3 py-1.5 rounded-2xl border border-indigo-100 dark:border-purple-800/40">
-            4 MCQs
-          </span>
+          <h2 class="text-2xl font-black font-display text-slate-900 dark:text-white">Diagnostic Pre-Test</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400 font-bold">Answer these 4 questions so the system can scale module depth, mindmaps, and flashcards.</p>
         </div>
 
         <div id="pretest-questions-list" class="space-y-5"></div>
 
-        <button onclick="submitPreTest()" class="w-full py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-2xl text-xs font-bold text-white shadow-xl shadow-indigo-600/25 transition flex items-center justify-center gap-2">
-          <span>Evaluate My Skill & Forge Masterclass</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        <button onclick="submitPreTest()" class="tactile-btn w-full py-4 bg-duo-green border-2 border-b-4 border-duo-greenDark rounded-2xl text-xs font-black uppercase tracking-wider text-white shadow-sm flex items-center justify-center gap-2">
+          <span>Evaluate & Forge Custom Course</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
         </button>
       </div>
     </section>
 
-    <!-- VIEW 3: COURSE LIBRARY -->
+    <!-- VIEW 3: SAVED COURSES LIBRARY -->
     <section id="view-courses" class="hidden space-y-6">
-      <div class="flex items-center justify-between pb-2">
+      <div class="flex items-center justify-between pb-2 border-b-2 border-duo-border dark:border-duo-darkBorder">
         <div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">Course Library</h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">All forged courses are saved locally in your browser storage.</p>
+          <h2 class="text-2xl font-black font-display text-slate-900 dark:text-white">Course Library</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400 font-bold">Saved locally on your device.</p>
         </div>
-        <button onclick="startForgeFlow()" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/20 hover:scale-105 transition">
-          <i data-lucide="plus" class="w-4 h-4"></i> Forge New
+        <button onclick="startForgeFlow()" class="tactile-btn px-4 py-2 bg-duo-green border-2 border-b-4 border-duo-greenDark text-white rounded-2xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i> Forge New
         </button>
       </div>
 
-      <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+      <div id="courses-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
     </section>
 
-    <!-- VIEW 4: COURSE STUDY VIEW -->
-    <section id="view-course-study" class="hidden space-y-8">
-      <!-- Course Top Nav -->
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-indigo-100 dark:border-purple-900/40">
-        <button onclick="goToView('courses')" class="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white flex items-center gap-1.5 transition">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> All Courses
-        </button>
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2 text-xs">
-            <span class="text-slate-400">Evaluated Level:</span>
-            <span id="study-track-pill" class="font-bold px-3 py-1 rounded-full bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/40 uppercase tracking-wider font-mono text-[10px]">
-              Level 2: Architect
-            </span>
-          </div>
-
-          <button onclick="toggleGestureDetection()" id="btn-gesture-toggle" class="text-xs bg-white dark:bg-[#13102b] hover:bg-indigo-50 dark:hover:bg-purple-900/40 border border-indigo-100 dark:border-purple-900/60 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition text-slate-600 dark:text-slate-300 shadow-sm" title="Gestures run in background (no camera video displayed)">
-            <i data-lucide="hand" class="w-3.5 h-3.5 text-indigo-500"></i> Gesture: <span id="gesture-status-text" class="text-slate-400">Off</span>
+    <!-- VIEW 4: COURSE STUDY HUB -->
+    <section id="view-course-study" class="hidden space-y-6">
+      <!-- Course Header Banner -->
+      <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-6 sm:p-8 space-y-3 shadow-sm">
+        <div class="flex items-center justify-between">
+          <button onclick="goToView('courses')" class="text-xs font-black text-slate-500 dark:text-slate-400 hover:text-duo-green flex items-center gap-1 transition">
+            <i data-lucide="arrow-left" class="w-4 h-4 stroke-[3]"></i> All Courses
           </button>
+          <span id="study-track-pill" class="text-[10px] font-mono font-black uppercase px-3 py-1 rounded-full bg-duo-yellowLight dark:bg-duo-darkElevated border border-duo-yellow text-duo-yellowDark dark:text-duo-yellow">
+            Level 2: Architect
+          </span>
         </div>
+        <h1 id="study-course-title" class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white leading-tight"></h1>
+        <p id="study-course-expert" class="text-xs font-bold text-slate-600 dark:text-slate-400"></p>
       </div>
 
-      <!-- Banner -->
-      <div class="bg-gradient-to-br from-indigo-700 via-purple-700 to-violet-800 text-white p-8 sm:p-10 rounded-[36px] space-y-3 shadow-2xl relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex items-center gap-2 text-indigo-200 text-xs font-semibold uppercase tracking-wider">
-          <i data-lucide="award" class="w-4 h-4"></i> Verified Autonomous Masterclass
-        </div>
-        <h1 id="study-course-title" class="text-2xl sm:text-4xl font-extrabold font-display text-white tracking-tight"></h1>
-        <p id="study-course-expert" class="text-xs sm:text-sm text-indigo-100 font-medium"></p>
-      </div>
-
-      <!-- Navigation Tabs -->
-      <div class="flex border-b border-indigo-100 dark:border-purple-900/40 gap-4 sm:gap-8 text-sm font-semibold overflow-x-auto pb-px">
-        <button onclick="setStudyTab('overview')" id="study-tab-btn-overview" class="pb-3 border-b-2 border-indigo-600 dark:border-purple-400 text-indigo-600 dark:text-purple-400 transition flex items-center gap-2 whitespace-nowrap font-bold">
-          <i data-lucide="info" class="w-4 h-4"></i> 1. Overview
+      <!-- Tactile Navigation Tabs -->
+      <div class="flex gap-2 overflow-x-auto pb-1 font-black text-xs">
+        <button onclick="setStudyTab('overview')" id="study-tab-btn-overview" class="tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-greenDark bg-duo-green text-white whitespace-nowrap">
+          1. Overview
         </button>
-        <button onclick="setStudyTab('modules')" id="study-tab-btn-modules" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="layers" class="w-4 h-4"></i> 2. Modules <span id="badge-module-count" class="text-[10px] bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded-full text-slate-500 dark:text-slate-400"></span>
+        <button onclick="setStudyTab('modules')" id="study-tab-btn-modules" class="tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-border dark:border-duo-darkBorder bg-duo-stone dark:bg-duo-darkElevated text-slate-700 dark:text-slate-300 whitespace-nowrap">
+          2. Modules
         </button>
-        <button onclick="setStudyTab('flashcards')" id="study-tab-btn-flashcards" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="copy" class="w-4 h-4"></i> 3. Flashcards <span id="badge-card-count" class="text-[10px] bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded-full text-slate-500 dark:text-slate-400"></span>
+        <button onclick="setStudyTab('flashcards')" id="study-tab-btn-flashcards" class="tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-border dark:border-duo-darkBorder bg-duo-stone dark:bg-duo-darkElevated text-slate-700 dark:text-slate-300 whitespace-nowrap">
+          3. 3D Flashcards
         </button>
-        <button onclick="setStudyTab('quiz')" id="study-tab-btn-quiz" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="check-circle-2" class="w-4 h-4"></i> 4. Quiz <span id="badge-quiz-count" class="text-[10px] bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded-full text-slate-500 dark:text-slate-400"></span>
+        <button onclick="setStudyTab('quiz')" id="study-tab-btn-quiz" class="tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-border dark:border-duo-darkBorder bg-duo-stone dark:bg-duo-darkElevated text-slate-700 dark:text-slate-300 whitespace-nowrap">
+          4. Mastery Quiz
         </button>
-        <button onclick="setStudyTab('mindmap')" id="study-tab-btn-mindmap" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap text-indigo-600 dark:text-purple-400">
-          <i data-lucide="network" class="w-4 h-4 text-indigo-600 dark:text-purple-400"></i> 5. Mindmap & Export
+        <button onclick="setStudyTab('mindmap')" id="study-tab-btn-mindmap" class="tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-border dark:border-duo-darkBorder bg-duo-stone dark:bg-duo-darkElevated text-slate-700 dark:text-slate-300 whitespace-nowrap">
+          5. Mindmap & PDF
         </button>
       </div>
 
       <!-- TAB 1: OVERVIEW -->
-      <div id="study-tab-overview" class="space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="md:col-span-2 space-y-6">
-            <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-7 rounded-3xl space-y-3 shadow-sm">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-purple-400 flex items-center gap-2 font-display">
-                <i data-lucide="book-open" class="w-4 h-4"></i> What You Are Going to Learn
-              </h3>
-              <p id="overview-description" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal"></p>
-            </div>
+      <div id="study-tab-overview" class="space-y-4">
+        <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-6 space-y-2 shadow-sm">
+          <span class="text-[10px] font-black uppercase tracking-wider text-duo-greenDark dark:text-duo-green">Curriculum Objective</span>
+          <p id="overview-description" class="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+        </div>
 
-            <div class="bg-purple-50/50 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/40 p-7 rounded-3xl space-y-3 shadow-sm">
-              <div class="flex items-center gap-2 text-purple-700 dark:text-purple-300 font-bold text-xs uppercase tracking-wider font-display">
-                <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-600 dark:text-purple-400"></i> Pathfinder Skill Diagnosis & Gap Radar
-              </div>
-              <p id="overview-diagnostic-note" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div class="p-3.5 bg-white dark:bg-[#0c0b1e] rounded-2xl border border-indigo-100 dark:border-purple-900/40">
-                  <span class="text-[10px] font-bold uppercase text-emerald-600 dark:text-emerald-400">Demonstrated Strength</span>
-                  <p id="overview-strength" class="text-xs text-slate-700 dark:text-slate-300 mt-1 font-medium"></p>
-                </div>
-                <div class="p-3.5 bg-white dark:bg-[#0c0b1e] rounded-2xl border border-indigo-100 dark:border-purple-900/40">
-                  <span class="text-[10px] font-bold uppercase text-amber-600 dark:text-amber-400">Calibrated Focus Area</span>
-                  <p id="overview-focus" class="text-xs text-slate-700 dark:text-slate-300 mt-1 font-medium"></p>
-                </div>
-              </div>
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-5 space-y-1 shadow-sm">
+            <span class="text-[10px] uppercase font-black text-duo-greenDark dark:text-duo-green">Verified Strength</span>
+            <p id="overview-strength" class="text-xs font-bold text-slate-700 dark:text-slate-300"></p>
           </div>
-
-          <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-7 rounded-3xl space-y-5 shadow-sm h-fit">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 font-display">Masterclass Metrics</h3>
-            
-            <div class="space-y-3.5 text-xs">
-              <div class="flex items-center justify-between pb-3 border-b border-indigo-50 dark:border-purple-950">
-                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-indigo-500"></i> Est. Study Time</span>
-                <span id="overview-time" class="font-bold text-slate-800 dark:text-slate-200">~25 mins</span>
-              </div>
-              <div class="flex items-center justify-between pb-3 border-b border-indigo-50 dark:border-purple-950">
-                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i> Total Modules</span>
-                <span id="overview-modules-count" class="font-bold text-slate-800 dark:text-slate-200"></span>
-              </div>
-              <div class="flex items-center justify-between pb-3 border-b border-indigo-50 dark:border-purple-950">
-                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><i data-lucide="copy" class="w-4 h-4 text-indigo-500"></i> Flashcards</span>
-                <span id="overview-cards-count" class="font-bold text-slate-800 dark:text-slate-200"></span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><i data-lucide="award" class="w-4 h-4 text-indigo-500"></i> Calibrated Level</span>
-                <span id="overview-level" class="font-bold text-indigo-600 dark:text-purple-400"></span>
-              </div>
-            </div>
-
-            <button onclick="setStudyTab('modules')" class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-2xl text-xs font-bold text-white transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25">
-              <span>Start Module 01</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </button>
+          <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-5 space-y-1 shadow-sm">
+            <span class="text-[10px] uppercase font-black text-duo-yellowDark dark:text-duo-yellow">Target Area</span>
+            <p id="overview-focus" class="text-xs font-bold text-slate-700 dark:text-slate-300"></p>
           </div>
         </div>
+
+        <button onclick="setStudyTab('modules')" class="tactile-btn w-full sm:w-auto px-6 py-3.5 bg-duo-green border-2 border-b-4 border-duo-greenDark rounded-2xl text-xs font-black uppercase tracking-wider text-white flex items-center justify-center gap-2">
+          <span>Start Module 01</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
+        </button>
       </div>
 
       <!-- TAB 2: MODULES -->
-      <div id="study-tab-modules" class="hidden space-y-6">
-        <div id="modules-list" class="space-y-6"></div>
+      <div id="study-tab-modules" class="hidden space-y-5">
+        <div id="modules-list" class="space-y-5"></div>
       </div>
 
-      <!-- TAB 3: FLASHCARDS -->
-      <div id="study-tab-flashcards" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h3 class="text-xl font-bold font-display text-slate-900 dark:text-white">Interactive 3D Flashcards</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Click any card to flip between the challenge prompt and technical explanation.</p>
-          </div>
-          <button onclick="flipAllCards()" class="self-start sm:self-auto text-xs font-semibold bg-white dark:bg-[#13102b] hover:bg-indigo-50 dark:hover:bg-purple-900/40 border border-indigo-100 dark:border-purple-900/60 text-indigo-600 dark:text-purple-400 px-4 py-2 rounded-2xl transition flex items-center gap-1.5 shadow-sm">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Flip All Cards
+      <!-- TAB 3: 3D FLASHCARDS -->
+      <div id="study-tab-flashcards" class="hidden space-y-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Click any card to flip between prompt and rationale.</span>
+          <button onclick="flipAllCards()" class="tactile-btn px-3 py-1.5 rounded-xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-xs font-black text-slate-700 dark:text-slate-300">
+            Flip All
           </button>
         </div>
-
-        <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
       </div>
 
-      <!-- TAB 4: QUIZ -->
-      <div id="study-tab-quiz" class="hidden max-w-2xl mx-auto space-y-6">
-        <div class="flex items-center justify-between">
+      <!-- TAB 4: MASTERY QUIZ WITH DUOLINGO-STYLE CELEBRATION DRAWER -->
+      <div id="study-tab-quiz" class="hidden space-y-5">
+        <div class="flex items-center justify-between pb-2 border-b-2 border-duo-border dark:border-duo-darkBorder">
           <div>
-            <h3 class="text-xl font-bold font-display text-slate-900 dark:text-white">Mastery Assessment</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Scenario questions scaled to lecture depth. Instant validation with expert rationales.</p>
+            <h3 class="text-lg font-black font-display text-slate-900 dark:text-white">Mastery Assessment</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 font-bold">Scenario questions with instant feedback.</p>
           </div>
-          <div id="quiz-score-badge" class="hidden text-xs font-bold px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60"></div>
+          <div id="quiz-score-badge" class="hidden text-xs font-black px-3 py-1.5 rounded-2xl bg-duo-greenLight dark:bg-duo-darkElevated text-duo-greenDark dark:text-duo-green border border-duo-green"></div>
         </div>
 
-        <div id="quiz-container" class="space-y-6"></div>
+        <div id="quiz-container" class="space-y-5"></div>
       </div>
 
-      <!-- TAB 5: REVISION BLUEPRINT MINDMAP & PDF EXPORT -->
-      <div id="study-tab-mindmap" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-6 rounded-3xl shadow-sm">
+      <!-- TAB 5: ARCHITECTURAL MINDMAP & PDF EXPORT -->
+      <div id="study-tab-mindmap" class="hidden space-y-5">
+        <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
           <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-purple-950/50 text-indigo-600 dark:text-purple-400 border border-indigo-100 dark:border-purple-900/40 px-2.5 py-0.5 rounded-full">Revision & Export</span>
-              <h3 class="text-lg font-bold font-display text-slate-900 dark:text-white">Course Mindmap & PDF Exporter</h3>
-            </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Review the conceptual architecture tree or download the complete course as a PDF with quiz and answer key.</p>
+            <h4 class="text-sm font-black font-display text-slate-900 dark:text-white">Course Blueprint & Dossier</h4>
+            <p class="text-xs font-bold text-slate-600 dark:text-slate-400">Export high-resolution blueprint PNG or download full course PDF.</p>
           </div>
-
-          <!-- Export Actions Bar -->
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button onclick="redrawMindmap()" class="text-xs font-semibold bg-slate-50 dark:bg-purple-950/50 hover:bg-slate-100 dark:hover:bg-purple-900/50 text-slate-700 dark:text-slate-300 px-3.5 py-2.5 rounded-2xl transition flex items-center gap-1.5 border border-indigo-100 dark:border-purple-900/40">
-              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Redraw
+          <div class="flex items-center gap-2">
+            <button onclick="downloadMindmapImage()" class="tactile-btn px-4 py-2 rounded-2xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-xs font-black text-slate-700 dark:text-slate-300">
+              Download PNG
             </button>
-            <button onclick="downloadMindmapImage()" class="text-xs font-semibold bg-slate-50 dark:bg-purple-950/50 hover:bg-slate-100 dark:hover:bg-purple-900/50 text-slate-700 dark:text-slate-300 px-4 py-2.5 rounded-2xl border border-indigo-100 dark:border-purple-900/40 transition flex items-center gap-1.5">
-              <i data-lucide="image" class="w-3.5 h-3.5 text-indigo-500"></i> Mindmap PNG
-            </button>
-            <button onclick="downloadCoursePDF()" id="btn-download-pdf" class="text-xs bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold px-4 py-2.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition flex items-center gap-2">
-              <i data-lucide="file-down" class="w-4 h-4"></i> Download Course PDF
+            <button onclick="downloadCoursePDF()" id="btn-download-pdf" class="tactile-btn px-4 py-2 rounded-2xl bg-duo-green border-2 border-b-4 border-duo-greenDark text-white text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="file-down" class="w-4 h-4 stroke-[3]"></i> Download PDF
             </button>
           </div>
         </div>
 
-        <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-3xl p-4 overflow-x-auto shadow-sm flex justify-center">
+        <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-4 overflow-x-auto shadow-sm flex justify-center">
           <canvas id="mindmap-canvas" class="rounded-2xl max-w-full"></canvas>
         </div>
       </div>
+
     </section>
 
   </main>
 
-  <!-- POPUP MODAL: MODULE PRACTICE CHALLENGE (TRIGGERED BY ✋ ALL FINGERS UP OR BUTTON) -->
-  <div id="module-quiz-modal" class="fixed inset-0 z-50 hidden bg-slate-950/60 dark:bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/60 rounded-[32px] p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5 animate-in zoom-in-95">
-      
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-indigo-50 dark:border-purple-950">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg font-bold">
-            ✋
-          </div>
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest font-mono">Module Knowledge Check</span>
-              <span class="text-[9px] bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 px-2 py-0.2 rounded-full font-semibold">Active</span>
-            </div>
-            <h3 id="modal-module-title" class="text-sm font-bold font-display text-slate-900 dark:text-white">Active Module</h3>
-          </div>
+  <!-- POPUP QUICK MCQ MODAL (HAND RAISE / BUTTON) -->
+  <div id="module-quiz-modal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl space-y-4 animate-in zoom-in-95">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-duo-border dark:border-duo-darkBorder">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">✋</span>
+          <h3 id="modal-module-title" class="text-xs font-black uppercase tracking-wider font-display text-slate-900 dark:text-white">Practice MCQ</h3>
         </div>
-        <button onclick="closeModuleQuizModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-purple-950/50 transition">
-          <i data-lucide="x" class="w-4 h-4"></i>
+        <button onclick="closeModuleQuizModal()" class="text-slate-400 hover:text-slate-800 dark:hover:text-white">
+          <i data-lucide="x" class="w-4 h-4 stroke-[3]"></i>
         </button>
       </div>
 
-      <!-- Content -->
-      <div id="modal-quiz-content" class="space-y-4">
-        <div class="flex items-center justify-center py-8">
-          <div class="w-8 h-8 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin"></div>
-        </div>
-      </div>
+      <div id="modal-quiz-content" class="space-y-3"></div>
 
-      <!-- Footer -->
-      <div class="flex items-center justify-between pt-2 border-t border-indigo-50 dark:border-purple-950">
-        <span class="text-[10px] text-slate-400 font-mono">Raise ✋ anytime to test current module</span>
-        <div class="flex gap-2">
-          <button onclick="fetchAnotherModuleQuestion()" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 hover:bg-purple-100 transition flex items-center gap-1">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Another Question
-          </button>
-          <button onclick="closeModuleQuizModal()" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-purple-900/40 text-slate-700 dark:text-slate-200 hover:bg-slate-200 transition">
-            Done
-          </button>
-        </div>
+      <div class="flex items-center justify-between pt-3 border-t-2 border-duo-border dark:border-duo-darkBorder">
+        <button onclick="fetchAnotherModuleQuestion()" class="text-xs font-black text-duo-blue hover:underline">
+          Another Question
+        </button>
+        <button onclick="closeModuleQuizModal()" class="tactile-btn px-4 py-1.5 rounded-xl bg-duo-stone dark:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-xs font-black text-slate-700 dark:text-slate-200">
+          Close
+        </button>
       </div>
-
     </div>
   </div>
 
-  <!-- FLOATING WIDGET: "FORGER" AI ASSISTANT -->
+  <!-- FLOATING AI COMPANION (FORGER) -->
   <div id="forger-floating-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    <div id="forger-chat-window" class="hidden mb-3 w-80 sm:w-96 bg-white/95 dark:bg-[#13102b]/95 border border-indigo-100 dark:border-purple-900/60 rounded-[32px] shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden transition-all duration-300">
-      <div class="p-4 bg-indigo-50/60 dark:bg-[#0c0b1e]/80 border-b border-indigo-100 dark:border-purple-900/40 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/30">
-            <i data-lucide="bot" class="w-4 h-4"></i>
+    <div id="forger-chat-window" class="hidden mb-3 w-80 sm:w-96 bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl shadow-2xl overflow-hidden">
+      
+      <div class="p-4 bg-duo-stone dark:bg-duo-darkElevated border-b-2 border-duo-border dark:border-duo-darkBorder flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-duo-green border border-duo-greenDark flex items-center justify-center text-white font-black text-sm">
+            ⚡
           </div>
           <div>
-            <h4 class="text-xs font-bold font-display text-slate-900 dark:text-white">Forger Tutor</h4>
-            <p class="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Contextual Tutor Partner
-            </p>
+            <h4 class="text-xs font-black text-slate-900 dark:text-white">Forger AI Companion</h4>
+            <p class="text-[10px] font-bold text-duo-greenDark dark:text-duo-green">Active Module Tutor</p>
           </div>
         </div>
+        <button onclick="toggleForgerWindow()" class="text-slate-400 hover:text-slate-800 dark:hover:text-white">
+          <i data-lucide="x" class="w-4 h-4 stroke-[3]"></i>
+        </button>
+      </div>
 
-        <div class="flex items-center gap-1.5">
-          <button onclick="toggleGestureDetection()" title="Toggle Gestures" class="p-1.5 rounded-xl bg-white dark:bg-purple-950/50 border border-indigo-100 dark:border-purple-900/40 text-slate-600 dark:text-slate-300 hover:text-indigo-600 text-xs flex items-center gap-1">
-            <i data-lucide="hand" class="w-3.5 h-3.5"></i>
-          </button>
-          <button onclick="toggleForgerWindow()" class="p-1.5 rounded-xl bg-white dark:bg-purple-950/50 border border-indigo-100 dark:border-purple-900/40 text-slate-400 hover:text-slate-800 dark:hover:text-white">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
+      <div id="forger-messages-stream" class="p-4 h-64 overflow-y-auto space-y-3 text-xs font-bold text-slate-700 dark:text-slate-300">
+        <div class="bg-duo-stone dark:bg-duo-darkElevated p-3 rounded-2xl border border-duo-border dark:border-duo-darkBorder leading-relaxed">
+          👋 Hi! I am <strong>Forger</strong>. Raise <strong>☝️ Index Finger</strong> for simple real-world analogies, or <strong>✋ Open Hand</strong> for a quick module quiz.
         </div>
       </div>
 
-      <div id="forger-gesture-toast" class="hidden bg-purple-50 dark:bg-purple-950/80 border-b border-purple-200 dark:border-purple-800/40 p-2.5 text-[11px] text-purple-700 dark:text-purple-300 flex items-center gap-2">
-        <span class="text-base">☝️</span> 
-        <span>Hand raise detected! Explaining current module simply...</span>
-      </div>
-
-      <div id="forger-messages-stream" class="p-4 h-72 overflow-y-auto space-y-3 text-xs">
-        <div class="bg-indigo-50/70 dark:bg-purple-950/40 border border-indigo-100 dark:border-purple-900/50 p-3 rounded-2xl text-slate-700 dark:text-slate-200 leading-relaxed">
-          👋 Hi! I'm <strong>Forger</strong>, your learning companion.
-          <ul class="mt-2 space-y-1 text-[11px] list-disc list-inside text-slate-600 dark:text-slate-300">
-            <li>Raise <strong>index finger only (☝️)</strong> to get a simple everyday explanation of the lesson.</li>
-            <li>Raise <strong>all fingers up (✋)</strong> to pop open an instant practice MCQ for that module!</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="p-3 bg-white dark:bg-[#0c0b1e]/90 border-t border-indigo-100 dark:border-purple-900/40 flex gap-2">
-        <input id="forger-user-input" type="text" placeholder="Ask Forger anything..." onkeydown="if(event.key==='Enter') sendForgerMessage()" class="flex-1 bg-slate-50 dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-slate-800 dark:text-white" />
-        <button onclick="sendForgerMessage()" class="px-3.5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl text-xs font-semibold shadow hover:opacity-95">
-          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+      <div class="p-3 bg-duo-card dark:bg-duo-darkCard border-t-2 border-duo-border dark:border-duo-darkBorder flex gap-2">
+        <input id="forger-user-input" type="text" placeholder="Ask Forger anything..." onkeydown="if(event.key==='Enter') sendForgerMessage()" class="flex-1 bg-duo-stone dark:bg-duo-darkBg border-2 border-duo-border dark:border-duo-darkBorder rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-duo-green text-slate-800 dark:text-white" />
+        <button onclick="sendForgerMessage()" class="tactile-btn px-4 py-2 bg-duo-green border-2 border-b-4 border-duo-greenDark text-white rounded-xl text-xs font-black">
+          <i data-lucide="send" class="w-3.5 h-3.5 stroke-[3]"></i>
         </button>
       </div>
     </div>
 
-    <!-- Trigger -->
-    <button onclick="toggleForgerWindow()" id="forger-fab" class="group relative flex items-center gap-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-5 py-3.5 rounded-full shadow-2xl shadow-indigo-600/40 transition-all duration-300 hover:scale-105">
-      <i data-lucide="bot" class="w-5 h-5"></i>
-      <span class="text-xs font-bold tracking-wide font-display">Forger</span>
-      <span id="gesture-indicator-dot" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-white dark:border-slate-950 animate-ping"></span>
+    <!-- Forger Mascot FAB -->
+    <button onclick="toggleForgerWindow()" class="tactile-btn w-14 h-14 rounded-2xl bg-duo-green border-2 border-b-4 border-duo-greenDark text-white flex items-center justify-center text-2xl shadow-xl hover:scale-105 transition" title="Ask Forger">
+      ⚡
     </button>
   </div>
 
   <!-- PRIVATE BACKGROUND WEBCAM ELEMENT (OFF-SCREEN) -->
   <video id="webcam-video" style="position: fixed; top: -9999px; left: -9999px; width: 320px; height: 240px; opacity: 0; pointer-events: none;" autoplay playsinline muted></video>
 
-  <!-- CORE LOGIC JAVASCRIPT WITH RESILIENT ZERO-FAIL COURSE SYNTHESIS -->
+  <!-- CORE LOGIC JAVASCRIPT -->
   <script>
     const GROQ_API_KEY = "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";
 
@@ -744,11 +522,10 @@
     let isGestureSenseOn = false;
     let cameraInstance = null;
     let handsInstance = null;
-    let gestureHoldCount_Index = 0; // ☝️
-    let gestureHoldCount_All = 0;   // ✋
+    let gestureHoldCount_Index = 0;
+    let gestureHoldCount_All = 0;
     let lastGestureTriggerTime = 0;
 
-    // STRICTLY ACTIVE, SUPPORTED PRODUCTION GROQ MODELS (DECOMMISSIONED MODELS PURGED)
     const CANDIDATE_MODELS = [
       "llama-3.3-70b-versatile",
       "llama-3.1-8b-instant"
@@ -797,29 +574,33 @@
 
     function saveCourseToStorage(course) {
       const courses = getSavedCourses();
-      courses.unshift(course);
+      const existingIdx = courses.findIndex(c => c.id === course.id);
+      if (existingIdx >= 0) courses[existingIdx] = course;
+      else courses.unshift(course);
       localStorage.setItem("ef_courses", JSON.stringify(courses));
     }
 
+    // VIEW ROUTER
     function goToView(viewName) {
       ['home', 'forge', 'courses', 'course-study'].forEach(v => {
         const el = document.getElementById(`view-${v}`);
         if (el) el.classList.toggle('hidden', v !== viewName);
       });
 
-      const navActions = document.getElementById('nav-actions');
-      if (viewName === 'home') {
-        navActions.innerHTML = ``;
-      } else {
-        navActions.innerHTML = `
-          <button onclick="goToView('courses')" class="text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-purple-950/40 border border-slate-200 dark:border-purple-900/40 transition">
-            View Courses
-          </button>
-          <button onclick="startForgeFlow()" class="text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-3.5 py-1.5 rounded-xl shadow-sm transition">
-            Forge Course
-          </button>
-        `;
-      }
+      // Side Nav Active Styling
+      ['home', 'forge', 'courses'].forEach(btn => {
+        const b = document.getElementById(`nav-btn-${btn}`);
+        if (b) {
+          if (btn === viewName || (btn === 'courses' && viewName === 'course-study')) {
+            b.classList.add('bg-duo-green', 'border-duo-greenDark', 'text-white');
+            b.classList.remove('bg-duo-stone', 'dark:bg-duo-darkElevated', 'text-slate-600', 'dark:text-slate-300');
+          } else {
+            b.classList.remove('bg-duo-green', 'border-duo-greenDark', 'text-white');
+            b.classList.add('bg-duo-stone', 'dark:bg-duo-darkElevated', 'text-slate-600', 'dark:text-slate-300');
+          }
+        }
+      });
+
       lucide.createIcons();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -827,7 +608,7 @@
     function startForgeFlow() {
       goToView('forge');
       setForgeStep('upload');
-      document.getElementById('upload-filename-display').innerText = "Accepts MP3, PDF, DOCX, TXT, PNG, JPG";
+      document.getElementById('upload-filename-display').innerText = "Accepts MP3, WAV, PDF, DOCX, TXT, PNG, JPG";
       document.getElementById('universal-file-input').value = "";
     }
 
@@ -838,60 +619,53 @@
       lucide.createIcons();
     }
 
-    // MULTIMODAL INGEST
+    // MULTIMODAL INGESTION
     async function handleUniversalUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       const fileName = file.name;
-      const extension = fileName.split('.').pop().toLowerCase();
-      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-
-      document.getElementById('upload-filename-display').innerText = `Selected: ${fileName} (${fileSizeMB} MB)`;
+      const ext = fileName.split('.').pop().toLowerCase();
+      document.getElementById('upload-filename-display').innerText = `Selected: ${fileName}`;
       setForgeStep('processing');
 
       try {
-        if (['mp3', 'wav', 'm4a', 'aac', 'ogg'].includes(extension)) {
-          document.getElementById('processing-title').innerText = "Transcribing Audio Lecture...";
+        if (['mp3', 'wav', 'm4a', 'aac', 'ogg'].includes(ext)) {
+          document.getElementById('processing-title').innerText = "Transcribing Speech...";
           document.getElementById('processing-subtitle').innerText = "Streaming speech directly to Groq Whisper Large v3...";
           currentExtractedText = await transcribeAudioWithWhisper(file);
-        } else if (extension === 'pdf') {
-          document.getElementById('processing-title').innerText = "Parsing PDF Lecture Deck...";
-          document.getElementById('processing-subtitle').innerText = "Extracting slide pages, headings, and notes via PDF.js...";
+        } else if (ext === 'pdf') {
+          document.getElementById('processing-title').innerText = "Parsing PDF Slides...";
+          document.getElementById('processing-subtitle').innerText = "Extracting slide pages via PDF.js...";
           currentExtractedText = await extractPdfText(file);
-        } else if (extension === 'docx') {
-          document.getElementById('processing-title').innerText = "Parsing Word Document...";
+        } else if (ext === 'docx') {
+          document.getElementById('processing-title').innerText = "Parsing Word Notes...";
           document.getElementById('processing-subtitle').innerText = "Extracting document structure via Mammoth.js...";
           currentExtractedText = await extractDocxText(file);
-        } else if (['png', 'jpg', 'jpeg', 'webp'].includes(extension)) {
-          document.getElementById('processing-title').innerText = "Analyzing Slide / Whiteboard Image...";
-          document.getElementById('processing-subtitle').innerText = "Transcribing visual diagrams with Groq Vision...";
+        } else if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) {
+          document.getElementById('processing-title').innerText = "Analyzing Diagram Image...";
+          document.getElementById('processing-subtitle').innerText = "Extracting visual notes via Groq Vision...";
           currentExtractedText = await extractImageWithVision(file);
-        } else if (extension === 'txt' || extension === 'md') {
-          document.getElementById('processing-title').innerText = "Reading Text Notes...";
-          document.getElementById('processing-subtitle').innerText = "Loading raw lecture notes...";
-          currentExtractedText = await file.text();
         } else {
-          throw new Error("Unsupported format. Please upload MP3, PDF, DOCX, TXT, or Image.");
+          currentExtractedText = await file.text();
         }
 
-        if (!currentExtractedText || currentExtractedText.trim().length < 40) {
-          throw new Error("Extracted content is too short or empty. Please check the file.");
+        if (!currentExtractedText || currentExtractedText.trim().length < 30) {
+          throw new Error("Content too short.");
         }
 
         const preview = document.getElementById('processing-transcript-preview');
         preview.classList.remove('hidden');
-        preview.innerText = currentExtractedText.substring(0, 300) + "...";
+        preview.innerText = currentExtractedText.substring(0, 260) + "...";
 
         await generateDiagnosticFromTranscript(currentExtractedText);
       } catch (err) {
-        console.error("Universal Ingest Error:", err);
+        console.warn("Upload fallback to sample:", err);
         loadDemoLecture('slides');
       }
     }
 
     async function transcribeAudioWithWhisper(file) {
-      if (file.size > 25 * 1024 * 1024) throw new Error("Audio exceeds 25MB Groq Whisper limit.");
       const formData = new FormData();
       formData.append("file", file);
       formData.append("model", "whisper-large-v3");
@@ -901,9 +675,8 @@
         headers: { "Authorization": `Bearer ${GROQ_API_KEY}` },
         body: formData
       });
-
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error?.message || `HTTP ${response.status}`);
+      if (!response.ok) throw new Error(data.error?.message || "Transcription failed");
       return data.text;
     }
 
@@ -914,8 +687,7 @@
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
-        const pageStrings = textContent.items.map(item => item.str).join(' ');
-        fullText += `[Slide / Page ${i}]:\n${pageStrings}\n\n`;
+        fullText += `[Slide ${i}]: ` + textContent.items.map(item => item.str).join(' ') + "\n\n";
       }
       return fullText;
     }
@@ -945,7 +717,7 @@
             {
               role: "user",
               content: [
-                { type: "text", text: "Transcribe and extract all technical notes, code, formulas, and diagrams visible in this lecture slide in rich detail." },
+                { type: "text", text: "Transcribe all technical concepts, formulas, and architecture diagrams visible in this slide." },
                 { type: "image_url", image_url: { url: base64Data } }
               ]
             }
@@ -953,17 +725,15 @@
           temperature: 0.2
         })
       });
-
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || "Vision transcription failed.");
+      if (!res.ok) throw new Error("Vision transcription error.");
       return data.choices[0].message.content;
     }
 
     function loadDemoLecture(type) {
       if (type === 'slides') {
         currentExtractedText = `[Slide 1: Stanford CS - Scaling Transformer Parameters]
-Speaker: Dr. Aris Thorne
-Overview: Parameters are the fundamental floating-point weights inside transformer self-attention and feed-forward layers.
+Parameters are the fundamental floating-point weights inside transformer self-attention and feed-forward layers.
 
 [Slide 2: What are Parameters?]
 Inside every large language model live billions of learned parameters. A 7B model contains 7 billion weights; a 70B model contains 70 billion. Before training, these numbers are randomly initialized Gaussian noise.
@@ -971,18 +741,15 @@ Inside every large language model live billions of learned parameters. A 7B mode
 [Slide 3: Backpropagation & Loss Optimization]
 During pre-training, backpropagation computes loss gradients across trillions of tokens. Weights are updated incrementally using AdamW optimization.
 
-[Slide 4: The 8B vs 70B Architectural Frontier]
-Higher parameter volume offers dimensional breadth, allowing models to grasp subtle context without catastrophic forgetting. But 70B FP16 requires 140GB VRAM.
-
-[Slide 5: Quantization Trade-offs]
+[Slide 4: Quantization Trade-offs]
 4-bit quantization (AWQ/GGUF) compresses 16-bit floats to 4-bit integers, reducing memory footprint to ~38GB for single-GPU inference with minimal perplexity loss.`;
       } else {
-        currentExtractedText = `Welcome to this masterclass on Understanding LLM Parameters. A parameter is simply a numerical weight in a neural network layer. In a 7B model, 7 billion numbers dictate token probability calculations. During training, backpropagation adjusts these weights based on error gradients. Quantization compresses these weights from 16-bit to 4-bit to fit large models onto consumer GPUs.`;
+        currentExtractedText = `A parameter is a numerical weight in neural layers. A 7B model contains 7 billion weights dictating token probability calculations. Backpropagation adjusts these weights based on error gradients. Quantization compresses weights from 16-bit to 4-bit to fit large models onto consumer GPUs.`;
       }
 
       setForgeStep('processing');
       document.getElementById('processing-title').innerText = "Deconstructing Lecture Source...";
-      document.getElementById('processing-subtitle').innerText = "Synthesizing 4 diagnostic pre-test questions via Groq...";
+      document.getElementById('processing-subtitle').innerText = "Generating 4 diagnostic pre-test questions via Groq...";
 
       const preview = document.getElementById('processing-transcript-preview');
       preview.classList.remove('hidden');
@@ -991,19 +758,13 @@ Higher parameter volume offers dimensional breadth, allowing models to grasp sub
       generateDiagnosticFromTranscript(currentExtractedText);
     }
 
-    // SAFE MODEL EXECUTION (AUTOMATICALLY SKIPS ANY DEPRECATED / DECOMMISSIONED MODELS)
+    // SAFE MODEL INFERENCE
     async function executeGroqWithFallback(messages, expectJson = true) {
       let lastErr = null;
       for (const model of CANDIDATE_MODELS) {
         try {
-          const bodyPayload = {
-            model: model,
-            messages: messages,
-            temperature: 0.25
-          };
-          if (expectJson) {
-            bodyPayload.response_format = { type: "json_object" };
-          }
+          const bodyPayload = { model, messages, temperature: 0.2 };
+          if (expectJson) bodyPayload.response_format = { type: "json_object" };
 
           const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
@@ -1017,23 +778,19 @@ Higher parameter volume offers dimensional breadth, allowing models to grasp sub
           const data = await res.json();
           if (!res.ok) {
             const msg = data.error?.message || `HTTP ${res.status}`;
-            // If the model is decommissioned or deprecated, discard and move to next model immediately
-            if (msg.includes('decommissioned') || msg.includes('deprecated') || msg.includes('not supported')) {
-              continue;
-            }
+            if (msg.includes('decommissioned') || msg.includes('deprecated') || msg.includes('not supported')) continue;
             lastErr = new Error(msg);
             continue;
           }
 
           if (data.choices && data.choices[0] && data.choices[0].message) {
-            document.getElementById('active-model-tag').innerText = model.split('/').pop().toUpperCase();
             return data.choices[0].message.content;
           }
         } catch (e) {
           lastErr = e;
         }
       }
-      throw lastErr || new Error("Groq generation failed.");
+      throw lastErr || new Error("Inference call failed.");
     }
 
     function parseSafeJSON(rawStr) {
@@ -1042,101 +799,70 @@ Higher parameter volume offers dimensional breadth, allowing models to grasp sub
       return JSON.parse(clean);
     }
 
-    // 4-Question Pre-Test
+    // DIAGNOSTIC PRE-TEST
     async function generateDiagnosticFromTranscript(transcript) {
-      document.getElementById('processing-title').innerText = "Agent Generating Diagnostic Pre-Test...";
-      document.getElementById('processing-subtitle').innerText = "Analyzing material and drafting 4 diagnostic questions...";
-
       const messages = [
         {
           role: "system",
-          content: "You are the ExpertForge Diagnostic Assessment Agent. You must generate valid JSON output only."
+          content: "You are the ExpertForge Diagnostic Assessment Agent. Return strictly JSON."
         },
         {
           role: "user",
           content: `Analyze this lecture text:
 """${transcript}"""
 
-Generate a 4-question multiple choice pre-test to evaluate baseline knowledge.
-Question 1: Beginner definition.
-Question 2: Intermediate mechanism.
-Question 3: Advanced architecture trade-off.
-Question 4: Production failure mode or best practice.
+Generate a 4-question pre-test:
+Q1: Definition.
+Q2: Mechanism.
+Q3: Architecture trade-off.
+Q4: Production optimization.
 
-Return valid JSON with this schema:
+JSON schema:
 {
   "questions": [
     { "id": 1, "q": "Question?", "options": ["A", "B", "C"], "correct": 0, "difficulty": "beginner" },
     { "id": 2, "q": "Question?", "options": ["A", "B", "C"], "correct": 1, "difficulty": "intermediate" },
     { "id": 3, "q": "Question?", "options": ["A", "B", "C"], "correct": 0, "difficulty": "advanced" },
-    { "id": 4, "q": "Question?", "options": ["A", "B", "C"], "correct": 2, "difficulty": "advanced" }
+    { "id": 4, "q": "Question?", "options": ["A", "B", "C"], "correct": 1, "difficulty": "advanced" }
   ]
 }`
         }
       ];
 
       try {
-        const rawResponse = await executeGroqWithFallback(messages, true);
-        const parsed = parseSafeJSON(rawResponse);
+        const raw = await executeGroqWithFallback(messages, true);
+        const parsed = parseSafeJSON(raw);
         activeDiagnostic = parsed.questions || parsed.preTest || parsed;
-        renderPreTestUI(activeDiagnostic);
-        setForgeStep('pretest');
-      } catch (err) {
-        console.warn("AI Diagnostic fallback:", err);
+      } catch (e) {
         activeDiagnostic = [
-          {
-            id: 1,
-            q: "What is the primary role of parameters in a neural network?",
-            options: ["They represent learned weights adjusted during training", "They control the cooling fans on GPUs", "They measure network latency"],
-            correct: 0,
-            difficulty: "beginner"
-          },
-          {
-            id: 2,
-            q: "How does backpropagation modify model weights?",
-            options: ["By setting all parameters to 1.0", "By calculating loss gradients and adjusting values incrementally", "By deleting unused tokens"],
-            correct: 1,
-            difficulty: "intermediate"
-          },
-          {
-            id: 3,
-            q: "What is the primary trade-off of deploying a 70B parameter model over an 8B model?",
-            options: ["Higher reasoning depth at the expense of increased VRAM and inference latency", "Lower token generation quality", "Inability to process English text"],
-            correct: 0,
-            difficulty: "advanced"
-          },
-          {
-            id: 4,
-            q: "Why is 4-bit quantization widely used in production LLM inference?",
-            options: ["It removes all punctuation", "It compresses memory footprint while preserving reasoning accuracy", "It doubles context window size automatically"],
-            correct: 1,
-            difficulty: "advanced"
-          }
+          { id: 1, q: "What is the primary role of parameters in a neural network?", options: ["Learned numerical weights that govern token probability distributions", "Hardware cooling fan controls", "Latency measurement counters"], correct: 0, difficulty: "beginner" },
+          { id: 2, q: "How does backpropagation update model weights?", options: ["By resetting weights to 0", "By computing loss gradients and adjusting values incrementally", "By discarding unused context tokens"], correct: 1, difficulty: "intermediate" },
+          { id: 3, q: "What is the primary trade-off of running 70B parameter models over 8B models?", options: ["Higher reasoning depth at the expense of increased VRAM and latency", "Complete loss of reasoning accuracy", "Lower power consumption"], correct: 0, difficulty: "advanced" },
+          { id: 4, q: "Why is 4-bit quantization widely deployed in production?", options: ["It doubles vocabulary size", "It compresses memory footprint while preserving reasoning accuracy", "It eliminates temperature controls"], correct: 1, difficulty: "advanced" }
         ];
-        renderPreTestUI(activeDiagnostic);
-        setForgeStep('pretest');
       }
+      renderPreTestUI(activeDiagnostic);
+      setForgeStep('pretest');
     }
 
     function renderPreTestUI(questions) {
       const container = document.getElementById('pretest-questions-list');
       container.innerHTML = questions.map((q, idx) => `
-        <div class="bg-slate-50 dark:bg-[#0c0b1e] p-5 rounded-2xl border border-indigo-100 dark:border-purple-900/40 space-y-3 shadow-sm">
+        <div class="bg-duo-card dark:bg-duo-darkCard p-5 rounded-2xl border-2 border-b-4 border-duo-border dark:border-duo-darkBorder space-y-3 shadow-sm">
           <div class="flex items-center justify-between">
-            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${idx + 1}. ${q.q}</p>
-            <span class="text-[10px] uppercase font-bold text-indigo-600 dark:text-purple-400 bg-indigo-50 dark:bg-purple-950/50 px-2.5 py-0.5 rounded-full border border-indigo-100 dark:border-purple-900/30 font-mono">${q.difficulty}</span>
+            <p class="text-xs font-black text-slate-800 dark:text-slate-100">${idx + 1}. ${q.q}</p>
+            <span class="text-[9px] font-mono font-black uppercase px-2 py-0.5 rounded-full bg-duo-stone dark:bg-duo-darkElevated border border-duo-border dark:border-duo-darkBorder text-slate-600 dark:text-slate-300">${q.difficulty}</span>
           </div>
           <div class="space-y-2">
             ${q.options.map((opt, oIdx) => `
-              <label class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 hover:border-indigo-500 cursor-pointer text-xs transition shadow-sm">
-                <input type="radio" name="pretest-${q.id}" value="${oIdx}" class="text-indigo-600 focus:ring-0" />
-                <span class="text-slate-700 dark:text-slate-300 leading-snug">${opt}</span>
+              <label class="tactile-btn flex items-center gap-3 p-3 rounded-2xl bg-duo-stone/70 dark:bg-duo-darkElevated/50 border-2 border-b-4 border-duo-border dark:border-duo-darkBorder hover:border-duo-green cursor-pointer text-xs font-bold text-slate-700 dark:text-slate-200">
+                <input type="radio" name="pretest-${q.id}" value="${oIdx}" class="text-duo-green focus:ring-0" />
+                <span>${opt}</span>
               </label>
             `).join('')}
           </div>
         </div>
       `).join('');
-      lucide.createIcons();
     }
 
     async function submitPreTest() {
@@ -1147,77 +873,64 @@ Return valid JSON with this schema:
       });
 
       let assessedLevel = "Level 2: Architect";
-      let levelTag = "intermediate";
-      if (score <= 1) {
-        assessedLevel = "Level 1: Apprentice";
-        levelTag = "beginner";
-      } else if (score >= 4) {
-        assessedLevel = "Level 3: Principal Master";
-        levelTag = "advanced";
-      }
+      if (score <= 1) assessedLevel = "Level 1: Apprentice";
+      else if (score >= 4) assessedLevel = "Level 3: Principal";
 
       setForgeStep('processing');
-      document.getElementById('processing-title').innerText = "Synthesizing Personalized Course...";
-      document.getElementById('processing-subtitle').innerText = `Scored ${score}/4 -> Calibrating Syllabus, Flashcards, Mindmap & Quiz for ${assessedLevel}...`;
+      document.getElementById('processing-title').innerText = "Personalizing Syllabus...";
+      document.getElementById('processing-subtitle').innerText = `Calibrating course depth for ${assessedLevel} (Score: ${score}/4)...`;
 
-      await forgeCourseWithLlama(currentExtractedText, assessedLevel, levelTag, score);
+      await forgeCourseWithLlama(currentExtractedText, assessedLevel, score);
     }
 
     // ZERO-FAILURE COURSE SYNTHESIS ENGINE
-    async function forgeCourseWithLlama(transcript, levelName, levelTag, score) {
+    async function forgeCourseWithLlama(transcript, levelName, score) {
       const customTitle = document.getElementById('input-lecture-title').value.trim() || "Adaptive Masterclass";
 
       const messages = [
         {
           role: "system",
-          content: "You are the ExpertForge Principal Curriculum Architect. Generate a complete, high-quality course in strictly valid JSON format only."
+          content: "You are the ExpertForge Principal Curriculum Architect. Return strictly valid JSON."
         },
         {
           role: "user",
-          content: `Analyze this masterclass material:
+          content: `Analyze this lecture:
 """${transcript}"""
+Score: ${score}/4 (${levelName}).
+Build a comprehensive course.
 
-Pre-test score: ${score}/4 (${levelName}).
-Generate a complete course.
-
-JSON structure:
+JSON Schema:
 {
   "title": "${customTitle}",
-  "expert": "Guest Expert",
+  "expert": "Curriculum Lead",
   "level": "${levelName}",
   "overview": {
-    "description": "3-4 sentences explaining what the student will master.",
+    "description": "Clear explanation of what the student will master.",
     "estimatedTime": "~25 mins",
-    "diagnosticNote": "Explanation of level calibration.",
-    "demonstratedStrength": "Demonstrated skill.",
-    "calibratedFocus": "Calibrated expansion area."
+    "demonstratedStrength": "Demonstrated technical proficiency.",
+    "calibratedFocus": "Key operational area for focus."
   },
   "modules": [
     {
       "title": "Module Title",
       "content": "Deep explanatory paragraphs.",
-      "summary": "Core takeaway bullet rule."
+      "summary": "Key operational principle or rule."
     }
   ],
   "flashcards": [
     { "q": "Question?", "a": "Answer." }
   ],
   "quiz": [
-    {
-      "q": "Scenario question?",
-      "options": ["A", "B", "C"],
-      "correct": 0,
-      "rationale": "Clear rationale."
-    }
+    { "q": "Scenario question?", "options": ["A", "B", "C"], "correct": 0, "rationale": "Clear rationale." }
   ],
   "mindmap": {
-    "centralThesis": "Core thesis in one sentence.",
+    "centralThesis": "Core system thesis in one sentence.",
     "branches": [
       {
         "label": "Pillar Title",
-        "objective": "Objective",
+        "objective": "Architecture Objective",
         "subnodes": [
-          { "title": "Mechanism", "desc": "1-2 sentence operational rule." }
+          { "title": "Concept", "desc": "Operational mechanism." }
         ]
       }
     ]
@@ -1227,13 +940,10 @@ JSON structure:
       ];
 
       let course = null;
-
       try {
-        const rawResponse = await executeGroqWithFallback(messages, true);
-        course = parseSafeJSON(rawResponse);
+        const raw = await executeGroqWithFallback(messages, true);
+        course = parseSafeJSON(raw);
       } catch (err) {
-        console.warn("API quota/rate limit encountered. Synthesizing rich local fallback course...", err);
-        // Robust instant synthesis directly from extracted transcript
         course = generateLocalSynthesisCourse(transcript, customTitle, levelName, score);
       }
 
@@ -1245,21 +955,18 @@ JSON structure:
       openCourseStudy(course);
     }
 
-    // LOCAL SYNTHESIS ENGINE (GUARANTEES 100% SUCCESS WITHOUT API HALTS)
     function generateLocalSynthesisCourse(transcript, customTitle, levelName, score) {
       const chunks = transcript.split('\n\n').map(s => s.trim()).filter(s => s.length > 25);
-      
-      const modules = (chunks.length >= 2 ? chunks.slice(0, 4) : [
-        "Inside every large language model live billions of learned parameters. A 7B model contains 7 billion weights; a 70B model contains 70 billion. Before training, these numbers are randomly initialized Gaussian noise that adjust systematically through backpropagation.",
+      const modules = (chunks.length >= 2 ? chunks.slice(0, 3) : [
+        "Inside every large language model live billions of learned parameters. A 7B model contains 7 billion weights; a 70B model contains 70 billion. Before training, these numbers are randomly initialized Gaussian noise.",
         "During pre-training, backpropagation computes loss gradients across trillions of tokens. Weights are updated incrementally using AdamW optimization to achieve convergence.",
         "4-bit quantization (AWQ/GGUF) compresses 16-bit floats to 4-bit integers, reducing memory footprint to ~38GB for single-GPU inference with minimal perplexity loss."
       ]).map((chunk, idx) => {
         const cleanTitle = chunk.includes(':') ? chunk.split(':')[0].replace(/\[|\]/g, '') : `Pillar 0${idx + 1}: Systems Architecture`;
-        const firstSentence = chunk.split('.')[0] + '.';
         return {
-          title: cleanTitle.length < 50 ? cleanTitle : `Pillar 0${idx + 1}: Conceptual Framework`,
-          content: chunk + "\n\nIn real-world deployment, engineers must carefully balance dimensional capacity, memory latency, and operational throughput to optimize system performance.",
-          summary: `${firstSentence} Always measure memory bandwidth bottlenecks before scaling inference clusters.`
+          title: cleanTitle.length < 40 ? cleanTitle : `Pillar 0${idx + 1}: Foundation Primitive`,
+          content: chunk + "\n\nIn production systems, developers evaluate computational density, KV cache size, and latency constraints.",
+          summary: `${chunk.split('.')[0]}. Benchmark VRAM allocations before multi-node distribution.`
         };
       });
 
@@ -1268,220 +975,171 @@ JSON structure:
         expert: "Dr. Aris Thorne",
         level: levelName,
         overview: {
-          description: `This masterclass provides an exhaustive architectural deep dive into ${customTitle || 'systems parameters and neural optimization'}. You will analyze loss gradients, evaluate quantization tradeoffs, and develop intuitive systems mastery.`,
+          description: `An architectural deep dive into ${customTitle || 'systems parameters and model deployment'}. Master loss gradients, precision formats, and inference scale.`,
           estimatedTime: "~25 mins",
-          diagnosticNote: `Calibrated specifically for ${levelName} based on your pre-test score of ${score}/4.`,
-          demonstratedStrength: "Core structural intuition and technical terminology.",
-          calibratedFocus: "Production quantization trade-offs and inference runtime profiling."
+          demonstratedStrength: "Core terminology and architectural intuition.",
+          calibratedFocus: "Production quantization trade-offs and runtime memory profiling."
         },
         modules: modules,
         flashcards: [
-          { q: "What is the primary role of parameters in a transformer layer?", a: "Parameters are learned numerical weights that govern token attention and calculate next-token probability distributions." },
-          { q: "How does backpropagation update neural weights?", a: "It calculates the gradient of the loss function with respect to each weight and updates values incrementally using optimizers like AdamW." },
-          { q: "What is the primary trade-off with 4-bit quantization (AWQ/GGUF)?", a: "It compresses VRAM requirements by over 65% with a negligible impact on multi-step reasoning perplexity." },
-          { q: "Why does a 70B FP16 model require ~140GB of VRAM?", a: "Each FP16 parameter occupies 2 bytes of memory. 70 billion parameters × 2 bytes = 140GB purely for weight storage." }
+          { q: "What is the primary role of parameters in a transformer?", a: "Parameters are learned numerical weights that govern token attention and calculate next-token probability distributions." },
+          { q: "How does backpropagation update neural weights?", a: "It calculates the gradient of the loss function with respect to each weight and updates values incrementally via AdamW." },
+          { q: "What is the primary trade-off with 4-bit quantization?", a: "It reduces VRAM requirements by over 65% with a negligible impact on multi-step reasoning perplexity." }
         ],
         quiz: [
           {
-            q: "How many bytes per parameter are required to store an LLM in FP16 precision?",
+            q: "How many bytes per parameter are required in FP16 precision?",
             options: ["2 Bytes", "4 Bytes", "1 Byte"],
             correct: 0,
             rationale: "16-bit floating point precision corresponds to exactly 2 bytes (16 bits / 8) per weight."
           },
           {
             q: "What optimization problem does backpropagation solve during training?",
-            options: ["Minimizing the loss function by computing partial error derivatives", "Compressing text into zip archives", "Allocating hardware cooling to GPU fans"],
+            options: ["Minimizing the loss function by computing partial error derivatives", "Zipping token datasets into archives", "Managing GPU fan curves"],
             correct: 0,
-            rationale: "Backpropagation applies the chain rule of calculus to calculate partial derivatives of loss with respect to all parameters."
-          },
-          {
-            q: "What is the core benefit of 4-bit weight quantization?",
-            options: ["Enables single-GPU consumer inference by slashing memory bandwidth needs", "Increases model training time by 10x", "Eliminates token context limits entirely"],
-            correct: 0,
-            rationale: "Quantizing 16-bit weights to 4-bit integers reduces memory footprint from 140GB down to ~38GB."
+            rationale: "Backpropagation applies the calculus chain rule to calculate loss gradients across weights."
           }
         ],
         mindmap: {
-          centralThesis: "Parameter volume and quantization precision govern the frontier between computational capacity and operational deployment.",
-          branches: modules.map((m, i) => ({
+          centralThesis: "Parameter volume and quantization precision govern computational capacity and operational deployment.",
+          branches: modules.map(m => ({
             label: m.title,
-            objective: "Operational systems execution",
+            objective: "Operational Architecture",
             subnodes: [
-              { title: "Primary Mechanism", desc: m.summary.split('.')[0] + '.' },
-              { title: "Architecture Rule", desc: "Benchmark memory bandwidth before multi-node distribution." }
+              { title: "Core Mechanism", desc: m.summary.split('.')[0] + '.' },
+              { title: "System Rule", desc: "Profile memory bandwidth before horizontal scaling." }
             ]
           }))
         }
       };
     }
 
-    // COURSE LIBRARY RENDERER
+    // SAVED COURSES REPOSITORY
     function renderCourseLibrary() {
       const grid = document.getElementById('courses-grid');
       const courses = getSavedCourses();
 
       if (courses.length === 0) {
         grid.innerHTML = `
-          <div class="col-span-2 text-center bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-3xl p-10 text-slate-500 text-xs shadow-sm">
-            <i data-lucide="sparkles" class="w-8 h-8 text-indigo-400 mx-auto mb-2"></i>
-            <p class="font-bold text-sm text-slate-800 dark:text-slate-200">No courses forged yet</p>
-            <p class="mt-1">Click "Forge New" to ingest audio, PDF slides, or notes into a masterclass!</p>
+          <div class="col-span-full text-center py-10 bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl text-xs font-bold text-slate-500">
+            No forged courses yet. Click "Forge New" to synthesize your first masterclass!
           </div>
         `;
-        lucide.createIcons();
         return;
       }
 
-      grid.innerHTML = courses.map((c, i) => {
-        const cardBorders = [
-          'border-indigo-100 dark:border-purple-900/40',
-          'border-purple-100 dark:border-purple-900/40',
-          'border-violet-100 dark:border-purple-900/40'
-        ];
-        const borderClass = cardBorders[i % cardBorders.length];
-
-        return `
-        <div class="bg-white dark:bg-[#13102b] border ${borderClass} hover:border-indigo-400 dark:hover:border-purple-400 p-7 rounded-[32px] transition space-y-4 shadow-sm hover:shadow-xl flex flex-col justify-between group">
-          <div class="space-y-3">
+      grid.innerHTML = courses.map(c => `
+        <div class="tactile-btn bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder hover:border-duo-green p-6 rounded-3xl transition space-y-4 shadow-sm flex flex-col justify-between">
+          <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-indigo-600 dark:text-purple-400 uppercase tracking-wider bg-indigo-50 dark:bg-purple-950/60 border border-indigo-100 dark:border-purple-800/40 px-3 py-1 rounded-full font-mono">
-                ${c.level || "Evaluated"}
+              <span class="text-[9px] font-mono font-black uppercase px-2.5 py-0.5 rounded-full bg-duo-yellowLight dark:bg-duo-darkElevated text-duo-yellowDark dark:text-duo-yellow border border-duo-yellow">
+                ${c.level || "Architect"}
               </span>
-              <div class="flex items-center gap-1.5 text-amber-500 font-bold text-xs bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
-                <span>⭐ 4.9</span>
-              </div>
+              <span class="text-[10px] text-slate-500 font-bold">${c.modules?.length || 0} Modules</span>
             </div>
-
-            <h3 class="text-lg font-bold font-display text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-purple-400 transition">${c.title}</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">${c.expert || "Guest Masterclass"} • ${c.overview?.estimatedTime || "~25 mins"}</p>
-
-            <div class="flex items-center gap-2 pt-1 text-[11px] text-slate-500 dark:text-slate-400">
-              <div class="flex -space-x-2 overflow-hidden">
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#13102b]" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&auto=format&fit=crop&q=80" alt=""/>
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#13102b]" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&auto=format&fit=crop&q=80" alt=""/>
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#13102b]" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&auto=format&fit=crop&q=80" alt=""/>
-              </div>
-              <span>${c.modules ? c.modules.length : 2} Modules • Mindmap & Quiz</span>
-            </div>
+            <h3 class="text-base font-black font-display text-slate-900 dark:text-white leading-snug">${c.title}</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 font-bold line-clamp-2">${c.overview?.description || "Course dossier."}</p>
           </div>
-
-          <div class="pt-4 border-t border-slate-100 dark:border-purple-950 flex items-center justify-between">
-            <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-              <i data-lucide="check" class="w-3.5 h-3.5"></i> Verified Dossier
-            </span>
-            <button onclick='launchSavedCourse("${c.id}")' class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-xl text-xs font-bold text-white transition flex items-center gap-1.5 shadow-md shadow-indigo-600/20">
-              Launch Course <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          <div class="pt-3 border-t-2 border-duo-border dark:border-duo-darkBorder flex items-center justify-between">
+            <span class="text-[11px] font-black text-duo-greenDark dark:text-duo-green">Verified</span>
+            <button onclick='launchSavedCourse("${c.id}")' class="tactile-btn px-4 py-1.5 bg-duo-green border-2 border-b-4 border-duo-greenDark text-white rounded-xl text-xs font-black uppercase tracking-wider">
+              Open
             </button>
           </div>
         </div>
-      `}).join('');
+      `).join('');
       lucide.createIcons();
     }
 
-    function launchSavedCourse(courseId) {
-      const courses = getSavedCourses();
-      const match = courses.find(c => c.id === courseId);
+    function launchSavedCourse(id) {
+      const match = getSavedCourses().find(c => c.id === id);
       if (match) openCourseStudy(match);
     }
 
-    // THE 5-SECTION STUDY VIEWER
+    // STUDY VIEW CONTROLLER
     function openCourseStudy(course) {
       currentCourse = course;
 
       document.getElementById('study-course-title').innerText = course.title;
-      document.getElementById('study-course-expert').innerText = (course.expert || "Guest Speaker") + " • " + (course.overview?.estimatedTime || "~25 mins");
-      document.getElementById('study-track-pill').innerText = course.level || "Apprentice";
+      document.getElementById('study-course-expert').innerText = `${course.expert || "Curriculum Lead"} • ${course.overview?.estimatedTime || "~25 mins"}`;
+      document.getElementById('study-track-pill').innerText = course.level || "Architect";
 
-      document.getElementById('badge-module-count').innerText = course.modules?.length || 0;
-      document.getElementById('badge-card-count').innerText = course.flashcards?.length || 0;
-      document.getElementById('badge-quiz-count').innerText = `${course.quiz?.length || 0} Qs`;
+      document.getElementById('overview-description').innerText = course.overview?.description || "Master core primitives.";
+      document.getElementById('overview-strength').innerText = course.overview?.demonstratedStrength || "Proficiency verified.";
+      document.getElementById('overview-focus').innerText = course.overview?.calibratedFocus || "Target expansion.";
 
-      // SECTION 1: OVERVIEW
-      document.getElementById('overview-description').innerText = course.overview?.description || "Master core architectural primitives.";
-      document.getElementById('overview-diagnostic-note').innerText = course.overview?.diagnosticNote || `Calibrated for ${course.level}.`;
-      document.getElementById('overview-strength').innerText = course.overview?.demonstratedStrength || "Core terminology.";
-      document.getElementById('overview-focus').innerText = course.overview?.calibratedFocus || "System trade-offs.";
-      document.getElementById('overview-time').innerText = course.overview?.estimatedTime || "~25 mins";
-      document.getElementById('overview-modules-count').innerText = `${course.modules?.length || 0} Lessons`;
-      document.getElementById('overview-cards-count').innerText = `${course.flashcards?.length || 0} Cards`;
-      document.getElementById('overview-level').innerText = course.level || "Apprentice";
-
-      // SECTION 2: MODULES
+      // Modules List
       document.getElementById('modules-list').innerHTML = (course.modules || []).map((m, idx) => `
-        <div class="module-card bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 rounded-[32px] p-8 space-y-5 shadow-sm transition-all duration-300" data-module-idx="${idx}" id="module-block-${idx}">
-          <div class="flex items-center justify-between pb-3 border-b border-indigo-50 dark:border-purple-950">
-            <span class="text-[11px] font-bold text-indigo-600 dark:text-purple-400 uppercase tracking-widest font-mono">Module 0${idx + 1}</span>
-            
+        <div class="module-card bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm" data-module-idx="${idx}" id="module-block-${idx}">
+          <div class="flex items-center justify-between pb-3 border-b-2 border-duo-border dark:border-duo-darkBorder">
             <div class="flex items-center gap-2">
-              <button onclick="triggerModuleQuickQuiz(${idx})" class="text-[11px] font-bold text-purple-600 dark:text-purple-300 hover:text-purple-700 bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/40 px-3 py-1 rounded-full flex items-center gap-1.5 transition">
-                <span>✋ Practice MCQ</span>
-                <span class="text-[9px] opacity-70">(or raise ✋)</span>
-              </button>
-              <span class="text-xs text-slate-400 font-mono">Section ${idx + 1} of ${course.modules.length}</span>
+              <span class="w-7 h-7 rounded-xl bg-duo-green text-white flex items-center justify-center text-xs font-black">
+                ${idx + 1}
+              </span>
+              <span class="text-[11px] font-mono font-black uppercase tracking-wider text-duo-greenDark dark:text-duo-green">Lesson 0${idx + 1}</span>
             </div>
+            <button onclick="triggerModuleQuickQuiz(${idx})" class="tactile-btn px-3 py-1 rounded-xl bg-duo-yellowLight dark:bg-duo-darkElevated border-2 border-b-4 border-duo-yellow text-duo-yellowDark dark:text-duo-yellow text-xs font-black flex items-center gap-1.5">
+              <span>✋ Practice MCQ</span>
+            </button>
           </div>
 
-          <h3 class="text-xl font-bold font-display text-slate-900 dark:text-white">${m.title}</h3>
+          <h3 class="text-lg font-black font-display text-slate-900 dark:text-white leading-snug">${m.title}</h3>
 
-          <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-3 font-normal whitespace-pre-line">
+          <div class="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
             ${m.content}
           </div>
 
-          <div class="p-5 bg-amber-50/70 dark:bg-amber-950/20 rounded-2xl border border-amber-200/80 dark:border-amber-900/40 space-y-1.5">
-            <span class="text-[11px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1.5 font-display">
-              <i data-lucide="sparkle" class="w-4 h-4 text-amber-500"></i> Module Key Takeaway & Architecture Rule
+          <div class="p-4 bg-duo-yellowLight/50 dark:bg-duo-darkElevated/60 rounded-2xl border-2 border-duo-yellow/60 space-y-1">
+            <span class="text-[10px] font-black uppercase tracking-wider text-duo-yellowDark dark:text-duo-yellow flex items-center gap-1">
+              ★ Operational Takeaway
             </span>
-            <p class="text-xs text-amber-900 dark:text-amber-200 leading-relaxed font-medium">${m.summary}</p>
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-200 leading-relaxed">${m.summary}</p>
           </div>
         </div>
       `).join('');
 
-      // SECTION 3: FLASHCARDS
+      // Flashcards
       allCardsFlipped = false;
       document.getElementById('flashcards-grid').innerHTML = (course.flashcards || []).map((card, idx) => `
-        <div class="perspective h-60 cursor-pointer select-none group" onclick="flipSingleCard(this)">
+        <div class="perspective h-52 cursor-pointer select-none" onclick="flipSingleCard(this)">
           <div class="card-inner relative w-full h-full transform-style-preserve duration-500 rounded-3xl">
-            <div class="absolute inset-0 backface-hidden bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-6 rounded-3xl flex flex-col justify-between shadow-sm group-hover:border-indigo-400 dark:group-hover:border-purple-400 transition">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-purple-400 flex items-center gap-1 font-mono">
-                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Challenge 0${idx + 1}
-              </span>
-              <p class="text-sm font-bold text-slate-800 dark:text-slate-200 text-center my-auto px-2 leading-snug font-display">${card.q}</p>
-              <span class="text-[10px] text-slate-400 text-right flex items-center justify-end gap-1"><i data-lucide="rotate-ccw" class="w-3 h-3"></i> Click to reveal</span>
+            <!-- Front -->
+            <div class="absolute inset-0 backface-hidden bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder p-6 rounded-3xl flex flex-col justify-between shadow-sm">
+              <span class="text-[10px] font-mono uppercase font-black text-duo-blue">Challenge 0${idx + 1}</span>
+              <p class="text-sm font-black text-slate-800 dark:text-slate-100 text-center font-display my-auto px-2 leading-snug">${card.q}</p>
+              <span class="text-[10px] font-black text-slate-400 text-right uppercase tracking-wider">Tap to flip ↻</span>
             </div>
-            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-purple-50/90 dark:bg-purple-950/70 border border-purple-300 dark:border-purple-500/50 p-6 rounded-3xl flex flex-col justify-between shadow-lg">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-mono">
-                <i data-lucide="check" class="w-3.5 h-3.5"></i> Concept Explanation
-              </span>
-              <p class="text-xs font-normal text-slate-800 dark:text-slate-200 text-center my-auto px-2 leading-relaxed">${card.a}</p>
-              <span class="text-[10px] text-purple-600 dark:text-purple-300 text-right font-medium">Click to flip back</span>
+            <!-- Back -->
+            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-duo-greenLight dark:bg-duo-darkElevated border-2 border-b-4 border-duo-green p-6 rounded-3xl flex flex-col justify-between shadow-sm">
+              <span class="text-[10px] font-mono uppercase font-black text-duo-greenDark dark:text-duo-green">Concept Rationale</span>
+              <p class="text-xs font-bold text-slate-800 dark:text-slate-200 text-center my-auto leading-relaxed px-2">${card.a}</p>
+              <span class="text-[10px] font-black text-duo-greenDark dark:text-duo-green text-right uppercase tracking-wider">Flip back ↺</span>
             </div>
           </div>
         </div>
       `).join('');
 
-      // SECTION 4: QUIZ
+      // Quiz
       document.getElementById('quiz-score-badge').classList.add('hidden');
       document.getElementById('quiz-container').innerHTML = (course.quiz || []).map((q, qIdx) => `
-        <div class="quiz-card bg-white dark:bg-[#13102b] border border-indigo-100 dark:border-purple-900/40 p-7 rounded-[32px] space-y-4 shadow-sm" data-answered="false">
+        <div class="quiz-card bg-duo-card dark:bg-duo-darkCard border-2 border-b-4 border-duo-border dark:border-duo-darkBorder p-6 rounded-3xl space-y-4 shadow-sm" data-answered="false">
           <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-indigo-600 dark:text-purple-400 uppercase tracking-widest font-mono">Question 0${qIdx + 1} of ${course.quiz.length}</span>
+            <span class="text-[10px] font-mono uppercase font-black text-slate-500">Question 0${qIdx + 1} of ${course.quiz.length}</span>
           </div>
-          <p class="text-sm font-bold font-display text-slate-900 dark:text-white">${q.q}</p>
+          <p class="text-sm font-black font-display text-slate-900 dark:text-white leading-snug">${q.q}</p>
           <div class="space-y-2.5">
             ${q.options.map((opt, oIdx) => `
-              <button onclick="handleQuizOptionClick(this, ${oIdx === q.correct}, '${(q.rationale || '').replace(/'/g, "\\'")}')" class="w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-[#0c0b1e] hover:bg-indigo-50/70 dark:hover:bg-purple-950/50 border border-indigo-100/70 dark:border-purple-900/40 text-xs font-medium text-slate-700 dark:text-slate-200 transition flex items-center justify-between">
+              <button onclick="handleQuizOptionClick(this, ${oIdx === q.correct}, '${(q.rationale || '').replace(/'/g, "\\'")}')" class="tactile-btn w-full text-left p-3.5 rounded-2xl bg-duo-stone/60 dark:bg-duo-darkElevated/50 hover:bg-duo-stone dark:hover:bg-duo-darkElevated border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-xs font-bold text-slate-700 dark:text-slate-200 transition flex items-center justify-between">
                 <span>${opt}</span>
-                <i data-lucide="circle" class="w-4 h-4 text-slate-400"></i>
+                <span class="w-6 h-6 rounded-full border-2 border-duo-border dark:border-duo-darkBorder flex items-center justify-center text-[10px] font-black text-slate-500 uppercase">${String.fromCharCode(65 + oIdx)}</span>
               </button>
             `).join('')}
           </div>
-          <div class="hidden rationale-box p-4 rounded-2xl bg-indigo-50 dark:bg-purple-950/50 border border-indigo-200 dark:border-purple-800/40 text-xs text-indigo-900 dark:text-indigo-200 leading-relaxed"></div>
+          <div class="hidden celebration-drawer p-4 rounded-2xl border-2 text-xs font-bold leading-relaxed"></div>
         </div>
       `).join('');
 
-      // SECTION 5: CANVAS MINDMAP
       renderMindmapCanvas(course);
-
       setStudyTab('overview');
       goToView('course-study');
       lucide.createIcons();
@@ -1493,9 +1151,11 @@ JSON structure:
         document.getElementById(`study-tab-${t}`).classList.toggle('hidden', t !== tab);
         const btn = document.getElementById(`study-tab-btn-${t}`);
         if (btn) {
-          btn.className = (t === tab)
-            ? "pb-3 border-b-2 border-indigo-600 dark:border-purple-400 text-indigo-600 dark:text-purple-400 transition flex items-center gap-2 whitespace-nowrap font-bold"
-            : "pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap";
+          if (t === tab) {
+            btn.className = "tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-greenDark bg-duo-green text-white whitespace-nowrap";
+          } else {
+            btn.className = "tactile-btn px-4 py-2.5 rounded-2xl border-2 border-b-4 border-duo-border dark:border-duo-darkBorder bg-duo-stone dark:bg-duo-darkElevated text-slate-700 dark:text-slate-300 whitespace-nowrap";
+          }
         }
       });
       lucide.createIcons();
@@ -1507,15 +1167,14 @@ JSON structure:
     }
 
     // FLASHCARD & QUIZ ACTIONS
-    function flipSingleCard(cardContainer) {
-      const inner = cardContainer.querySelector('.card-inner');
-      inner.classList.toggle('rotate-y-180');
+    function flipSingleCard(container) {
+      container.querySelector('.card-inner').classList.toggle('rotate-y-180');
     }
 
     function flipAllCards() {
       allCardsFlipped = !allCardsFlipped;
-      document.querySelectorAll('#flashcards-grid .card-inner').forEach(inner => {
-        inner.classList.toggle('rotate-y-180', allCardsFlipped);
+      document.querySelectorAll('#flashcards-grid .card-inner').forEach(el => {
+        el.classList.toggle('rotate-y-180', allCardsFlipped);
       });
     }
 
@@ -1524,36 +1183,37 @@ JSON structure:
       if (card.getAttribute('data-answered') === 'true') return;
       card.setAttribute('data-answered', 'true');
 
-      const box = card.querySelector('.rationale-box');
-      box.classList.remove('hidden');
-      box.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${rationale}`;
+      const drawer = card.querySelector('.celebration-drawer');
+      drawer.classList.remove('hidden');
 
-      btn.classList.remove('bg-slate-50', 'dark:bg-[#0c0b1e]', 'border-indigo-100/70', 'text-slate-700');
       if (isCorrect) {
-        btn.classList.add('bg-emerald-50', 'dark:bg-emerald-950/70', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300');
+        btn.classList.add('bg-duo-greenLight', 'dark:bg-duo-darkElevated', 'border-duo-green', 'text-duo-greenDark', 'dark:text-duo-green');
+        drawer.className = "celebration-drawer p-4 rounded-2xl border-2 border-b-4 border-duo-green bg-duo-greenLight dark:bg-duo-darkElevated text-duo-greenDark dark:text-duo-green text-xs font-bold leading-relaxed";
+        drawer.innerHTML = `<div class="flex items-center gap-2 mb-1"><span class="text-base">🎉</span> <strong>Nice job! Accurate answer!</strong></div> ${rationale}`;
       } else {
-        btn.classList.add('bg-rose-50', 'dark:bg-rose-950/70', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300');
+        btn.classList.add('bg-duo-coralLight', 'dark:bg-duo-darkElevated', 'border-duo-coral', 'text-duo-coralDark', 'dark:text-duo-coral');
+        drawer.className = "celebration-drawer p-4 rounded-2xl border-2 border-b-4 border-duo-coral bg-duo-coralLight dark:bg-duo-darkElevated text-duo-coralDark dark:text-duo-coral text-xs font-bold leading-relaxed";
+        drawer.innerHTML = `<div class="flex items-center gap-2 mb-1"><span class="text-base">💡</span> <strong>Correct solution & explanation:</strong></div> ${rationale}`;
       }
 
       updateQuizScoreTally();
-      lucide.createIcons();
     }
 
     function updateQuizScoreTally() {
       const answered = document.querySelectorAll('.quiz-card[data-answered="true"]');
       let correct = 0;
       answered.forEach(c => {
-        if (c.querySelector('.bg-emerald-50') || c.querySelector('.dark\\:bg-emerald-950\\/70')) correct++;
+        if (c.querySelector('.border-duo-green')) correct++;
       });
 
       if (answered.length > 0) {
         const badge = document.getElementById('quiz-score-badge');
         badge.classList.remove('hidden');
-        badge.innerText = `Score: ${correct} / ${answered.length} (${Math.round((correct/answered.length)*100)}%)`;
+        badge.innerText = `Score: ${correct} / ${answered.length}`;
       }
     }
 
-    // THEME-AWARE MINDMAP CANVAS
+    // THEME-AWARE TACTILE CANVAS MINDMAP (NO PURPLE/INDIGO)
     function renderMindmapCanvas(course) {
       const canvas = document.getElementById('mindmap-canvas');
       if (!canvas) return;
@@ -1561,36 +1221,26 @@ JSON structure:
       const ctx = canvas.getContext('2d');
       const isDark = document.documentElement.classList.contains('dark');
 
-      let branches = [];
-      if (course.mindmap && course.mindmap.branches && course.mindmap.branches.length > 0) {
-        branches = course.mindmap.branches.map(b => ({
-          label: b.label || "Core Module",
-          objective: b.objective || "Pillar Objective",
-          subnodes: (b.subnodes || []).map(s => {
-            if (typeof s === 'string') return { title: s, desc: "Key operational principle." };
-            return { title: s.title || "Concept", desc: s.desc || "Operational mechanism." };
-          })
-        }));
-      } else {
-        branches = (course.modules || []).map(m => ({
-          label: m.title.replace(/^Pillar \d+:|^Module \d+:/i, '').trim(),
-          objective: "Operational Architecture",
-          subnodes: [
-            { title: "Core Mechanism", desc: "Numerical parameters adjusted incrementally via loss gradients." },
-            { title: "Engineering Rule", desc: "Quantization preserves perplexity while slashing VRAM." }
-          ]
-        }));
-      }
+      const branches = (course.mindmap?.branches || []).length > 0
+        ? course.mindmap.branches
+        : (course.modules || []).map(m => ({
+            label: m.title,
+            objective: "Architecture Objective",
+            subnodes: [
+              { title: "Core Mechanism", desc: "Numerical parameters adjusted incrementally via loss gradients." },
+              { title: "Tactile Rule", desc: "Quantization preserves multi-step reasoning while slashing VRAM." }
+            ]
+          }));
 
       let totalLeaves = 0;
       branches.forEach(b => {
-        totalLeaves += (b.subnodes && b.subnodes.length > 0 ? b.subnodes.length : 1);
+        totalLeaves += (b.subnodes?.length || 1);
       });
 
-      const width = 1380;
-      const leafCardHeight = 84;
-      const leafGap = 26;
-      const height = Math.max(750, totalLeaves * (leafCardHeight + leafGap) + 180);
+      const width = 1200;
+      const leafHeight = 72;
+      const leafGap = 22;
+      const height = Math.max(600, totalLeaves * (leafHeight + leafGap) + 120);
       const dpr = window.devicePixelRatio || 2;
 
       canvas.width = width * dpr;
@@ -1600,121 +1250,76 @@ JSON structure:
 
       ctx.scale(dpr, dpr);
 
-      ctx.fillStyle = isDark ? '#0b091e' : '#f8f9fe';
+      // Canvas background
+      ctx.fillStyle = isDark ? '#131f24' : '#f5efe6';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = isDark ? '#272052' : '#e0e7ff';
-      for (let x = 24; x < width; x += 32) {
-        for (let y = 24; y < height; y += 32) {
-          ctx.beginPath();
-          ctx.arc(x, y, 1, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
       const branchColors = [
-        { stroke: '#6366f1', fill: isDark ? '#1b1747' : '#eef2ff', text: isDark ? '#a5b4fc' : '#4338ca', border: '#6366f1', pill: '#818cf8' },
-        { stroke: '#8b5cf6', fill: isDark ? '#261453' : '#f3e8ff', text: isDark ? '#d8b4fe' : '#6b21a8', border: '#8b5cf6', pill: '#a855f7' },
-        { stroke: '#10b981', fill: isDark ? '#063f31' : '#ecfdf5', text: isDark ? '#6ee7b7' : '#047857', border: '#10b981', pill: '#34d399' }
+        { stroke: '#58cc02', fill: isDark ? '#1b272d' : '#fffcf7', text: isDark ? '#ffffff' : '#131f24', border: '#46a302' },
+        { stroke: '#ffc800', fill: isDark ? '#1b272d' : '#fffcf7', text: isDark ? '#ffffff' : '#131f24', border: '#e5a500' },
+        { stroke: '#1cb0f6', fill: isDark ? '#1b272d' : '#fffcf7', text: isDark ? '#ffffff' : '#131f24', border: '#1899d6' }
       ];
 
-      const rootX = 170;
+      const rootX = 140;
       const rootY = height / 2;
-      const col2X = 540;
-      const col3X = 940;
-      const leafCardWidth = 380;
+      const col2X = 460;
+      const col3X = 800;
+      const leafWidth = 360;
 
-      ctx.font = 'bold 11px system-ui, sans-serif';
-      ctx.fillStyle = isDark ? '#a5b4fc' : '#4f46e5';
-      ctx.fillText('EXPERTFORGE AUTONOMOUS REVISION BLUEPRINT', 44, 42);
-
-      ctx.font = '10px monospace';
-      ctx.fillStyle = isDark ? '#64748b' : '#94a3b8';
-      ctx.fillText(`Target Track: ${course.level || 'Apprentice'} • Generated: ${new Date().toLocaleDateString()} • Verified Schema`, 44, 58);
-
-      let currentLeafY = 90;
+      let currentLeafY = 60;
 
       branches.forEach((branch, bIdx) => {
         const color = branchColors[bIdx % branchColors.length];
         const subnodes = branch.subnodes || [];
-
         const branchStartY = currentLeafY;
-        const branchHeight = subnodes.length * (leafCardHeight + leafGap);
+        const branchHeight = subnodes.length * (leafHeight + leafGap);
         const branchY = branchStartY + branchHeight / 2 - leafGap / 2;
 
         ctx.beginPath();
-        ctx.moveTo(rootX + 120, rootY);
-        ctx.bezierCurveTo(rootX + 280, rootY, col2X - 90, branchY, col2X, branchY);
+        ctx.moveTo(rootX + 90, rootY);
+        ctx.bezierCurveTo(rootX + 220, rootY, col2X - 60, branchY, col2X, branchY);
         ctx.strokeStyle = color.stroke;
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 3;
         ctx.stroke();
 
-        const modBoxWidth = 230;
-        const modBoxHeight = 68;
-        drawRoundedRect(ctx, col2X - 10, branchY - modBoxHeight / 2, modBoxWidth, modBoxHeight, 14, color.fill, color.border);
+        drawRoundedRect(ctx, col2X - 5, branchY - 26, 210, 52, 12, color.fill, color.border);
+        ctx.font = 'bold 11px system-ui, sans-serif';
+        ctx.fillStyle = color.text;
+        ctx.fillText(truncateText(ctx, branch.label || `Pillar ${bIdx+1}`, 180), col2X + 12, branchY + 4);
 
-        ctx.font = 'bold 9px system-ui, sans-serif';
-        ctx.fillStyle = color.pill;
-        ctx.fillText(`PILLAR 0${bIdx + 1}`, col2X + 12, branchY - 14);
-
-        ctx.font = 'bold 12px system-ui, sans-serif';
-        ctx.fillStyle = isDark ? '#ffffff' : '#0f172a';
-        ctx.fillText(truncateText(ctx, branch.label, 200), col2X + 12, branchY + 4);
-
-        ctx.font = '9px system-ui, sans-serif';
-        ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
-        ctx.fillText(truncateText(ctx, branch.objective || "Operational Architecture", 200), col2X + 12, branchY + 20);
-
-        subnodes.forEach((leaf) => {
-          const cardCenterY = currentLeafY + leafCardHeight / 2;
-
+        subnodes.forEach(leaf => {
+          const cardCenterY = currentLeafY + leafHeight / 2;
           ctx.beginPath();
-          ctx.moveTo(col2X + modBoxWidth - 10, branchY);
-          ctx.bezierCurveTo(col2X + modBoxWidth + 80, branchY, col3X - 70, cardCenterY, col3X, cardCenterY);
-          ctx.strokeStyle = color.stroke + '70';
-          ctx.lineWidth = 1.6;
+          ctx.moveTo(col2X + 205, branchY);
+          ctx.bezierCurveTo(col2X + 280, branchY, col3X - 50, cardCenterY, col3X, cardCenterY);
+          ctx.strokeStyle = color.stroke;
+          ctx.lineWidth = 2;
           ctx.stroke();
 
-          drawRoundedRect(ctx, col3X, currentLeafY, leafCardWidth, leafCardHeight, 12, isDark ? '#141033' : '#ffffff', isDark ? color.border + '80' : '#e2e8f0');
+          drawRoundedRect(ctx, col3X, currentLeafY, leafWidth, leafHeight, 10, isDark ? '#1b272d' : '#fffcf7', isDark ? '#28383f' : '#e5decb');
 
           ctx.fillStyle = color.stroke;
           ctx.beginPath();
-          ctx.roundRect(col3X, currentLeafY, 4, leafCardHeight, [12, 0, 0, 12]);
+          ctx.roundRect(col3X, currentLeafY, 5, leafHeight, [10, 0, 0, 10]);
           ctx.fill();
 
           ctx.font = 'bold 11px system-ui, sans-serif';
-          ctx.fillStyle = isDark ? '#ffffff' : '#0f172a';
-          ctx.fillText(truncateText(ctx, leaf.title, 340), col3X + 16, currentLeafY + 20);
-
-          ctx.fillStyle = color.pill;
-          ctx.beginPath();
-          ctx.arc(col3X + leafCardWidth - 16, currentLeafY + 16, 3, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.fillStyle = isDark ? '#ffffff' : '#131f24';
+          ctx.fillText(truncateText(ctx, leaf.title || "Concept", 320), col3X + 16, currentLeafY + 20);
 
           ctx.font = '10px system-ui, sans-serif';
-          ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
-          wrapCanvasText(ctx, leaf.desc, col3X + 16, currentLeafY + 38, leafCardWidth - 32, 14, 3);
+          ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+          wrapCanvasText(ctx, leaf.desc || "", col3X + 16, currentLeafY + 36, leafWidth - 28, 13, 2);
 
-          currentLeafY += leafCardHeight + leafGap;
+          currentLeafY += leafHeight + leafGap;
         });
       });
 
-      const rootW = 240;
-      const rootH = 80;
-      drawRoundedRect(ctx, rootX - rootW / 2, rootY - rootH / 2, rootW, rootH, 16, isDark ? '#1c164a' : '#4f46e5', '#818cf8');
-
-      ctx.fillStyle = isDark ? '#c7d2fe' : '#e0e7ff';
-      ctx.font = 'bold 9px system-ui, sans-serif';
-      ctx.fillText('MASTERCLASS BLUEPRINT CORE', rootX - rootW / 2 + 18, rootY - 18);
-
+      // Central Hub
+      drawRoundedRect(ctx, rootX - 80, rootY - 32, 160, 64, 16, '#58cc02', '#46a302');
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 13px system-ui, sans-serif';
-      ctx.fillText(truncateText(ctx, course.title, rootW - 36), rootX - rootW / 2 + 18, rootY + 4);
-
-      const thesis = course.mindmap?.centralThesis || "Core systems architecture & operational primitives.";
-      ctx.font = '9px system-ui, sans-serif';
-      ctx.fillStyle = isDark ? '#cbd5e1' : '#e0e7ff';
-      ctx.fillText(truncateText(ctx, thesis, rootW - 36), rootX - rootW / 2 + 18, rootY + 22);
+      ctx.font = 'bold 12px system-ui, sans-serif';
+      ctx.fillText(truncateText(ctx, course.title || "Core Syllabus", 130), rootX - 68, rootY + 4);
     }
 
     function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
@@ -1726,8 +1331,7 @@ JSON structure:
 
       for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && n > 0) {
+        if (ctx.measureText(testLine).width > maxWidth && n > 0) {
           if (lineCount >= maxLines) {
             ctx.fillText(line.trim() + '...', x, currentY);
             return;
@@ -1755,16 +1359,8 @@ JSON structure:
       ctx.lineTo(x, y + radius);
       ctx.quadraticCurveTo(x, y, x + radius, y);
       ctx.closePath();
-
-      if (fill) {
-        ctx.fillStyle = fill;
-        ctx.fill();
-      }
-      if (stroke) {
-        ctx.strokeStyle = stroke;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      }
+      if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+      if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); }
     }
 
     function truncateText(ctx, text, maxWidth) {
@@ -1784,252 +1380,125 @@ JSON structure:
     function downloadMindmapImage() {
       const canvas = document.getElementById('mindmap-canvas');
       if (!canvas || !currentCourse) return;
-
       const link = document.createElement('a');
-      const safeTitle = (currentCourse.title || "Course").replace(/[^a-zA-Z0-9]/g, '_');
-      link.download = `ExpertForge_${safeTitle}_Revision_Blueprint.png`;
-      link.href = canvas.toDataURL('image/png', 1.0);
+      link.download = `${(currentCourse.title || "Course").replace(/\s+/g, '_')}_Blueprint.png`;
+      link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    // DIRECT VECTOR jsPDF EXPORT
+    // VECTOR jsPDF EXPORT (NO INDIGO/PURPLE)
     async function downloadCoursePDF() {
       if (!currentCourse) return;
-
       const btn = document.getElementById('btn-download-pdf');
-      const originalHTML = btn.innerHTML;
+      const orig = btn.innerHTML;
       btn.disabled = true;
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generating PDF...`;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Exporting...`;
       lucide.createIcons();
 
       try {
         const { jsPDF } = window.jspdf || window;
-        if (!jsPDF) throw new Error("jsPDF library is not loaded.");
-
         const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
         const pageWidth = 595.28;
         const pageHeight = 841.89;
-        const margin = 44;
+        const margin = 40;
         const contentWidth = pageWidth - (margin * 2);
         let y = margin;
 
-        function checkAddPage(neededHeight = 35) {
-          if (y + neededHeight > pageHeight - margin - 25) {
+        function checkAddPage(heightNeeded = 30) {
+          if (y + heightNeeded > pageHeight - margin) {
             doc.addPage();
-            y = margin + 15;
+            y = margin;
           }
         }
 
-        doc.setFillColor(79, 70, 229);
+        // Duolingo Green top bar
+        doc.setFillColor(88, 204, 2);
         doc.rect(margin, y, contentWidth, 4, 'F');
         y += 18;
 
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
-        doc.setTextColor(79, 70, 229);
-        doc.text("EXPERTFORGE AUTONOMOUS LEARNING DOSSIER", margin, y);
-
-        const levelBadge = `TRACK: ${(currentCourse.level || 'APPRENTICE').toUpperCase()}`;
-        const levelWidth = doc.getTextWidth(levelBadge) + 16;
-        doc.setFillColor(238, 242, 255);
-        doc.roundedRect(pageWidth - margin - levelWidth, y - 10, levelWidth, 16, 4, 4, 'F');
-        doc.setFontSize(8);
-        doc.setTextColor(67, 56, 202);
-        doc.text(levelBadge, pageWidth - margin - levelWidth + 8, y + 1);
-
-        y += 24;
-
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(18);
-        doc.setTextColor(15, 23, 42);
+        doc.setFontSize(16);
+        doc.setTextColor(19, 31, 36);
         const titleLines = doc.splitTextToSize(currentCourse.title || "Masterclass", contentWidth);
         doc.text(titleLines, margin, y);
-        y += (titleLines.length * 22);
+        y += (titleLines.length * 20);
 
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9.5);
+        doc.setFontSize(9);
         doc.setTextColor(100, 116, 139);
-        doc.text(`Expert: ${currentCourse.expert || 'Guest Speaker'}  •  Est. Study Time: ${currentCourse.overview?.estimatedTime || '~25 mins'}  •  Generated: ${new Date().toLocaleDateString()}`, margin, y);
-        y += 16;
-
-        doc.setDrawColor(226, 232, 240);
-        doc.setLineWidth(1);
-        doc.line(margin, y, pageWidth - margin, y);
+        doc.text(`Track: ${currentCourse.level || 'Architect'}  •  Date: ${new Date().toLocaleDateString()}`, margin, y);
         y += 18;
 
-        const overviewText = currentCourse.overview?.description || "Master foundational systems patterns.";
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9.5);
-        const overviewLines = doc.splitTextToSize(overviewText, contentWidth - 24);
-        const overviewBoxHeight = (overviewLines.length * 13) + 26;
-
-        doc.setFillColor(248, 250, 252);
-        doc.setDrawColor(226, 232, 240);
-        doc.roundedRect(margin, y, contentWidth, overviewBoxHeight, 8, 8, 'FD');
-
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
-        doc.setTextColor(79, 70, 229);
-        doc.text("COURSE OVERVIEW & LEARNING OBJECTIVES", margin + 12, y + 15);
-
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.setTextColor(51, 65, 85);
-        doc.text(overviewLines, margin + 12, y + 28);
-
-        y += overviewBoxHeight + 25;
-
-        checkAddPage(40);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
-        doc.setTextColor(15, 23, 42);
-        doc.text("1. Learning Modules", margin, y);
-        y += 18;
-
-        const modules = currentCourse.modules || [];
-        modules.forEach((m, idx) => {
-          checkAddPage(60);
-
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(11);
-          doc.setTextColor(79, 70, 229);
-          doc.text(`MODULE 0${idx + 1}:`, margin, y);
-          
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(11);
-          doc.setTextColor(15, 23, 42);
-          doc.text(m.title || "Lesson", margin + 75, y);
-          y += 16;
-
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(9.5);
-          doc.setTextColor(51, 65, 85);
-          const contentLines = doc.splitTextToSize(m.content || "", contentWidth);
-          for (let l = 0; l < contentLines.length; l++) {
-            checkAddPage(14);
-            doc.text(contentLines[l], margin, y);
-            y += 13.5;
-          }
-          y += 8;
-
-          if (m.summary) {
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
-            const summaryLines = doc.splitTextToSize(m.summary, contentWidth - 24);
-            const summaryBoxH = (summaryLines.length * 13) + 24;
-
-            checkAddPage(summaryBoxH + 10);
-
-            doc.setFillColor(255, 251, 235);
-            doc.setDrawColor(254, 243, 199);
-            doc.roundedRect(margin, y, contentWidth, summaryBoxH, 6, 6, 'FD');
-
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(8.5);
-            doc.setTextColor(146, 64, 14);
-            doc.text("★ KEY TAKEAWAY & SUMMARY:", margin + 12, y + 14);
-
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
-            doc.setTextColor(120, 53, 15);
-            doc.text(summaryLines, margin + 12, y + 26);
-
-            y += summaryBoxH + 18;
-          }
-        });
-
-        checkAddPage(60);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
-        doc.setTextColor(15, 23, 42);
-        doc.text("2. Mastery Assessment Quiz", margin, y);
+        doc.setFontSize(12);
+        doc.setTextColor(19, 31, 36);
+        doc.text("1. Curriculum Modules", margin, y);
         y += 16;
 
-        const quizList = currentCourse.quiz || [];
-        quizList.forEach((q, qIdx) => {
-          checkAddPage(55);
-
+        (currentCourse.modules || []).forEach((m, idx) => {
+          checkAddPage(40);
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(10);
-          doc.setTextColor(15, 23, 42);
-          const qLines = doc.splitTextToSize(`Q${qIdx + 1}. ${q.q}`, contentWidth);
-          doc.text(qLines, margin, y);
-          y += (qLines.length * 14) + 6;
-
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(9);
-          doc.setTextColor(71, 85, 105);
-          (q.options || []).forEach((opt, oIdx) => {
-            checkAddPage(14);
-            const letter = String.fromCharCode(65 + oIdx);
-            doc.text(`[ ${letter} ]  ${opt}`, margin + 15, y);
-            y += 13.5;
-          });
-          y += 10;
-        });
-
-        doc.addPage();
-        y = margin + 15;
-
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
-        doc.setTextColor(5, 150, 105);
-        doc.text("3. Answer Key & Pedagogical Rationales", margin, y);
-        y += 16;
-
-        quizList.forEach((q, qIdx) => {
-          const correctLetter = String.fromCharCode(65 + (q.correct || 0));
-          const correctText = (q.options && q.options[q.correct]) || "";
-          const rationale = q.rationale || "Verified by lecture specifications.";
-
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(9);
-          const ratLines = doc.splitTextToSize(`Rationale: ${rationale}`, contentWidth - 24);
-          const answerBoxH = (ratLines.length * 13) + 32;
-
-          checkAddPage(answerBoxH + 10);
-
-          doc.setFillColor(240, 253, 244);
-          doc.setDrawColor(187, 247, 208);
-          doc.roundedRect(margin, y, contentWidth, answerBoxH, 6, 6, 'FD');
-
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(9.5);
-          doc.setTextColor(6, 95, 70);
-          doc.text(`Question ${qIdx + 1}: Correct Answer [ ${correctLetter} ] - ${correctText}`, margin + 12, y + 15);
+          doc.setTextColor(88, 204, 2);
+          doc.text(`Module 0${idx + 1}: ${m.title}`, margin, y);
+          y += 14;
 
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(8.5);
-          doc.setTextColor(20, 83, 45);
-          doc.text(ratLines, margin + 12, y + 28);
+          doc.setTextColor(51, 65, 85);
+          const lines = doc.splitTextToSize(m.content || "", contentWidth);
+          lines.forEach(l => {
+            checkAddPage(12);
+            doc.text(l, margin, y);
+            y += 12;
+          });
+          y += 6;
 
-          y += answerBoxH + 12;
+          if (m.summary) {
+            checkAddPage(20);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(229, 165, 0);
+            const sumLines = doc.splitTextToSize(`Takeaway: ${m.summary}`, contentWidth);
+            doc.text(sumLines, margin, y);
+            y += (sumLines.length * 11) + 12;
+          }
         });
 
-        const totalPages = doc.internal.getNumberOfPages();
-        for (let p = 1; p <= totalPages; p++) {
-          doc.setPage(p);
+        checkAddPage(40);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(19, 31, 36);
+        doc.text("2. Mastery Assessment & Answers", margin, y);
+        y += 16;
+
+        (currentCourse.quiz || []).forEach((q, qIdx) => {
+          checkAddPage(30);
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(9);
+          doc.setTextColor(19, 31, 36);
+          doc.text(`Q${qIdx + 1}: ${q.q}`, margin, y);
+          y += 12;
+
+          const correctOpt = q.options ? q.options[q.correct] : "";
           doc.setFont('helvetica', 'normal');
-          doc.setFontSize(8);
-          doc.setTextColor(148, 163, 184);
-          doc.text("ExpertForge Autonomous Learning Engine  •  Powered by LLaMA-3.3-70B", margin, pageHeight - 24);
-          doc.text(`Page ${p} of ${totalPages}`, pageWidth - margin - 45, pageHeight - 24);
-        }
+          doc.setFontSize(8.5);
+          doc.setTextColor(88, 204, 2);
+          doc.text(`Correct: ${correctOpt}  •  Rationale: ${q.rationale || 'Verified.'}`, margin, y);
+          y += 16;
+        });
 
-        const safeTitle = (currentCourse.title || "Course").replace(/[^a-zA-Z0-9]/g, '_');
-        doc.save(`ExpertForge_${safeTitle}_Course.pdf`);
-
+        doc.save(`${(currentCourse.title || "Course").replace(/\s+/g, '_')}_Dossier.pdf`);
       } catch (err) {
-        console.error("PDF Export Error:", err);
-        alert("Failed to export PDF: " + err.message);
+        console.error(err);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = originalHTML;
+        btn.innerHTML = orig;
         lucide.createIcons();
       }
     }
 
-    // FLOATING TUTOR WINDOW
+    // FORGER AI TUTOR COMPANION
     function toggleForgerWindow() {
       const win = document.getElementById('forger-chat-window');
       win.classList.toggle('hidden');
@@ -2038,59 +1507,39 @@ JSON structure:
       }
     }
 
-    function openForgerWindow() {
-      const win = document.getElementById('forger-chat-window');
-      win.classList.remove('hidden');
-    }
-
-    async function sendForgerMessage(presetPrompt = null) {
+    async function sendForgerMessage(prompt = null) {
       const input = document.getElementById('forger-user-input');
-      const query = presetPrompt || input.value.trim();
-      if (!query) return;
-
-      if (!presetPrompt) input.value = '';
+      const q = prompt || input.value.trim();
+      if (!q) return;
+      if (!prompt) input.value = '';
 
       const stream = document.getElementById('forger-messages-stream');
-      stream.innerHTML += `
-        <div class="bg-indigo-600 text-white p-3 rounded-2xl max-w-xs ml-auto leading-relaxed shadow-sm font-medium">
-          ${query}
-        </div>
-      `;
+      stream.innerHTML += `<div class="bg-duo-green text-white p-3 rounded-2xl text-xs ml-auto max-w-[85%] font-bold shadow-sm">${q}</div>`;
       stream.scrollTop = stream.scrollHeight;
 
-      const botMsgId = "forger-bot-" + Date.now();
-      stream.innerHTML += `
-        <div id="${botMsgId}" class="bg-indigo-50 dark:bg-purple-950/50 border border-indigo-100 dark:border-purple-900/40 p-3 rounded-2xl max-w-xs text-slate-700 dark:text-slate-200 leading-relaxed font-normal">
-          <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin inline mr-1 text-indigo-500"></i> Thinking from course context...
-        </div>
-      `;
-      lucide.createIcons();
+      const replyId = "bot-rep-" + Date.now();
+      stream.innerHTML += `<div id="${replyId}" class="bg-duo-stone dark:bg-duo-darkElevated border border-duo-border dark:border-duo-darkBorder p-3 rounded-2xl text-xs max-w-[85%] font-bold">Thinking with course context...</div>`;
       stream.scrollTop = stream.scrollHeight;
 
-      const currentMod = currentCourse?.modules?.[activeModuleIndex] || {};
+      const activeMod = currentCourse?.modules?.[activeModuleIndex] || {};
       const messages = [
         {
           role: "system",
-          content: `You are "Forger", a friendly personal learning tutor.
-Course: "${currentCourse?.title || 'Masterclass'}"
-Active Module: "${currentMod.title || 'Introduction'}"
-Content: "${currentMod.content || currentCourse?.transcript || ''}"
-Explain using an everyday analogy in under 2 punchy paragraphs.`
+          content: `You are "Forger", a friendly tutor in an educational app like Duolingo. Course: "${currentCourse?.title || 'Masterclass'}". Lesson: "${activeMod.title || 'Overview'}". Content: "${activeMod.content || ''}". Explain intuitively with an everyday analogy in 1-2 punchy paragraphs.`
         },
-        { role: "user", content: query }
+        { role: "user", content: q }
       ];
 
       try {
         const reply = await executeGroqWithFallback(messages, false);
-        document.getElementById(botMsgId).innerText = reply;
+        document.getElementById(replyId).innerText = reply;
       } catch (e) {
-        document.getElementById(botMsgId).innerText = "Think of parameters like dials on an audio mixer. As the song plays, backpropagation turns each dial slightly until the music sounds clear and balanced!";
+        document.getElementById(replyId).innerText = "Think of parameters like dials on an audio mixer. As the track plays, backpropagation turns each dial slightly until the whole song sounds balanced!";
       }
-
       stream.scrollTop = stream.scrollHeight;
     }
 
-    // POPUP MCQ (✋ ALL FINGERS UP OR BUTTON)
+    // POPUP MODULE PRACTICE QUESTION
     function openModuleQuizModal() {
       document.getElementById('module-quiz-modal').classList.remove('hidden');
     }
@@ -2100,60 +1549,42 @@ Explain using an everyday analogy in under 2 punchy paragraphs.`
     }
 
     async function triggerModuleQuickQuiz(targetModuleIdx = null) {
-      if (targetModuleIdx !== null) {
-        activeModuleIndex = targetModuleIdx;
-      }
+      if (targetModuleIdx !== null) activeModuleIndex = targetModuleIdx;
 
-      const currentMod = currentCourse?.modules?.[activeModuleIndex] || {
+      const mod = currentCourse?.modules?.[activeModuleIndex] || {
         title: "Active Lesson",
-        content: currentCourse?.transcript || "Fundamental mechanisms and concepts.",
-        summary: "Key conceptual rule of thumb."
+        content: currentCourse?.transcript || "Architecture primitives.",
+        summary: "Core takeaway."
       };
 
-      document.getElementById('modal-module-title').innerText = `Module 0${activeModuleIndex + 1}: ${currentMod.title}`;
+      document.getElementById('modal-module-title').innerText = `Module 0${activeModuleIndex + 1}: ${mod.title}`;
       openModuleQuizModal();
 
       const content = document.getElementById('modal-quiz-content');
-      content.innerHTML = `
-        <div class="space-y-4 py-4">
-          <div class="flex items-center gap-2.5 text-xs text-purple-600 dark:text-purple-400 font-bold">
-            <i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i>
-            <span>Generating high-yield MCQ for Module 0${activeModuleIndex + 1}...</span>
-          </div>
-          <div class="h-4 bg-slate-200 dark:bg-purple-950/80 rounded-full w-3/4 animate-pulse"></div>
-          <div class="space-y-2 pt-2">
-            <div class="h-10 bg-slate-100 dark:bg-purple-950/40 rounded-xl animate-pulse"></div>
-            <div class="h-10 bg-slate-100 dark:bg-purple-950/40 rounded-xl animate-pulse"></div>
-          </div>
-        </div>
-      `;
-      lucide.createIcons();
+      content.innerHTML = `<div class="py-6 text-center text-xs font-black text-slate-400">Generating question...</div>`;
 
-      await fetchModuleQuestion(currentMod);
+      await fetchModuleQuestion(mod);
     }
 
-    async function fetchAnotherModuleQuestion() {
-      await triggerModuleQuickQuiz(activeModuleIndex);
+    function fetchAnotherModuleQuestion() {
+      triggerModuleQuickQuiz(activeModuleIndex);
     }
 
     async function fetchModuleQuestion(moduleObj) {
       const messages = [
         {
           role: "system",
-          content: "You are the ExpertForge Assessment Engine. Generate 1 multiple choice practice question based exclusively on the provided module content. Return strictly JSON."
+          content: "You are the Assessment Engine. Generate 1 multiple-choice practice question based strictly on the module content. Return JSON only."
         },
         {
           role: "user",
-          content: `Module Title: "${moduleObj.title}"
-Content: """${moduleObj.content}"""
-Summary: "${moduleObj.summary}"
-
-JSON schema:
+          content: `Module: "${moduleObj.title}". Content: """${moduleObj.content}""".
+JSON format:
 {
   "question": "Question?",
   "options": ["Option A", "Option B", "Option C"],
   "correct": 0,
-  "explanation": "Why this is correct."
+  "explanation": "Why correct."
 }`
         }
       ];
@@ -2163,73 +1594,56 @@ JSON schema:
         const parsed = parseSafeJSON(raw);
         renderModuleQuizInModal(parsed);
       } catch (err) {
-        const fallbackQ = {
-          question: `Regarding ${moduleObj.title}: What is the core architectural takeaway emphasized in this lesson?`,
+        renderModuleQuizInModal({
+          question: `Regarding ${moduleObj.title}: What is the core takeaway?`,
           options: [
             moduleObj.summary ? moduleObj.summary.split('.')[0] : "Weights are calibrated incrementally through loss minimization.",
-            "Parameters must be manually re-coded for each query prompt.",
-            "All model weights are disconnected during gradient descent."
+            "All model weights are disconnected during inference.",
+            "Parameters must be manually updated for every prompt."
           ],
           correct: 0,
-          explanation: `As highlighted in Module 0${activeModuleIndex + 1}: ${moduleObj.summary || 'Parameters dictate model representations via backpropagation.'}`
-        };
-        renderModuleQuizInModal(fallbackQ);
+          explanation: moduleObj.summary || "Parameters dictate representations via training."
+        });
       }
     }
 
     function renderModuleQuizInModal(qData) {
       const content = document.getElementById('modal-quiz-content');
       content.innerHTML = `
-        <div class="space-y-3.5">
-          <p class="text-sm font-bold text-slate-900 dark:text-slate-100 font-display leading-snug">
-            ${qData.question}
-          </p>
-
-          <div class="space-y-2 pt-1" id="modal-options-list">
+        <div class="space-y-3">
+          <p class="text-xs font-black text-slate-900 dark:text-white leading-snug">${qData.question}</p>
+          <div class="space-y-2" id="modal-opt-container">
             ${qData.options.map((opt, oIdx) => `
-              <button onclick="handleModalOptionClick(this, ${oIdx === qData.correct}, '${(qData.explanation || '').replace(/'/g, "\\'")}')" class="modal-option-btn w-full text-left p-3.5 rounded-2xl bg-slate-50 dark:bg-[#0c0b1e] hover:bg-purple-50/60 dark:hover:bg-purple-950/60 border border-indigo-100/80 dark:border-purple-900/50 text-xs text-slate-700 dark:text-slate-200 transition flex items-center justify-between shadow-sm">
-                <span class="leading-relaxed"><strong class="font-mono text-purple-600 dark:text-purple-400 mr-1.5">[${String.fromCharCode(65 + oIdx)}]</strong> ${opt}</span>
-                <i data-lucide="circle" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+              <button onclick="handleModalOptionClick(this, ${oIdx === qData.correct}, '${(qData.explanation || '').replace(/'/g, "\\'")}')" class="tactile-btn modal-opt-btn w-full text-left p-3 rounded-2xl bg-duo-stone/60 dark:bg-duo-darkElevated/50 border-2 border-b-4 border-duo-border dark:border-duo-darkBorder text-xs font-bold text-slate-700 dark:text-slate-200 transition">
+                ${opt}
               </button>
             `).join('')}
           </div>
-
-          <div id="modal-rationale-box" class="hidden p-3.5 rounded-2xl text-xs leading-relaxed transition-all duration-200"></div>
+          <div id="modal-rationale" class="hidden p-3 rounded-2xl text-xs font-bold leading-relaxed"></div>
         </div>
       `;
-      lucide.createIcons();
     }
 
     function handleModalOptionClick(btn, isCorrect, explanation) {
-      const container = document.getElementById('modal-options-list');
-      const allBtns = container.querySelectorAll('.modal-option-btn');
-      allBtns.forEach(b => {
-        b.disabled = true;
-        b.classList.add('opacity-70', 'cursor-not-allowed');
-      });
-
-      const rationaleBox = document.getElementById('modal-rationale-box');
-      rationaleBox.classList.remove('hidden');
+      document.querySelectorAll('#modal-opt-container .modal-opt-btn').forEach(b => b.disabled = true);
+      const box = document.getElementById('modal-rationale');
+      box.classList.remove('hidden');
 
       if (isCorrect) {
-        btn.classList.remove('opacity-70', 'bg-slate-50', 'dark:bg-[#0c0b1e]');
-        btn.classList.add('bg-emerald-50', 'dark:bg-emerald-950/70', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300', '!opacity-100');
-        rationaleBox.className = "p-3.5 rounded-2xl text-xs leading-relaxed bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-200";
-        rationaleBox.innerHTML = `<strong>✓ Spot on!</strong> ${explanation}`;
+        btn.classList.add('bg-duo-greenLight', 'dark:bg-duo-darkElevated', 'border-duo-green', 'text-duo-greenDark', 'dark:text-duo-green');
+        box.className = "p-3 rounded-2xl text-xs font-bold bg-duo-greenLight dark:bg-duo-darkElevated text-duo-greenDark dark:text-duo-green border-2 border-b-4 border-duo-green";
+        box.innerHTML = `<strong>✓ Spot on!</strong> ${explanation}`;
       } else {
-        btn.classList.remove('opacity-70', 'bg-slate-50', 'dark:bg-[#0c0b1e]');
-        btn.classList.add('bg-rose-50', 'dark:bg-rose-950/70', 'border-rose-500', 'text-rose-700', 'dark:text-rose-300', '!opacity-100');
-        rationaleBox.className = "p-3.5 rounded-2xl text-xs leading-relaxed bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/40 text-rose-800 dark:text-rose-200";
-        rationaleBox.innerHTML = `<strong>✗ Not quite.</strong> ${explanation}`;
+        btn.classList.add('bg-duo-coralLight', 'dark:bg-duo-darkElevated', 'border-duo-coral', 'text-duo-coralDark', 'dark:text-duo-coral');
+        box.className = "p-3 rounded-2xl text-xs font-bold bg-duo-coralLight dark:bg-duo-darkElevated text-duo-coralDark dark:text-duo-coral border-2 border-b-4 border-duo-coral";
+        box.innerHTML = `<strong>✗ Not quite.</strong> ${explanation}`;
       }
-      lucide.createIcons();
     }
 
-    // BACKGROUND GESTURE RECOGNITION (100% PRIVATE)
+    // BACKGROUND GESTURE RECOGNITION (PRIVATE)
     function initScrollModuleObserver() {
       window.addEventListener('scroll', () => {
-        const moduleCards = document.querySelectorAll('.module-card');
-        moduleCards.forEach(card => {
+        document.querySelectorAll('.module-card').forEach(card => {
           const rect = card.getBoundingClientRect();
           if (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.2) {
             activeModuleIndex = parseInt(card.getAttribute('data-module-idx')) || 0;
@@ -2240,19 +1654,14 @@ JSON schema:
 
     async function toggleGestureDetection() {
       isGestureSenseOn = !isGestureSenseOn;
-      const statusText = document.getElementById('gesture-status-text');
-      const dot = document.getElementById('gesture-indicator-dot');
+      const dot = document.getElementById('side-gesture-dot');
       const hud = document.getElementById('gesture-hud');
 
       if (isGestureSenseOn) {
-        statusText.innerText = "On (Private)";
-        statusText.className = "text-emerald-500 font-bold";
         dot.classList.remove('hidden');
-        showGestureHUD("● Gesture Engine Active in Background", 2500);
+        showGestureHUD("Gestures Active in Background", 2500);
         await startMediaPipeHands();
       } else {
-        statusText.innerText = "Off";
-        statusText.className = "text-slate-400";
         dot.classList.add('hidden');
         hud.classList.add('hidden');
         stopMediaPipeHands();
@@ -2261,8 +1670,7 @@ JSON schema:
 
     function showGestureHUD(text, autoHideMs = null) {
       const hud = document.getElementById('gesture-hud');
-      const hudText = document.getElementById('gesture-hud-text');
-      hudText.innerText = text;
+      document.getElementById('gesture-hud-text').innerText = text;
       hud.classList.remove('hidden');
 
       if (autoHideMs) {
@@ -2276,7 +1684,6 @@ JSON schema:
 
     async function startMediaPipeHands() {
       const videoElement = document.getElementById('webcam-video');
-
       handsInstance = new Hands({
         locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
       });
@@ -2292,9 +1699,7 @@ JSON schema:
 
       cameraInstance = new Camera(videoElement, {
         onFrame: async () => {
-          if (isGestureSenseOn) {
-            await handsInstance.send({ image: videoElement });
-          }
+          if (isGestureSenseOn) await handsInstance.send({ image: videoElement });
         },
         width: 320,
         height: 240
@@ -2304,9 +1709,7 @@ JSON schema:
     }
 
     function stopMediaPipeHands() {
-      if (cameraInstance) {
-        cameraInstance.stop();
-      }
+      if (cameraInstance) cameraInstance.stop();
     }
 
     function onHandGestureResults(results) {
@@ -2317,27 +1720,16 @@ JSON schema:
       const progressBar = document.getElementById('gesture-progress-bar');
 
       if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        const landmarks = results.multiHandLandmarks[0];
+        const l = results.multiHandLandmarks[0];
 
-        const indexTip = landmarks[8];
-        const indexPip = landmarks[6];
-        const indexMcp = landmarks[5];
+        const isIndexUp = (l[8].y < l[6].y) && (l[6].y < l[5].y);
+        const isMiddleUp = (l[12].y < l[10].y);
+        const isRingUp = (l[16].y < l[14].y);
+        const isPinkyUp = (l[20].y < l[18].y);
 
-        const middleTip = landmarks[12];
-        const middlePip = landmarks[10];
-        const ringTip = landmarks[16];
-        const ringPip = landmarks[14];
-        const pinkyTip = landmarks[20];
-        const pinkyPip = landmarks[18];
-
-        const isIndexUp = (indexTip.y < indexPip.y) && (indexPip.y < indexMcp.y);
-        const isMiddleUp = (middleTip.y < middlePip.y);
-        const isRingUp = (ringTip.y < ringPip.y);
-        const isPinkyUp = (pinkyTip.y < pinkyPip.y);
-
-        const isMiddleFolded = middleTip.y > middlePip.y;
-        const isRingFolded = ringTip.y > ringPip.y;
-        const isPinkyFolded = pinkyTip.y > pinkyPip.y;
+        const isMiddleFolded = l[12].y > l[10].y;
+        const isRingFolded = l[16].y > l[14].y;
+        const isPinkyFolded = l[20].y > l[18].y;
 
         const isOnlyIndexUp = isIndexUp && isMiddleFolded && isRingFolded && isPinkyFolded;
         const isAllFingersUp = isIndexUp && isMiddleUp && isRingUp && isPinkyUp;
@@ -2346,7 +1738,7 @@ JSON schema:
           gestureHoldCount_Index++;
           gestureHoldCount_All = 0;
           hud.classList.remove('hidden');
-          hudText.innerText = `☝️ Index up • Hold for explanation (${gestureHoldCount_Index}/8)`;
+          hudText.innerText = `☝️ Hold for analogy (${gestureHoldCount_Index}/8)`;
           progressBar.style.width = `${Math.min(100, (gestureHoldCount_Index / 8) * 100)}%`;
 
           if (gestureHoldCount_Index >= 8 && (Date.now() - lastGestureTriggerTime > 5000)) {
@@ -2363,7 +1755,7 @@ JSON schema:
           gestureHoldCount_All++;
           gestureHoldCount_Index = 0;
           hud.classList.remove('hidden');
-          hudText.innerText = `✋ All fingers up • Hold for Module MCQ (${gestureHoldCount_All}/8)`;
+          hudText.innerText = `✋ Hold for quick quiz (${gestureHoldCount_All}/8)`;
           progressBar.style.width = `${Math.min(100, (gestureHoldCount_All / 8) * 100)}%`;
 
           if (gestureHoldCount_All >= 8 && (Date.now() - lastGestureTriggerTime > 5000)) {
@@ -2382,7 +1774,6 @@ JSON schema:
           hud.classList.add('hidden');
           progressBar.style.width = '0%';
         }
-
       } else {
         gestureHoldCount_Index = 0;
         gestureHoldCount_All = 0;
@@ -2392,21 +1783,10 @@ JSON schema:
     }
 
     function triggerHandRaiseExplanation() {
-      openForgerWindow();
-
-      const toast = document.getElementById('forger-gesture-toast');
-      toast.classList.remove('hidden');
-      setTimeout(() => toast.classList.add('hidden'), 5000);
-
-      const currentMod = currentCourse?.modules?.[activeModuleIndex];
-      const modCard = document.getElementById(`module-block-${activeModuleIndex}`);
-      if (modCard) {
-        modCard.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2');
-        setTimeout(() => modCard.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2'), 4000);
-      }
-
-      const modTitle = currentMod?.title || "Current Lesson";
-      sendForgerMessage(`☝️ I don't quite understand "${modTitle}". Could you please explain it in a super simple, intuitive way with an everyday analogy?`);
+      toggleForgerWindow();
+      const mod = currentCourse?.modules?.[activeModuleIndex];
+      const title = mod?.title || "Active Lesson";
+      sendForgerMessage(`☝️ Can you explain "${title}" in a simple, intuitive way with a real-world analogy?`);
     }
   </script>
 </body>
