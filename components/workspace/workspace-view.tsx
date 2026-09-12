@@ -221,7 +221,7 @@ export function WorkspaceView({ initialContext, userEmail }: WorkspaceViewProps)
                   variant={activeTab === "appointments" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setActiveTab("appointments")}
-                  className={`gap-1.5 text-xs h-8 px-3 rounded-lg ${activeTab === "appointments" ? "bg-teal-700 hover:bg-teal-800 text-white shadow-xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"}`}
+                  className={`gap-1.5 text-xs h-8 px-3 rounded-lg ${activeTab === "appointments" ? "bg-teal-700 hover:bg-teal-800 text-white shadow-xs dark:bg-teal-600 dark:hover:bg-teal-700" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-800"}`}
                 >
                   <Calendar className="h-3.5 w-3.5" />
                   <span>Appointments</span>
@@ -235,12 +235,12 @@ export function WorkspaceView({ initialContext, userEmail }: WorkspaceViewProps)
                   variant={activeTab === "reminders" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setActiveTab("reminders")}
-                  className={`gap-1.5 text-xs h-8 px-3 rounded-lg ${activeTab === "reminders" ? "bg-teal-700 hover:bg-teal-800 text-white shadow-xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"}`}
+                  className={`gap-1.5 text-xs h-8 px-3 rounded-lg ${activeTab === "reminders" ? "bg-teal-700 hover:bg-teal-800 text-white shadow-xs dark:bg-teal-600 dark:hover:bg-teal-700" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-800"}`}
                 >
                   <Bell className="h-3.5 w-3.5" />
                   <span>Reminders</span>
                   {activeReminders.length > 0 && (
-                    <span className={`ml-1 rounded-full px-1.5 py-0.2 text-[10px] font-semibold ${activeTab === "reminders" ? "bg-white/20 text-white" : "bg-slate-200 text-slate-700"}`}>
+                    <span className={`ml-1 rounded-full px-1.5 py-0.2 text-[10px] font-semibold ${activeTab === "reminders" ? "bg-white/20 text-white" : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200"}`}>
                       {activeReminders.length}
                     </span>
                   )}

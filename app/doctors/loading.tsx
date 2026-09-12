@@ -54,7 +54,7 @@ export default function DoctorsLoading() {
               <div className="h-4 w-64 sm:w-80 rounded-md bg-slate-200/60 dark:bg-slate-800/80 animate-shimmer" />
             </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-teal-200/80 dark:border-teal-900/60 bg-white/90 dark:bg-slate-850 px-4 py-3 shadow-2xs">
+            <div className="flex items-center gap-3 rounded-xl border border-teal-200/80 dark:border-teal-900/60 bg-white/90 dark:bg-slate-800 px-4 py-3 shadow-2xs">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-100/80 dark:bg-teal-950/70 text-teal-700 dark:text-teal-300 animate-pulse">
                 <Sparkles className="h-5 w-5" />
               </div>

@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI, type GenerativeModel } from "@google/generative-ai";
 
-const DEFAULT_MODEL = "gemini-2.0-flash";
+const DEFAULT_MODEL = "gemini-3.6-flash";
 
 export function getGeminiModel(): GenerativeModel {
   const key = process.env.GEMINI_API_KEY;
