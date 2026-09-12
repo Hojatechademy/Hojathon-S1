@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExpertForge - Universal Learning Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- PDF.js for PDF slides parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Mammoth.js for Word DOCX parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <!-- MediaPipe Hands & Camera Utils for Gesture Detection -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <!-- Direct Vector jsPDF Library (Never Blank) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    .perspective { perspective: 1000px; }
+    .transform-style-preserve { transform-style: preserve-3d; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+    .backface-hidden { backface-visibility: hidden; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col relative">
+
+  <!-- TOP NAV -->
+  <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="goToView('home')">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i data-lucide="flame" class="w-4 h-4 text-white"></i>
+        </div>
+        <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">ExpertForge</span>
+        <span id="active-model-tag" class="text-[10px] uppercase font-bold tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full ml-1">GPT-OSS-120B</span>
+      </div>
+
+      <div id="nav-actions" class="flex items-center gap-3"></div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-5xl mx-auto px-6 py-10 flex-1 w-full pb-28">
+
+    <!-- VIEW 1: CLEAN 2-CHOICE OPENING -->
+    <section id="view-home" class="min-h-[75vh] flex flex-col justify-center items-center text-center space-y-10">
+      <div class="space-y-3 max-w-xl">
+        <span class="text-[11px] font-bold uppercase tracking-widest bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full">
+          Autonomous Learning Platform
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+          Any lecture source, forged into personalized mastery.
+        </h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Upload audio recordings, PDF slides, Word documents, or whiteboard photos. Take a 4-question pre-test, and receive an adaptive masterclass with AI gesture assistance, visual mindmaps, and full PDF export.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
+        <div onclick="startForgeFlow()" class="group bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-indigo-500/50 p-8 rounded-3xl cursor-pointer transition-all duration-300 flex flex-col items-center text-center space-y-4 hover:shadow-2xl hover:shadow-indigo-500/10">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition duration-300 flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition">Forge a Course</h3>
+            <p class="text-xs text-slate-400 mt-1">Ingest MP3, PDF slides, DOCX notes, or whiteboard images into an adaptive curriculum.</p>
+          </div>
+        </div>
+
+        <div onclick="goToView('courses')" class="group bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-emerald-500/50 p-8 rounded-3xl cursor-pointer transition-all duration-300 flex flex-col items-center text-center space-y-4 hover:shadow-2xl hover:shadow-emerald-500/10">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-600/10 border border-emerald-500/20 text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition duration-300 flex items-center justify-center">
+            <i data-lucide="book-marked" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition">View Courses</h3>
+            <p class="text-xs text-slate-400 mt-1">Access saved courses, review all flashcards, visual mindmaps, and take dynamic quizzes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: MULTIMODAL FORGE WIZARD -->
+    <section id="view-forge" class="hidden max-w-2xl mx-auto space-y-8">
+      <button onclick="goToView('home')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition">
+        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Home
+      </button>
+
+      <!-- Upload Step -->
+      <div id="forge-step-upload" class="bg-slate-900 border border-slate-800/80 rounded-3xl p-8 space-y-6 shadow-xl">
+        <div class="text-center space-y-1">
+          <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Step 1 of 3</span>
+          <h2 class="text-2xl font-bold">Upload Lecture Material</h2>
+          <p class="text-xs text-slate-400">Audio (MP3/WAV), Slide Decks (PDF), Documents (DOCX/TXT), or Whiteboards (PNG/JPG)</p>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1.5">Lecture / Topic Name (Optional)</label>
+          <input id="input-lecture-title" type="text" placeholder="e.g. LLM Parameters & Architecture by Dr. Thorne" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500" />
+        </div>
+
+        <div class="border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-2xl p-8 text-center space-y-4 transition">
+          <input type="file" id="universal-file-input" accept="audio/*,.pdf,.docx,.txt,image/*" class="hidden" onchange="handleUniversalUpload(event)" />
+          
+          <div class="flex justify-center items-center gap-3 text-slate-500">
+            <div class="w-10 h-10 rounded-xl bg-slate-800/80 flex items-center justify-center text-indigo-400"><i data-lucide="headphones" class="w-5 h-5"></i></div>
+            <div class="w-10 h-10 rounded-xl bg-slate-800/80 flex items-center justify-center text-rose-400"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+            <div class="w-10 h-10 rounded-xl bg-slate-800/80 flex items-center justify-center text-blue-400"><i data-lucide="file-type-2" class="w-5 h-5"></i></div>
+            <div class="w-10 h-10 rounded-xl bg-slate-800/80 flex items-center justify-center text-amber-400"><i data-lucide="image" class="w-5 h-5"></i></div>
+          </div>
+
+          <div>
+            <label for="universal-file-input" class="cursor-pointer text-sm font-semibold text-indigo-400 hover:underline">Click to browse any lecture file</label>
+            <p class="text-[11px] text-slate-500 mt-1" id="upload-filename-display">Accepts MP3, PDF, DOCX, TXT, PNG, JPG</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <button onclick="loadDemoLecture('audio')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700/50 flex items-center gap-1.5 transition">
+            <i data-lucide="headphones" class="w-3.5 h-3.5 text-indigo-400"></i> Sample Audio
+          </button>
+          <button onclick="loadDemoLecture('slides')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700/50 flex items-center gap-1.5 transition">
+            <i data-lucide="presentation" class="w-3.5 h-3.5 text-rose-400"></i> Sample PDF Slides
+          </button>
+        </div>
+      </div>
+
+      <!-- Processing Step -->
+      <div id="forge-step-processing" class="hidden bg-slate-900 border border-slate-800/80 rounded-3xl p-8 space-y-5 text-center shadow-xl">
+        <div class="w-12 h-12 mx-auto rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+        <div class="space-y-1">
+          <h3 id="processing-title" class="text-lg font-bold">Extracting Knowledge Primitives...</h3>
+          <p id="processing-subtitle" class="text-xs text-slate-400">Processing input content...</p>
+        </div>
+        <div id="processing-transcript-preview" class="hidden text-left bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-400 max-h-36 overflow-y-auto leading-relaxed"></div>
+      </div>
+
+      <!-- Diagnostic Step -->
+      <div id="forge-step-pretest" class="hidden bg-slate-900 border border-slate-800/80 rounded-3xl p-8 space-y-6 shadow-xl">
+        <div class="flex items-start justify-between">
+          <div>
+            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Step 2 of 3</span>
+            <h3 class="text-xl font-bold mt-0.5">Pre-Course Diagnostic Test</h3>
+            <p class="text-xs text-slate-400">Answer these 4 questions so the Agent can calibrate module depth, flashcards, mindmap, and quiz.</p>
+          </div>
+          <span class="text-xs font-mono bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-full border border-indigo-500/20">4 MCQs</span>
+        </div>
+
+        <div id="pretest-questions-list" class="space-y-4"></div>
+
+        <button onclick="submitPreTest()" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-xl text-xs font-bold text-white shadow-lg shadow-indigo-600/20 transition flex items-center justify-center gap-2">
+          <span>Evaluate My Skill & Forge Course</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- VIEW 3: COURSE LIBRARY -->
+    <section id="view-courses" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold">Course Library</h2>
+          <p class="text-xs text-slate-400">All forged courses are saved locally in your browser.</p>
+        </div>
+        <button onclick="startForgeFlow()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+          <i data-lucide="plus" class="w-4 h-4"></i> Forge New
+        </button>
+      </div>
+
+      <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </section>
+
+    <!-- VIEW 4: FINE-TUNED COURSE STUDY VIEW (WITH MINDMAP & PDF EXPORT) -->
+    <section id="view-course-study" class="hidden space-y-8">
+      <!-- Course Top Nav -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-900">
+        <button onclick="goToView('courses')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> All Courses
+        </button>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-slate-500">Evaluated Level:</span>
+            <span id="study-track-pill" class="font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 uppercase tracking-wider">
+              Level 2: Architect
+            </span>
+          </div>
+
+          <!-- Gesture Sense Status Pill -->
+          <button onclick="toggleGestureDetection()" id="btn-gesture-toggle" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-1 rounded-full flex items-center gap-1.5 transition text-slate-400">
+            <i data-lucide="hand" class="w-3.5 h-3.5"></i> Gesture: <span id="gesture-status-text" class="text-slate-500">Off</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Course Header -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border border-slate-800/80 p-7 rounded-3xl space-y-2.5 shadow-xl">
+        <h1 id="study-course-title" class="text-2xl sm:text-3xl font-extrabold text-white"></h1>
+        <p id="study-course-expert" class="text-xs text-slate-400"></p>
+      </div>
+
+      <!-- Navigation Tabs (5 Sections) -->
+      <div class="flex border-b border-slate-800 gap-6 text-sm font-semibold overflow-x-auto pb-px">
+        <button onclick="setStudyTab('overview')" id="study-tab-btn-overview" class="pb-3 border-b-2 border-indigo-500 text-indigo-400 transition flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="info" class="w-4 h-4"></i> 1. Overview
+        </button>
+        <button onclick="setStudyTab('modules')" id="study-tab-btn-modules" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="layers" class="w-4 h-4"></i> 2. Modules <span id="badge-module-count" class="text-[10px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-400"></span>
+        </button>
+        <button onclick="setStudyTab('flashcards')" id="study-tab-btn-flashcards" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="copy" class="w-4 h-4"></i> 3. Flashcards <span id="badge-card-count" class="text-[10px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-400"></span>
+        </button>
+        <button onclick="setStudyTab('quiz')" id="study-tab-btn-quiz" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i> 4. Quiz <span id="badge-quiz-count" class="text-[10px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-400"></span>
+        </button>
+        <button onclick="setStudyTab('mindmap')" id="study-tab-btn-mindmap" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap text-indigo-300">
+          <i data-lucide="network" class="w-4 h-4 text-indigo-400"></i> 5. Mindmap & Export
+        </button>
+      </div>
+
+      <!-- TAB 1: OVERVIEW -->
+      <div id="study-tab-overview" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-6">
+            <div class="bg-slate-900 border border-slate-800/80 p-6 rounded-3xl space-y-3 shadow-lg">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+                <i data-lucide="book-open" class="w-4 h-4"></i> What You Are Going to Learn
+              </h3>
+              <p id="overview-description" class="text-sm text-slate-300 leading-relaxed font-normal"></p>
+            </div>
+
+            <div class="bg-indigo-950/30 border border-indigo-800/40 p-6 rounded-3xl space-y-3 shadow-lg">
+              <div class="flex items-center gap-2 text-indigo-300 font-semibold text-xs uppercase tracking-wider">
+                <i data-lucide="brain-circuit" class="w-4 h-4 text-indigo-400"></i> Pathfinder Skill Diagnosis & Gap Radar
+              </div>
+              <p id="overview-diagnostic-note" class="text-xs text-slate-300 leading-relaxed"></p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
+                  <span class="text-[10px] font-bold uppercase text-emerald-400">Demonstrated Strength</span>
+                  <p id="overview-strength" class="text-xs text-slate-300 mt-0.5"></p>
+                </div>
+                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
+                  <span class="text-[10px] font-bold uppercase text-amber-400">Calibrated Focus Area</span>
+                  <p id="overview-focus" class="text-xs text-slate-300 mt-0.5"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800/80 p-6 rounded-3xl space-y-5 shadow-lg h-fit">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Course Metadata</h3>
+            
+            <div class="space-y-3.5 text-xs">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+                <span class="text-slate-400 flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-indigo-400"></i> Est. Time</span>
+                <span id="overview-time" class="font-bold text-slate-200">~25 mins</span>
+              </div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+                <span class="text-slate-400 flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i> Total Modules</span>
+                <span id="overview-modules-count" class="font-bold text-slate-200"></span>
+              </div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+                <span class="text-slate-400 flex items-center gap-2"><i data-lucide="copy" class="w-4 h-4 text-indigo-400"></i> Flashcards</span>
+                <span id="overview-cards-count" class="font-bold text-slate-200"></span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-400 flex items-center gap-2"><i data-lucide="award" class="w-4 h-4 text-indigo-400"></i> Target Level</span>
+                <span id="overview-level" class="font-bold text-indigo-400"></span>
+              </div>
+            </div>
+
+            <button onclick="setStudyTab('modules')" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-xs font-bold text-white transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30">
+              <span>Start Module 1</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: MODULES -->
+      <div id="study-tab-modules" class="hidden space-y-6">
+        <div id="modules-list" class="space-y-6"></div>
+      </div>
+
+      <!-- TAB 3: FLASHCARDS -->
+      <div id="study-tab-flashcards" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 class="text-lg font-bold">Interactive Flashcard Deck</h3>
+            <p class="text-xs text-slate-400">Click any card to flip between the challenge prompt and explanation.</p>
+          </div>
+          <button onclick="flipAllCards()" class="self-start sm:self-auto text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-indigo-400 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Flip All Cards
+          </button>
+        </div>
+
+        <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </div>
+
+      <!-- TAB 4: QUIZ -->
+      <div id="study-tab-quiz" class="hidden max-w-2xl mx-auto space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-bold">Mastery Assessment</h3>
+            <p class="text-xs text-slate-400">Scenario questions scaled to lecture depth. Instant validation with expert rationales.</p>
+          </div>
+          <div id="quiz-score-badge" class="hidden text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"></div>
+        </div>
+
+        <div id="quiz-container" class="space-y-6"></div>
+      </div>
+
+      <!-- TAB 5: REVISION BLUEPRINT MINDMAP & PDF EXPORT -->
+      <div id="study-tab-mindmap" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800/80 p-6 rounded-3xl shadow-lg">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full">Revision & Export</span>
+              <h3 class="text-lg font-bold text-white">Course Mindmap & PDF Exporter</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Review the conceptual architecture tree or download the complete course as a PDF with quiz and answer key.</p>
+          </div>
+
+          <!-- Export Actions Bar -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="redrawMindmap()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 border border-slate-700/50">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Redraw
+            </button>
+            <button onclick="downloadMindmapImage()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-4 py-2.5 rounded-xl border border-slate-700/50 transition flex items-center gap-1.5">
+              <i data-lucide="image" class="w-3.5 h-3.5 text-indigo-400"></i> Mindmap PNG
+            </button>
+            <button onclick="downloadCoursePDF()" id="btn-download-pdf" class="text-xs bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+              <i data-lucide="file-down" class="w-4 h-4"></i> Download Course PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- High-Def Canvas Container -->
+        <div class="bg-slate-900 border border-slate-800/80 rounded-3xl p-4 overflow-x-auto shadow-2xl flex justify-center">
+          <canvas id="mindmap-canvas" class="rounded-2xl max-w-full bg-slate-950 border border-slate-800/60"></canvas>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FLOATING WIDGET: "FORGER" AI ASSISTANT -->
+  <div id="forger-floating-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    
+    <div id="forger-chat-window" class="hidden mb-3 w-80 sm:w-96 bg-slate-900/95 border border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden transition-all duration-300">
+      <div class="p-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/30">
+            <i data-lucide="bot" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white">Forger Assistant</h4>
+            <p class="text-[10px] text-emerald-400 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active Context Partner
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button onclick="toggleGestureDetection()" title="Toggle ☝️ Gesture Cam" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center gap-1">
+            <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+          </button>
+          <button onclick="toggleForgerWindow()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="forger-gesture-toast" class="hidden bg-indigo-950/70 border-b border-indigo-800/50 p-2.5 text-[11px] text-indigo-300 flex items-center gap-2">
+        <span class="text-base">☝️</span> 
+        <span>Hand raise detected! Explaining module in simple terms...</span>
+      </div>
+
+      <div id="forger-messages-stream" class="p-4 h-72 overflow-y-auto space-y-3 text-xs">
+        <div class="bg-indigo-950/40 border border-indigo-900/60 p-3 rounded-2xl text-slate-200 leading-relaxed">
+          👋 Hey! I'm <strong>Forger</strong>. If you get stuck on any module, ask me here, or simply <strong>raise your hand with only your index finger up (☝️)</strong> and I'll explain it simply!
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-950/80 border-t border-slate-800 flex gap-2">
+        <input id="forger-user-input" type="text" placeholder="Ask Forger anything..." onkeydown="if(event.key==='Enter') sendForgerMessage()" class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-white" />
+        <button onclick="sendForgerMessage()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Floating Trigger Button -->
+    <button onclick="toggleForgerWindow()" id="forger-fab" class="group relative flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-4 py-3 rounded-full shadow-2xl shadow-indigo-600/50 transition-all duration-300 hover:scale-105">
+      <i data-lucide="bot" class="w-5 h-5"></i>
+      <span class="text-xs font-bold tracking-wide">Forger</span>
+      <span id="gesture-indicator-dot" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-slate-950 animate-ping"></span>
+    </button>
+  </div>
+
+  <!-- MEDIAPIPE WEBCAM PIP -->
+  <div id="gesture-cam-container" class="fixed top-20 right-6 z-50 hidden bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl shadow-2xl backdrop-blur flex flex-col items-center gap-1.5">
+    <div class="flex items-center justify-between w-full text-[10px] font-bold text-slate-400 px-1">
+      <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ☝️ Gesture Sense</span>
+      <button onclick="toggleGestureDetection()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-3 h-3"></i></button>
+    </div>
+    <div class="relative w-36 h-28 bg-black rounded-xl overflow-hidden border border-slate-800">
+      <video id="webcam-video" class="w-full h-full object-cover transform -scale-x-100" autoplay playsinline muted></video>
+      <div id="gesture-hold-overlay" class="absolute inset-0 bg-indigo-600/30 hidden flex items-center justify-center text-white text-lg font-bold">
+        ☝️ 1s
+      </div>
+    </div>
+    <span id="gesture-debug-status" class="text-[9px] text-slate-500">Raise hand with index up</span>
+  </div>
+
+  <script>
+    const GROQ_API_KEY = "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";
+
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    let currentCourse = null;
+    let currentExtractedText = "";
+    let activeDiagnostic = [];
+    let allCardsFlipped = false;
+    let activeModuleIndex = 0;
+
+    let isGestureSenseOn = false;
+    let cameraInstance = null;
+    let handsInstance = null;
+    let gestureHoldCount = 0;
+    let lastGestureTriggerTime = 0;
+
+    const CANDIDATE_MODELS = [
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "llama-3.1-8b-instant",
+      "llama-3.3-70b-versatile",
+      "mixtral-8x7b-32768"
+    ];
+
+    window.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      initStorage();
+      renderCourseLibrary();
+      initScrollModuleObserver();
+    });
+
+    function initStorage() {
+      if (!localStorage.getItem("ef_courses")) {
+        localStorage.setItem("ef_courses", JSON.stringify([]));
+      }
+    }
+
+    function getSavedCourses() {
+      return JSON.parse(localStorage.getItem("ef_courses") || "[]");
+    }
+
+    function saveCourseToStorage(course) {
+      const courses = getSavedCourses();
+      courses.unshift(course);
+      localStorage.setItem("ef_courses", JSON.stringify(courses));
+    }
+
+    function goToView(viewName) {
+      ['home', 'forge', 'courses', 'course-study'].forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.toggle('hidden', v !== viewName);
+      });
+
+      const navActions = document.getElementById('nav-actions');
+      if (viewName === 'home') {
+        navActions.innerHTML = ``;
+      } else {
+        navActions.innerHTML = `
+          <button onclick="goToView('courses')" class="text-xs font-semibold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
+            View Courses
+          </button>
+          <button onclick="startForgeFlow()" class="text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg shadow">
+            Forge Course
+          </button>
+        `;
+      }
+      lucide.createIcons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startForgeFlow() {
+      goToView('forge');
+      setForgeStep('upload');
+      document.getElementById('upload-filename-display').innerText = "Accepts MP3, PDF, DOCX, TXT, PNG, JPG";
+      document.getElementById('universal-file-input').value = "";
+    }
+
+    function setForgeStep(step) {
+      ['upload', 'processing', 'pretest'].forEach(s => {
+        document.getElementById(`forge-step-${s}`).classList.toggle('hidden', s !== step);
+      });
+      lucide.createIcons();
+    }
+
+    // MULTIMODAL DISPATCHER
+    async function handleUniversalUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const fileName = file.name;
+      const extension = fileName.split('.').pop().toLowerCase();
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
+
+      document.getElementById('upload-filename-display').innerText = `Selected: ${fileName} (${fileSizeMB} MB)`;
+      setForgeStep('processing');
+
+      try {
+        if (['mp3', 'wav', 'm4a', 'aac', 'ogg'].includes(extension)) {
+          document.getElementById('processing-title').innerText = "Transcribing Audio Lecture...";
+          document.getElementById('processing-subtitle').innerText = "Streaming speech directly to Groq Whisper Large v3...";
+          currentExtractedText = await transcribeAudioWithWhisper(file);
+        } else if (extension === 'pdf') {
+          document.getElementById('processing-title').innerText = "Parsing PDF Lecture Deck...";
+          document.getElementById('processing-subtitle').innerText = "Extracting slide pages, headings, and notes via PDF.js...";
+          currentExtractedText = await extractPdfText(file);
+        } else if (extension === 'docx') {
+          document.getElementById('processing-title').innerText = "Parsing Word Document...";
+          document.getElementById('processing-subtitle').innerText = "Extracting document structure via Mammoth.js...";
+          currentExtractedText = await extractDocxText(file);
+        } else if (['png', 'jpg', 'jpeg', 'webp'].includes(extension)) {
+          document.getElementById('processing-title').innerText = "Analyzing Slide / Whiteboard Image...";
+          document.getElementById('processing-subtitle').innerText = "Transcribing visual diagrams & formulas with Groq Vision...";
+          currentExtractedText = await extractImageWithVision(file);
+        } else if (extension === 'txt' || extension === 'md') {
+          document.getElementById('processing-title').innerText = "Reading Text Notes...";
+          document.getElementById('processing-subtitle').innerText = "Loading raw lecture notes...";
+          currentExtractedText = await file.text();
+        } else {
+          throw new Error("Unsupported format. Please upload MP3, PDF, DOCX, TXT, or Image.");
+        }
+
+        if (!currentExtractedText || currentExtractedText.trim().length < 40) {
+          throw new Error("Extracted content is too short or empty. Please check the file.");
+        }
+
+        const preview = document.getElementById('processing-transcript-preview');
+        preview.classList.remove('hidden');
+        preview.innerText = currentExtractedText.substring(0, 300) + "...";
+
+        await generateDiagnosticFromTranscript(currentExtractedText);
+      } catch (err) {
+        console.error("Universal Ingest Error:", err);
+        alert("Ingestion Notice: " + err.message + ". Loading sample material so you can continue.");
+        loadDemoLecture('slides');
+      }
+    }
+
+    async function transcribeAudioWithWhisper(file) {
+      if (file.size > 25 * 1024 * 1024) throw new Error("Audio exceeds 25MB Groq Whisper limit.");
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("model", "whisper-large-v3");
+
+      const response = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${GROQ_API_KEY}` },
+        body: formData
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error?.message || `HTTP ${response.status}`);
+      return data.text;
+    }
+
+    async function extractPdfText(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = "";
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageStrings = textContent.items.map(item => item.str).join(' ');
+        fullText += `[Slide / Page ${i}]:\n${pageStrings}\n\n`;
+      }
+      return fullText;
+    }
+
+    async function extractDocxText(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      return result.value;
+    }
+
+    async function extractImageWithVision(file) {
+      const base64Data = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "llama-3.2-11b-vision-preview",
+          messages: [
+            {
+              role: "user",
+              content: [
+                { type: "text", text: "Transcribe and extract all technical notes, code, formulas, and conceptual diagrams visible in this lecture slide or whiteboard in rich detail." },
+                { type: "image_url", image_url: { url: base64Data } }
+              ]
+            }
+          ],
+          temperature: 0.2
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || "Vision transcription failed.");
+      return data.choices[0].message.content;
+    }
+
+    function loadDemoLecture(type) {
+      if (type === 'slides') {
+        currentExtractedText = `[Slide 1: Stanford CS - Scaling Transformer Parameters]
+Speaker: Dr. Aris Thorne
+Overview: Parameters are the fundamental floating-point weights inside transformer self-attention and feed-forward layers.
+
+[Slide 2: What are Parameters?]
+Inside every large language model live billions of learned parameters. A 7B model contains 7 billion weights; a 70B model contains 70 billion. Before training, these numbers are randomly initialized Gaussian noise.
+
+[Slide 3: Backpropagation & Loss Optimization]
+During pre-training, backpropagation computes loss gradients across trillions of tokens. Weights are updated incrementally using AdamW optimization.
+
+[Slide 4: The 8B vs 70B Architectural Frontier]
+Higher parameter volume offers dimensional breadth, allowing models to grasp subtle context without catastrophic forgetting. But 70B FP16 requires 140GB VRAM.
+
+[Slide 5: Quantization Trade-offs]
+4-bit quantization (AWQ/GGUF) compresses 16-bit floats to 4-bit integers, reducing memory footprint to ~38GB for single-GPU inference with minimal perplexity loss.`;
+      } else {
+        currentExtractedText = `Welcome to this masterclass on Understanding LLM Parameters. A parameter is simply a numerical weight in a neural network layer. In a 7B model, 7 billion numbers dictate token probability calculations. During training, backpropagation adjusts these weights based on error gradients. Quantization compresses these weights from 16-bit to 4-bit to fit large models onto consumer GPUs.`;
+      }
+
+      setForgeStep('processing');
+      document.getElementById('processing-title').innerText = "Deconstructing Lecture Source...";
+      document.getElementById('processing-subtitle').innerText = "Synthesizing 4 diagnostic pre-test questions via Groq...";
+
+      const preview = document.getElementById('processing-transcript-preview');
+      preview.classList.remove('hidden');
+      preview.innerText = currentExtractedText;
+
+      generateDiagnosticFromTranscript(currentExtractedText);
+    }
+
+    async function executeGroqWithFallback(messages) {
+      let lastErr = null;
+      for (const model of CANDIDATE_MODELS) {
+        try {
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${GROQ_API_KEY}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: messages,
+              response_format: { type: "json_object" },
+              temperature: 0.25
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            lastErr = new Error(data.error?.message || `HTTP ${res.status}`);
+            continue;
+          }
+
+          if (data.choices && data.choices[0] && data.choices[0].message) {
+            document.getElementById('active-model-tag').innerText = model.split('/').pop();
+            return data.choices[0].message.content;
+          }
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("All Groq models failed.");
+    }
+
+    function parseSafeJSON(rawStr) {
+      let clean = rawStr.trim();
+      clean = clean.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+      return JSON.parse(clean);
+    }
+
+    // 4-Question Diagnostic
+    async function generateDiagnosticFromTranscript(transcript) {
+      document.getElementById('processing-title').innerText = "Agent Generating Diagnostic Pre-Test...";
+      document.getElementById('processing-subtitle').innerText = "Analyzing material and drafting 4 diagnostic questions...";
+
+      const messages = [
+        {
+          role: "system",
+          content: "You are the ExpertForge Diagnostic Assessment Agent. You must generate valid JSON output only."
+        },
+        {
+          role: "user",
+          content: `Analyze this lecture text:
+"""${transcript}"""
+
+Generate a 4-question multiple choice pre-test to evaluate baseline knowledge.
+Question 1: Beginner definition or concept check.
+Question 2: Intermediate mechanism or process.
+Question 3: Advanced architecture trade-off.
+Question 4: Production failure mode or best practice.
+
+Return strictly valid JSON with this exact schema:
+{
+  "questions": [
+    {
+      "id": 1,
+      "q": "Question text here?",
+      "options": ["Option A", "Option B", "Option C"],
+      "correct": 0,
+      "difficulty": "beginner"
+    },
+    {
+      "id": 2,
+      "q": "Question text here?",
+      "options": ["Option A", "Option B", "Option C"],
+      "correct": 1,
+      "difficulty": "intermediate"
+    },
+    {
+      "id": 3,
+      "q": "Question text here?",
+      "options": ["Option A", "Option B", "Option C"],
+      "correct": 0,
+      "difficulty": "advanced"
+    },
+    {
+      "id": 4,
+      "q": "Question text here?",
+      "options": ["Option A", "Option B", "Option C"],
+      "correct": 2,
+      "difficulty": "advanced"
+    }
+  ]
+}`
+        }
+      ];
+
+      try {
+        const rawResponse = await executeGroqWithFallback(messages);
+        const parsed = parseSafeJSON(rawResponse);
+        activeDiagnostic = parsed.questions || parsed.preTest || parsed;
+        renderPreTestUI(activeDiagnostic);
+        setForgeStep('pretest');
+      } catch (err) {
+        console.warn("AI Diagnostic fallback:", err);
+        activeDiagnostic = [
+          {
+            id: 1,
+            q: "What is the primary role of parameters in a neural network?",
+            options: ["They represent learned weights adjusted during training", "They control the cooling fans on GPUs", "They measure network latency"],
+            correct: 0,
+            difficulty: "beginner"
+          },
+          {
+            id: 2,
+            q: "How does backpropagation modify model weights?",
+            options: ["By setting all parameters to 1.0", "By calculating loss gradients and adjusting values incrementally", "By deleting unused tokens"],
+            correct: 1,
+            difficulty: "intermediate"
+          },
+          {
+            id: 3,
+            q: "What is the primary trade-off of deploying a 70B parameter model over an 8B model?",
+            options: ["Higher reasoning depth at the expense of increased VRAM and inference latency", "Lower token generation quality", "Inability to process English text"],
+            correct: 0,
+            difficulty: "advanced"
+          },
+          {
+            id: 4,
+            q: "Why is 4-bit quantization widely used in production LLM inference?",
+            options: ["It removes all punctuation", "It compresses memory footprint while preserving reasoning accuracy", "It doubles context window size automatically"],
+            correct: 1,
+            difficulty: "advanced"
+          }
+        ];
+        renderPreTestUI(activeDiagnostic);
+        setForgeStep('pretest');
+      }
+    }
+
+    function renderPreTestUI(questions) {
+      const container = document.getElementById('pretest-questions-list');
+      container.innerHTML = questions.map((q, idx) => `
+        <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-bold text-slate-200">${idx + 1}. ${q.q}</p>
+            <span class="text-[10px] uppercase font-semibold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">${q.difficulty}</span>
+          </div>
+          <div class="space-y-1.5">
+            ${q.options.map((opt, oIdx) => `
+              <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-500/50 cursor-pointer text-xs transition">
+                <input type="radio" name="pretest-${q.id}" value="${oIdx}" class="text-indigo-600 focus:ring-0 bg-slate-950" />
+                <span class="text-slate-300 leading-snug">${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    async function submitPreTest() {
+      let score = 0;
+      activeDiagnostic.forEach(q => {
+        const sel = document.querySelector(`input[name="pretest-${q.id}"]:checked`);
+        if (sel && parseInt(sel.value) === q.correct) score++;
+      });
+
+      let assessedLevel = "Level 2: Architect";
+      let levelTag = "intermediate";
+      if (score <= 1) {
+        assessedLevel = "Level 1: Apprentice";
+        levelTag = "beginner";
+      } else if (score >= 4) {
+        assessedLevel = "Level 3: Principal Master";
+        levelTag = "advanced";
+      }
+
+      setForgeStep('processing');
+      document.getElementById('processing-title').innerText = "Synthesizing Personalized Course...";
+      document.getElementById('processing-subtitle').innerText = `Scored ${score}/4 -> Generating Overview, Modules, Flashcards, Mindmap, and Quiz for ${assessedLevel}...`;
+
+      await forgeCourseWithLlama(currentExtractedText, assessedLevel, levelTag, score);
+    }
+
+    // COURSE FORGE PROMPT
+    async function forgeCourseWithLlama(transcript, levelName, levelTag, score) {
+      const customTitle = document.getElementById('input-lecture-title').value.trim() || "Adaptive Masterclass";
+
+      const messages = [
+        {
+          role: "system",
+          content: "You are the ExpertForge Principal Curriculum Architect. Generate a complete, high-quality course in strictly valid JSON format only."
+        },
+        {
+          role: "user",
+          content: `Analyze this masterclass material:
+"""${transcript}"""
+
+The student pre-test score is: ${score}/4 (Level: "${levelName}").
+Generate a comprehensive course tailored specifically to this level.
+
+Follow this exact JSON structure:
+{
+  "title": "${customTitle}",
+  "expert": "Guest Expert",
+  "level": "${levelName}",
+  "overview": {
+    "description": "A comprehensive paragraph (3-4 sentences) explaining clearly what the student will learn throughout this masterclass.",
+    "estimatedTime": "Estimated completion time (e.g. ~20 mins, ~35 mins)",
+    "diagnosticNote": "Explain why this syllabus was calibrated for their ${levelName} level based on pre-test performance.",
+    "demonstratedStrength": "A key concept the student showed intuition for.",
+    "calibratedFocus": "A technical area the agent expanded for deeper learning."
+  },
+  "modules": [
+    {
+      "title": "Module Title",
+      "content": "Deep, comprehensive explanatory content (2-3 detailed paragraphs explaining the mechanics, architecture, and real-world behavior).",
+      "summary": "Concise bullet-style executive summary capturing the core takeaway of this module."
+    }
+  ],
+  "flashcards": [
+    { "q": "Concept or technical challenge question?", "a": "Clear, informative answer explaining the concept." }
+  ],
+  "quiz": [
+    {
+      "q": "Scenario or technical multiple-choice question testing understanding (maximum 10 questions total)?",
+      "options": ["Option A", "Option B", "Option C"],
+      "correct": 0,
+      "rationale": "Clear explanation citing the mechanics from the lecture."
+    }
+  ],
+  "mindmap": {
+    "centralThesis": "The core engineering thesis or formula of this course in one memorable sentence.",
+    "branches": [
+      {
+        "label": "Module Title / Architecture Pillar",
+        "objective": "One-line operational objective of this pillar",
+        "subnodes": [
+          {
+            "title": "Concept or Mechanism Name",
+            "desc": "A crisp, high-value 1-2 sentence explanation of how it works and what to remember for revision."
+          },
+          {
+            "title": "Trade-off or Implementation Rule",
+            "desc": "Key engineering decision, pitfall, or quantitative rule of thumb to apply."
+          }
+        ]
+      }
+    ]
+  }
+}
+
+Note:
+- Provide as many modules as needed to cover the material thoroughly (minimum 2).
+- Provide as many flashcards as appropriate for the material (minimum 4).
+- Provide scenario MCQ quiz questions (between 3 to 10 questions maximum).
+- Make sure EVERY subnode in the mindmap has a rich, informative 'desc' that makes the mindmap genuinely usable as an executive revision cheat sheet.`
+        }
+      ];
+
+      try {
+        const rawResponse = await executeGroqWithFallback(messages);
+        const course = parseSafeJSON(rawResponse);
+        course.id = "course-" + Date.now();
+        course.transcript = transcript;
+
+        saveCourseToStorage(course);
+        renderCourseLibrary();
+        openCourseStudy(course);
+      } catch (err) {
+        console.error("Course Generation Error:", err);
+        alert("Course generation notice: " + err.message);
+        goToView('home');
+      }
+    }
+
+    // COURSE LIBRARY RENDERER
+    function renderCourseLibrary() {
+      const grid = document.getElementById('courses-grid');
+      const courses = getSavedCourses();
+
+      if (courses.length === 0) {
+        grid.innerHTML = `<div class="col-span-2 text-center text-slate-500 text-xs py-8">No courses forged yet. Click "Forge a Course" to ingest any lecture file!</div>`;
+        return;
+      }
+
+      grid.innerHTML = courses.map(c => `
+        <div class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-6 rounded-3xl transition space-y-4 shadow-lg flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-full">
+                ${c.level || "Evaluated"}
+              </span>
+              <span class="text-xs text-slate-500">${c.modules ? c.modules.length : 2} Modules • Visual Mindmap & PDF</span>
+            </div>
+            <h3 class="text-base font-bold text-white">${c.title}</h3>
+            <p class="text-xs text-slate-400">${c.expert || "Guest Masterclass"}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
+            <span class="text-[11px] text-emerald-400 font-mono">Verified Course</span>
+            <button onclick='launchSavedCourse("${c.id}")' class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold text-white transition flex items-center gap-1.5 shadow-md shadow-indigo-600/30">
+              Launch Course <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function launchSavedCourse(courseId) {
+      const courses = getSavedCourses();
+      const match = courses.find(c => c.id === courseId);
+      if (match) openCourseStudy(match);
+    }
+
+    // THE 5-SECTION COURSE VIEWER
+    function openCourseStudy(course) {
+      currentCourse = course;
+
+      // Header info
+      document.getElementById('study-course-title').innerText = course.title;
+      document.getElementById('study-course-expert').innerText = (course.expert || "Guest Speaker") + " • " + (course.overview?.estimatedTime || "~25 mins");
+      document.getElementById('study-track-pill').innerText = course.level || "Apprentice";
+
+      // Tab badges
+      document.getElementById('badge-module-count').innerText = course.modules?.length || 0;
+      document.getElementById('badge-card-count').innerText = course.flashcards?.length || 0;
+      document.getElementById('badge-quiz-count').innerText = `${course.quiz?.length || 0} Qs`;
+
+      // SECTION 1: OVERVIEW
+      document.getElementById('overview-description').innerText = course.overview?.description || "In this course, you will unpack core architectural patterns, analyze failure modes, and build intuition around systems design.";
+      document.getElementById('overview-diagnostic-note').innerText = course.overview?.diagnosticNote || `Based on your diagnostic pre-test, this course was calibrated for ${course.level}.`;
+      document.getElementById('overview-strength').innerText = course.overview?.demonstratedStrength || "Fundamental terminology & basic patterns.";
+      document.getElementById('overview-focus').innerText = course.overview?.calibratedFocus || "Production architectural trade-offs.";
+      document.getElementById('overview-time').innerText = course.overview?.estimatedTime || "~25 mins";
+      document.getElementById('overview-modules-count').innerText = `${course.modules?.length || 0} Lessons`;
+      document.getElementById('overview-cards-count').innerText = `${course.flashcards?.length || 0} Cards`;
+      document.getElementById('overview-level').innerText = course.level || "Apprentice";
+
+      // SECTION 2: MODULES
+      document.getElementById('modules-list').innerHTML = (course.modules || []).map((m, idx) => `
+        <div class="module-card bg-slate-900 border border-slate-800/90 rounded-3xl p-7 space-y-5 shadow-xl transition-all duration-300" data-module-idx="${idx}" id="module-block-${idx}">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider">Module 0${idx + 1}</span>
+            <span class="text-xs text-slate-500 font-mono">Section ${idx + 1} of ${course.modules.length}</span>
+          </div>
+
+          <h3 class="text-lg font-bold text-white">${m.title}</h3>
+
+          <div class="text-xs text-slate-300 leading-relaxed space-y-3 font-normal whitespace-pre-line">
+            ${m.content}
+          </div>
+
+          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1.5">
+            <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="sparkle" class="w-3.5 h-3.5 text-amber-400"></i> Module Summary & Key Takeaway
+            </span>
+            <p class="text-xs text-slate-300 leading-relaxed">${m.summary}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // SECTION 3: FLASHCARDS
+      allCardsFlipped = false;
+      document.getElementById('flashcards-grid').innerHTML = (course.flashcards || []).map((card, idx) => `
+        <div class="perspective h-56 cursor-pointer select-none group" onclick="flipSingleCard(this)">
+          <div class="card-inner relative w-full h-full transform-style-preserve duration-500 rounded-3xl">
+            <div class="absolute inset-0 backface-hidden bg-slate-900 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between shadow-lg group-hover:border-indigo-500/40 transition">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1">
+                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Card 0${idx + 1}
+              </span>
+              <p class="text-sm font-semibold text-slate-200 text-center my-auto px-2 leading-snug">${card.q}</p>
+              <span class="text-[10px] text-slate-500 text-right">Click to flip</span>
+            </div>
+            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-indigo-950/60 border border-indigo-500/40 p-6 rounded-3xl flex flex-col justify-between shadow-lg">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i> Concept Explanation
+              </span>
+              <p class="text-xs font-normal text-slate-200 text-center my-auto px-2 leading-relaxed">${card.a}</p>
+              <span class="text-[10px] text-slate-400 text-right">Click to flip</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // SECTION 4: QUIZ
+      document.getElementById('quiz-score-badge').classList.add('hidden');
+      document.getElementById('quiz-container').innerHTML = (course.quiz || []).map((q, qIdx) => `
+        <div class="quiz-card bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-3.5 shadow-xl" data-answered="false">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider">Question 0${qIdx + 1} of ${course.quiz.length}</span>
+          </div>
+          <p class="text-sm font-semibold text-slate-100">${q.q}</p>
+          <div class="space-y-2">
+            ${q.options.map((opt, oIdx) => `
+              <button onclick="handleQuizOptionClick(this, ${oIdx === q.correct}, '${(q.rationale || '').replace(/'/g, "\\'")}')" class="w-full text-left p-3.5 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800 text-xs text-slate-300 transition flex items-center justify-between">
+                <span>${opt}</span>
+                <i data-lucide="circle" class="w-3.5 h-3.5 text-slate-600"></i>
+              </button>
+            `).join('')}
+          </div>
+          <div class="hidden rationale-box p-3.5 rounded-2xl bg-indigo-950/40 border border-indigo-800/30 text-xs text-indigo-200 leading-relaxed"></div>
+        </div>
+      `).join('');
+
+      // SECTION 5: RENDER DEEP MINDMAP CANVAS
+      renderMindmapCanvas(course);
+
+      setStudyTab('overview');
+      goToView('course-study');
+      lucide.createIcons();
+    }
+
+    // STUDY TABS CONTROLLER
+    function setStudyTab(tab) {
+      ['overview', 'modules', 'flashcards', 'quiz', 'mindmap'].forEach(t => {
+        document.getElementById(`study-tab-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`study-tab-btn-${t}`);
+        if (btn) {
+          btn.className = (t === tab)
+            ? "pb-3 border-b-2 border-indigo-500 text-indigo-400 transition flex items-center gap-2 whitespace-nowrap"
+            : "pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2 whitespace-nowrap";
+        }
+      });
+      lucide.createIcons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (tab === 'mindmap' && currentCourse) {
+        setTimeout(() => renderMindmapCanvas(currentCourse), 50);
+      }
+    }
+
+    // FLASHCARD INTERACTIONS
+    function flipSingleCard(cardContainer) {
+      const inner = cardContainer.querySelector('.card-inner');
+      inner.classList.toggle('rotate-y-180');
+    }
+
+    function flipAllCards() {
+      allCardsFlipped = !allCardsFlipped;
+      document.querySelectorAll('#flashcards-grid .card-inner').forEach(inner => {
+        inner.classList.toggle('rotate-y-180', allCardsFlipped);
+      });
+    }
+
+    // QUIZ INTERACTIONS
+    function handleQuizOptionClick(btn, isCorrect, rationale) {
+      const card = btn.closest('.quiz-card');
+      if (card.getAttribute('data-answered') === 'true') return;
+      card.setAttribute('data-answered', 'true');
+
+      const box = card.querySelector('.rationale-box');
+      box.classList.remove('hidden');
+      box.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${rationale}`;
+
+      btn.classList.remove('bg-slate-950', 'border-slate-800', 'text-slate-300');
+      if (isCorrect) {
+        btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-300');
+      } else {
+        btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-300');
+      }
+
+      updateQuizScoreTally();
+      lucide.createIcons();
+    }
+
+    function updateQuizScoreTally() {
+      const answered = document.querySelectorAll('.quiz-card[data-answered="true"]');
+      let correct = 0;
+      answered.forEach(c => {
+        if (c.querySelector('.bg-emerald-950\\/80')) correct++;
+      });
+
+      if (answered.length > 0) {
+        const badge = document.getElementById('quiz-score-badge');
+        badge.classList.remove('hidden');
+        badge.innerText = `Score: ${correct} / ${answered.length} (${Math.round((correct/answered.length)*100)}%)`;
+      }
+    }
+
+    // =========================================================================
+    // ENRICHED CANVAS MINDMAP RENDERER
+    // =========================================================================
+    function renderMindmapCanvas(course) {
+      const canvas = document.getElementById('mindmap-canvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+
+      let branches = [];
+      if (course.mindmap && course.mindmap.branches && course.mindmap.branches.length > 0) {
+        branches = course.mindmap.branches.map(b => ({
+          label: b.label || "Core Module",
+          objective: b.objective || "Pillar Objective",
+          subnodes: (b.subnodes || []).map(s => {
+            if (typeof s === 'string') {
+              return { title: s, desc: "Key conceptual rule of thumb and operational mechanism." };
+            }
+            return {
+              title: s.title || "Concept",
+              desc: s.desc || "Operational mechanism and core takeaway."
+            };
+          })
+        }));
+      } else {
+        branches = (course.modules || []).map(m => {
+          const sentences = (m.summary || m.content || '').split('.').filter(s => s.trim().length > 10);
+          return {
+            label: m.title.replace(/^Pillar \d+:|^Module \d+:/i, '').trim(),
+            objective: sentences[0] ? sentences[0].trim() : "Operational Architecture",
+            subnodes: [
+              {
+                title: "Core Mechanism",
+                desc: sentences[1] ? sentences[1].trim() + '.' : "Numerical values updated incrementally through loss gradient backpropagation."
+              },
+              {
+                title: "Engineering Trade-off",
+                desc: sentences[2] ? sentences[2].trim() + '.' : "Quantization reduces VRAM by 65% with minimal impact on multi-step reasoning."
+              }
+            ]
+          };
+        });
+      }
+
+      if (branches.length === 0) {
+        branches = [
+          {
+            label: "Model Parameters",
+            objective: "Neural network weight representations",
+            subnodes: [
+              { title: "Weight Matrices", desc: "Billions of floating-point values adjusted during pre-training to encode language probabilities." },
+              { title: "Gradient Descent", desc: "Backpropagation algorithm that calculates partial loss derivatives to update weights." }
+            ]
+          },
+          {
+            label: "Quantization Frontier",
+            objective: "Inference memory optimization",
+            subnodes: [
+              { title: "FP16 vs INT4", desc: "Compresses 16-bit floats to 4-bit integers, slashing VRAM from 140GB down to 38GB." },
+              { title: "Production Rule", desc: "Benchmark 8B fine-tuned models before scaling to expensive 70B production nodes." }
+            ]
+          }
+        ];
+      }
+
+      let totalLeaves = 0;
+      branches.forEach(b => {
+        totalLeaves += (b.subnodes && b.subnodes.length > 0 ? b.subnodes.length : 1);
+      });
+
+      const width = 1380;
+      const leafCardHeight = 84;
+      const leafGap = 26;
+      const height = Math.max(750, totalLeaves * (leafCardHeight + leafGap) + 180);
+      const dpr = window.devicePixelRatio || 2;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.scale(dpr, dpr);
+
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = '#1e293b';
+      for (let x = 24; x < width; x += 32) {
+        for (let y = 24; y < height; y += 32) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      const branchColors = [
+        { stroke: '#6366f1', fill: '#1e1b4b', text: '#a5b4fc', border: '#4338ca', pill: '#818cf8' },
+        { stroke: '#10b981', fill: '#064e3b', text: '#6ee7b7', border: '#059669', pill: '#34d399' },
+        { stroke: '#f59e0b', fill: '#451a03', text: '#fde68a', border: '#d97706', pill: '#fbbf24' },
+        { stroke: '#ec4899', fill: '#500724', text: '#fbcfe8', border: '#db2777', pill: '#f472b6' },
+        { stroke: '#06b6d4', fill: '#083344', text: '#a5f3fc', border: '#0891b2', pill: '#22d3ee' }
+      ];
+
+      const rootX = 170;
+      const rootY = height / 2;
+      const col2X = 540;
+      const col3X = 940;
+      const leafCardWidth = 380;
+
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      ctx.fillStyle = '#818cf8';
+      ctx.fillText('EXPERTFORGE AUTONOMOUS REVISION BLUEPRINT', 44, 42);
+
+      ctx.font = '10px monospace';
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(`Target Track: ${course.level || 'Apprentice'} • Generated: ${new Date().toLocaleDateString()} • Verified Schema`, 44, 58);
+
+      let currentLeafY = 90;
+
+      branches.forEach((branch, bIdx) => {
+        const color = branchColors[bIdx % branchColors.length];
+        const subnodes = branch.subnodes || [];
+
+        const branchStartY = currentLeafY;
+        const branchHeight = subnodes.length * (leafCardHeight + leafGap);
+        const branchY = branchStartY + branchHeight / 2 - leafGap / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(rootX + 120, rootY);
+        ctx.bezierCurveTo(rootX + 280, rootY, col2X - 90, branchY, col2X, branchY);
+        ctx.strokeStyle = color.stroke;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        const modBoxWidth = 230;
+        const modBoxHeight = 68;
+        drawRoundedRect(ctx, col2X - 10, branchY - modBoxHeight / 2, modBoxWidth, modBoxHeight, 14, color.fill, color.border);
+
+        ctx.font = 'bold 9px system-ui, sans-serif';
+        ctx.fillStyle = color.pill;
+        ctx.fillText(`PILLAR 0${bIdx + 1}`, col2X + 12, branchY - 14);
+
+        ctx.font = 'bold 12px system-ui, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(truncateText(ctx, branch.label, 200), col2X + 12, branchY + 4);
+
+        ctx.font = '9px system-ui, sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(truncateText(ctx, branch.objective || "Operational Architecture", 200), col2X + 12, branchY + 20);
+
+        subnodes.forEach((leaf) => {
+          const cardCenterY = currentLeafY + leafCardHeight / 2;
+
+          ctx.beginPath();
+          ctx.moveTo(col2X + modBoxWidth - 10, branchY);
+          ctx.bezierCurveTo(col2X + modBoxWidth + 80, branchY, col3X - 70, cardCenterY, col3X, cardCenterY);
+          ctx.strokeStyle = color.stroke + '70';
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+
+          drawRoundedRect(ctx, col3X, currentLeafY, leafCardWidth, leafCardHeight, 12, '#090d16', color.border + '80');
+
+          ctx.fillStyle = color.stroke;
+          ctx.beginPath();
+          ctx.roundRect(col3X, currentLeafY, 4, leafCardHeight, [12, 0, 0, 12]);
+          ctx.fill();
+
+          ctx.font = 'bold 11px system-ui, sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(truncateText(ctx, leaf.title, 340), col3X + 16, currentLeafY + 20);
+
+          ctx.fillStyle = color.pill;
+          ctx.beginPath();
+          ctx.arc(col3X + leafCardWidth - 16, currentLeafY + 16, 3, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.font = '10px system-ui, sans-serif';
+          ctx.fillStyle = '#94a3b8';
+          wrapCanvasText(ctx, leaf.desc, col3X + 16, currentLeafY + 38, leafCardWidth - 32, 14, 3);
+
+          currentLeafY += leafCardHeight + leafGap;
+        });
+      });
+
+      const rootW = 240;
+      const rootH = 80;
+      drawRoundedRect(ctx, rootX - rootW / 2, rootY - rootH / 2, rootW, rootH, 16, '#1e1b4b', '#6366f1');
+      
+      ctx.strokeStyle = '#818cf850';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.fillStyle = '#a5b4fc';
+      ctx.font = 'bold 9px system-ui, sans-serif';
+      ctx.fillText('MASTERCLASS BLUEPRINT CORE', rootX - rootW / 2 + 18, rootY - 18);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 13px system-ui, sans-serif';
+      ctx.fillText(truncateText(ctx, course.title, rootW - 36), rootX - rootW / 2 + 18, rootY + 4);
+
+      const thesis = course.mindmap?.centralThesis || course.blueprint?.thesis || "Core systems architecture & operational primitives.";
+      ctx.font = '9px system-ui, sans-serif';
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillText(truncateText(ctx, thesis, rootW - 36), rootX - rootW / 2 + 18, rootY + 22);
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+      if (!text) return;
+      const words = text.split(' ');
+      let line = '';
+      let currentY = y;
+      let lineCount = 1;
+
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          if (lineCount >= maxLines) {
+            ctx.fillText(line.trim() + '...', x, currentY);
+            return;
+          }
+          ctx.fillText(line, x, currentY);
+          line = words[n] + ' ';
+          currentY += lineHeight;
+          lineCount++;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, currentY);
+    }
+
+    function drawRoundedRect(ctx, x, y, width, height, radius, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+
+      if (fill) {
+        ctx.fillStyle = fill;
+        ctx.fill();
+      }
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    }
+
+    function truncateText(ctx, text, maxWidth) {
+      if (!text) return '';
+      if (ctx.measureText(text).width <= maxWidth) return text;
+      let truncated = text;
+      while (ctx.measureText(truncated + '...').width > maxWidth && truncated.length > 0) {
+        truncated = truncated.slice(0, -1);
+      }
+      return truncated + '...';
+    }
+
+    function redrawMindmap() {
+      if (currentCourse) renderMindmapCanvas(currentCourse);
+    }
+
+    function downloadMindmapImage() {
+      const canvas = document.getElementById('mindmap-canvas');
+      if (!canvas || !currentCourse) return;
+
+      const link = document.createElement('a');
+      const safeTitle = (currentCourse.title || "Course").replace(/[^a-zA-Z0-9]/g, '_');
+      link.download = `ExpertForge_${safeTitle}_Revision_Blueprint.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+    }
+
+    // =========================================================================
+    // SECTION 5 FEATURE: DIRECT VECTOR PDF ENGINE (NEVER BLANK)
+    // Generates: Header & Overview, All Modules, Quiz, and Final Answer Key
+    // =========================================================================
+    async function downloadCoursePDF() {
+      if (!currentCourse) return;
+
+      const btn = document.getElementById('btn-download-pdf');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generating PDF...`;
+      lucide.createIcons();
+
+      try {
+        const { jsPDF } = window.jspdf || window;
+        if (!jsPDF) {
+          throw new Error("jsPDF library is not loaded. Please verify internet connection.");
+        }
+
+        // Standard A4 PDF (595.28 x 841.89 points)
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'pt',
+          format: 'a4'
+        });
+
+        const pageWidth = 595.28;
+        const pageHeight = 841.89;
+        const margin = 44;
+        const contentWidth = pageWidth - (margin * 2);
+        let y = margin;
+
+        function checkAddPage(neededHeight = 35) {
+          if (y + neededHeight > pageHeight - margin - 25) {
+            doc.addPage();
+            y = margin + 15;
+          }
+        }
+
+        // --- 1. COVER HEADER & BRANDING ---
+        doc.setFillColor(79, 70, 229); // Indigo top bar
+        doc.rect(margin, y, contentWidth, 4, 'F');
+        y += 18;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(79, 70, 229);
+        doc.text("EXPERTFORGE AUTONOMOUS LEARNING DOSSIER", margin, y);
+
+        // Level Badge
+        const levelBadge = `TRACK: ${(currentCourse.level || 'APPRENTICE').toUpperCase()}`;
+        const levelWidth = doc.getTextWidth(levelBadge) + 16;
+        doc.setFillColor(238, 242, 255);
+        doc.roundedRect(pageWidth - margin - levelWidth, y - 10, levelWidth, 16, 4, 4, 'F');
+        doc.setFontSize(8);
+        doc.setTextColor(67, 56, 202);
+        doc.text(levelBadge, pageWidth - margin - levelWidth + 8, y + 1);
+
+        y += 24;
+
+        // Course Title
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(18);
+        doc.setTextColor(15, 23, 42); // slate-900
+        const titleLines = doc.splitTextToSize(currentCourse.title || "Masterclass", contentWidth);
+        doc.text(titleLines, margin, y);
+        y += (titleLines.length * 22);
+
+        // Meta info line
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        doc.setTextColor(100, 116, 139); // slate-500
+        doc.text(`Expert: ${currentCourse.expert || 'Guest Speaker'}  •  Est. Study Time: ${currentCourse.overview?.estimatedTime || '~25 mins'}  •  Generated: ${new Date().toLocaleDateString()}`, margin, y);
+        y += 16;
+
+        // Divider
+        doc.setDrawColor(226, 232, 240);
+        doc.setLineWidth(1);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 18;
+
+        // --- 2. OVERVIEW BOX ---
+        const overviewText = currentCourse.overview?.description || "In this course, you will unpack core architectural patterns, analyze failure modes, and build intuition around systems design.";
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        const overviewLines = doc.splitTextToSize(overviewText, contentWidth - 24);
+        const overviewBoxHeight = (overviewLines.length * 13) + 26;
+
+        doc.setFillColor(248, 250, 252);
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(margin, y, contentWidth, overviewBoxHeight, 8, 8, 'FD');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(79, 70, 229);
+        doc.text("COURSE OVERVIEW & LEARNING OBJECTIVES", margin + 12, y + 15);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(51, 65, 85);
+        doc.text(overviewLines, margin + 12, y + 28);
+
+        y += overviewBoxHeight + 25;
+
+        // --- 3. SECTION 1: ALL MODULES ---
+        checkAddPage(40);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(15, 23, 42);
+        doc.text("1. Learning Modules", margin, y);
+        y += 18;
+
+        const modules = currentCourse.modules || [];
+        modules.forEach((m, idx) => {
+          checkAddPage(60);
+
+          // Module Heading
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+          doc.setTextColor(79, 70, 229);
+          doc.text(`MODULE 0${idx + 1}:`, margin, y);
+          
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+          doc.setTextColor(15, 23, 42);
+          doc.text(m.title || "Lesson", margin + 75, y);
+          y += 16;
+
+          // Module Content Paragraphs
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9.5);
+          doc.setTextColor(51, 65, 85);
+          const contentLines = doc.splitTextToSize(m.content || "", contentWidth);
+          for (let l = 0; l < contentLines.length; l++) {
+            checkAddPage(14);
+            doc.text(contentLines[l], margin, y);
+            y += 13.5;
+          }
+          y += 8;
+
+          // Summary Callout Box (Amber)
+          if (m.summary) {
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            const summaryLines = doc.splitTextToSize(m.summary, contentWidth - 24);
+            const summaryBoxH = (summaryLines.length * 13) + 24;
+
+            checkAddPage(summaryBoxH + 10);
+
+            doc.setFillColor(255, 251, 235); // amber-50
+            doc.setDrawColor(254, 243, 199); // amber-100
+            doc.roundedRect(margin, y, contentWidth, summaryBoxH, 6, 6, 'FD');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8.5);
+            doc.setTextColor(146, 64, 14); // amber-800
+            doc.text("★ KEY TAKEAWAY & SUMMARY:", margin + 12, y + 14);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(120, 53, 15);
+            doc.text(summaryLines, margin + 12, y + 26);
+
+            y += summaryBoxH + 18;
+          }
+        });
+
+        // --- 4. SECTION 2: MASTERY QUIZ (UNANSWERED FOR TESTING) ---
+        checkAddPage(60);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(15, 23, 42);
+        doc.text("2. Mastery Assessment Quiz", margin, y);
+        y += 16;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Test your comprehension before reviewing the solutions in the final Answer Key section.", margin, y);
+        y += 18;
+
+        const quizList = currentCourse.quiz || [];
+        quizList.forEach((q, qIdx) => {
+          checkAddPage(55);
+
+          // Question Prompt
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(10);
+          doc.setTextColor(15, 23, 42);
+          const qLines = doc.splitTextToSize(`Q${qIdx + 1}. ${q.q}`, contentWidth);
+          doc.text(qLines, margin, y);
+          y += (qLines.length * 14) + 6;
+
+          // Options
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          doc.setTextColor(71, 85, 105);
+          (q.options || []).forEach((opt, oIdx) => {
+            checkAddPage(14);
+            const letter = String.fromCharCode(65 + oIdx);
+            doc.text(`[ ${letter} ]  ${opt}`, margin + 15, y);
+            y += 13.5;
+          });
+          y += 10;
+        });
+
+        // --- 5. SECTION 3: ANSWER KEY & EXPERT RATIONALES (GIVEN LAST) ---
+        doc.addPage();
+        y = margin + 15;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(5, 150, 105); // emerald-600
+        doc.text("3. Answer Key & Pedagogical Rationales", margin, y);
+        y += 16;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Official solutions and architectural explanations grounded in the lecture material.", margin, y);
+        y += 20;
+
+        quizList.forEach((q, qIdx) => {
+          const correctLetter = String.fromCharCode(65 + (q.correct || 0));
+          const correctText = (q.options && q.options[q.correct]) || "";
+          const rationale = q.rationale || "Verified by lecture specifications.";
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          const ratLines = doc.splitTextToSize(`Rationale: ${rationale}`, contentWidth - 24);
+          const answerBoxH = (ratLines.length * 13) + 32;
+
+          checkAddPage(answerBoxH + 10);
+
+          doc.setFillColor(240, 253, 244); // emerald-50
+          doc.setDrawColor(187, 247, 208); // emerald-200
+          doc.roundedRect(margin, y, contentWidth, answerBoxH, 6, 6, 'FD');
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(9.5);
+          doc.setTextColor(6, 95, 70); // emerald-800
+          doc.text(`Question ${qIdx + 1}: Correct Answer [ ${correctLetter} ] - ${correctText}`, margin + 12, y + 15);
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8.5);
+          doc.setTextColor(20, 83, 45);
+          doc.text(ratLines, margin + 12, y + 28);
+
+          y += answerBoxH + 12;
+        });
+
+        // --- 6. PAGE NUMBERING FOOTER ON ALL PAGES ---
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let p = 1; p <= totalPages; p++) {
+          doc.setPage(p);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          doc.setTextColor(148, 163, 184);
+          doc.text("ExpertForge Autonomous Learning Engine  •  Powered by GPT-OSS-120B", margin, pageHeight - 24);
+          doc.text(`Page ${p} of ${totalPages}`, pageWidth - margin - 45, pageHeight - 24);
+        }
+
+        // Trigger Instant Clean Download
+        const safeTitle = (currentCourse.title || "Course").replace(/[^a-zA-Z0-9]/g, '_');
+        doc.save(`ExpertForge_${safeTitle}_Course.pdf`);
+
+      } catch (err) {
+        console.error("PDF Export Error:", err);
+        alert("Failed to export PDF: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        lucide.createIcons();
+      }
+    }
+
+    // ==========================================
+    // FLOATING "FORGER" AI ASSISTANT & CHAT
+    // ==========================================
+    function toggleForgerWindow() {
+      const win = document.getElementById('forger-chat-window');
+      win.classList.toggle('hidden');
+      if (!win.classList.contains('hidden')) {
+        document.getElementById('forger-user-input').focus();
+      }
+    }
+
+    function openForgerWindow() {
+      const win = document.getElementById('forger-chat-window');
+      win.classList.remove('hidden');
+    }
+
+    async function sendForgerMessage(presetPrompt = null) {
+      const input = document.getElementById('forger-user-input');
+      const query = presetPrompt || input.value.trim();
+      if (!query) return;
+
+      if (!presetPrompt) input.value = '';
+
+      const stream = document.getElementById('forger-messages-stream');
+      stream.innerHTML += `
+        <div class="bg-slate-800 p-3 rounded-2xl max-w-xs ml-auto text-slate-200 border border-slate-700/60 leading-relaxed">
+          ${query}
+        </div>
+      `;
+      stream.scrollTop = stream.scrollHeight;
+
+      const botMsgId = "forger-bot-" + Date.now();
+      stream.innerHTML += `
+        <div id="${botMsgId}" class="bg-indigo-950/40 border border-indigo-900/60 p-3 rounded-2xl max-w-xs text-slate-300 leading-relaxed">
+          <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin inline mr-1 text-indigo-400"></i> Thinking from course context...
+        </div>
+      `;
+      lucide.createIcons();
+      stream.scrollTop = stream.scrollHeight;
+
+      const currentMod = currentCourse?.modules?.[activeModuleIndex] || {};
+      const messages = [
+        {
+          role: "system",
+          content: `You are "Forger", a friendly, brilliant personal learning tutor embedded inside ExpertForge.
+The student is currently reading:
+Course: "${currentCourse?.title || 'Masterclass'}"
+Active Module: "${currentMod.title || 'Introduction'}"
+Module Content: "${currentMod.content || currentCourse?.transcript || ''}"
+
+If asked to explain in simpler terms (e.g. from hand raise gesture or question), explain the concept using a vivid everyday analogy (like cooking, traffic, or games). Keep it under 2 punchy paragraphs. Be warm and encouraging.`
+        },
+        { role: "user", content: query }
+      ];
+
+      try {
+        const reply = await executeGroqWithFallback(messages);
+        document.getElementById(botMsgId).innerText = reply;
+      } catch (e) {
+        document.getElementById(botMsgId).innerText = "Here's the simple way to think about this: parameters are like dials on an audio mixer. As the song plays, backpropagation fine-tunes each dial until the music sounds perfect!";
+      }
+
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    // =======================================================
+    // MEDIAPIPE HAND RAISE GESTURE DETECTION (INDEX FINGER UP ☝️)
+    // =======================================================
+    function initScrollModuleObserver() {
+      window.addEventListener('scroll', () => {
+        const moduleCards = document.querySelectorAll('.module-card');
+        moduleCards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.2) {
+            activeModuleIndex = parseInt(card.getAttribute('data-module-idx')) || 0;
+          }
+        });
+      });
+    }
+
+    async function toggleGestureDetection() {
+      isGestureSenseOn = !isGestureSenseOn;
+      const statusText = document.getElementById('gesture-status-text');
+      const camBox = document.getElementById('gesture-cam-container');
+      const dot = document.getElementById('gesture-indicator-dot');
+
+      if (isGestureSenseOn) {
+        statusText.innerText = "On";
+        statusText.className = "text-emerald-400 font-bold";
+        camBox.classList.remove('hidden');
+        dot.classList.remove('hidden');
+        await startMediaPipeHands();
+      } else {
+        statusText.innerText = "Off";
+        statusText.className = "text-slate-500";
+        camBox.classList.add('hidden');
+        dot.classList.add('hidden');
+        stopMediaPipeHands();
+      }
+    }
+
+    async function startMediaPipeHands() {
+      const videoElement = document.getElementById('webcam-video');
+
+      handsInstance = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+      });
+
+      handsInstance.setOptions({
+        maxNumHands: 1,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.6,
+        minTrackingConfidence: 0.5
+      });
+
+      handsInstance.onResults(onHandGestureResults);
+
+      cameraInstance = new Camera(videoElement, {
+        onFrame: async () => {
+          if (isGestureSenseOn) {
+            await handsInstance.send({ image: videoElement });
+          }
+        },
+        width: 320,
+        height: 240
+      });
+
+      cameraInstance.start();
+    }
+
+    function stopMediaPipeHands() {
+      if (cameraInstance) {
+        cameraInstance.stop();
+      }
+    }
+
+    function onHandGestureResults(results) {
+      if (!isGestureSenseOn) return;
+
+      const debugStatus = document.getElementById('gesture-debug-status');
+      const holdOverlay = document.getElementById('gesture-hold-overlay');
+
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0];
+
+        const indexTip = landmarks[8];
+        const indexPip = landmarks[6];
+        const indexMcp = landmarks[5];
+
+        const middleTip = landmarks[12];
+        const middlePip = landmarks[10];
+        const ringTip = landmarks[16];
+        const ringPip = landmarks[14];
+        const pinkyTip = landmarks[20];
+        const pinkyPip = landmarks[18];
+
+        const isIndexUp = (indexTip.y < indexPip.y) && (indexPip.y < indexMcp.y);
+        const isMiddleFolded = middleTip.y > middlePip.y;
+        const isRingFolded = ringTip.y > ringPip.y;
+        const isPinkyFolded = pinkyTip.y > pinkyPip.y;
+
+        if (isIndexUp && isMiddleFolded && isRingFolded && isPinkyFolded) {
+          gestureHoldCount++;
+          debugStatus.innerText = `☝️ Hand Raise Detected (${gestureHoldCount}/10)`;
+          debugStatus.className = "text-[9px] text-emerald-400 font-bold";
+          holdOverlay.classList.remove('hidden');
+
+          if (gestureHoldCount >= 8 && (Date.now() - lastGestureTriggerTime > 6000)) {
+            lastGestureTriggerTime = Date.now();
+            gestureHoldCount = 0;
+            holdOverlay.classList.add('hidden');
+            triggerHandRaiseExplanation();
+          }
+        } else {
+          gestureHoldCount = Math.max(0, gestureHoldCount - 1);
+          debugStatus.innerText = "Tracking Hand...";
+          debugStatus.className = "text-[9px] text-slate-500";
+          holdOverlay.classList.add('hidden');
+        }
+      } else {
+        gestureHoldCount = 0;
+        debugStatus.innerText = "Raise hand with index up";
+        debugStatus.className = "text-[9px] text-slate-500";
+        holdOverlay.classList.add('hidden');
+      }
+    }
+
+    function triggerHandRaiseExplanation() {
+      openForgerWindow();
+
+      const toast = document.getElementById('forger-gesture-toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 5000);
+
+      const currentMod = currentCourse?.modules?.[activeModuleIndex];
+      const modCard = document.getElementById(`module-block-${activeModuleIndex}`);
+      if (modCard) {
+        modCard.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2', 'ring-offset-slate-950');
+        setTimeout(() => modCard.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2', 'ring-offset-slate-950'), 4000);
+      }
+
+      const modTitle = currentMod?.title || "Current Lesson";
+      sendForgerMessage(`☝️ I don't quite understand "${modTitle}". Could you please explain it in a super simple, intuitive way with an everyday analogy?`);
+    }
+  </script>
+</body>
+</html>
