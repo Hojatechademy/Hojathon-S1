@@ -2,7 +2,7 @@
 
 **Team ID:** 12
 
-**Team Name:** ALMAS CP
+**Team Name:** Agri-Corp
 
 **Project Name:** AgriPilot
 
