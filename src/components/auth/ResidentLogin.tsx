@@ -8,15 +8,15 @@ interface ResidentLoginProps {
 }
 
 export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess }) => {
-  const [email, setEmail] = useState('anoop.ward7@enteward.in');
-  const [password, setPassword] = useState('demo123');
+  const [username, setUsername] = useState('resident001');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage('Please enter both your email/phone and password.');
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage('Incorrect username or password.');
       return;
     }
 
@@ -24,14 +24,14 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess 
     setErrorMessage(null);
 
     try {
-      const { user, error } = await authService.signIn(email, password, 'resident');
+      const { user, error } = await authService.signIn(username, password, 'resident');
       if (error || !user) {
-        setErrorMessage(error || 'Invalid credentials. Please verify your email and password.');
+        setErrorMessage(error || 'Incorrect username or password.');
       } else {
         onSuccess(user);
       }
     } catch (_err) {
-      setErrorMessage('Network error: Unable to connect to authentication service.');
+      setErrorMessage('Incorrect username or password.');
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +68,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess 
             തിരികെ സ്വാഗതം
           </p>
           <p style={{ fontSize: '0.8rem', color: 'var(--outline)', marginTop: '0.25rem' }}>
-            Sign in to your Ente Ward account.
+            Sign in with your username and password.
           </p>
         </div>
 
@@ -93,16 +93,17 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--outline)', marginBottom: '0.4rem' }}>
-              Mobile Number or Email
+              Username
             </label>
             <div style={{ position: 'relative' }}>
               <span className="material-symbols-outlined" style={{ position: 'absolute', left: '0.75rem', top: '0.75rem', color: 'var(--outline)', fontSize: '1.2rem' }}>
-                mail
+                account_circle
               </span>
               <input
                 type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
                 required
                 style={{
                   width: '100%',
@@ -129,6 +130,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
                 required
                 style={{
                   width: '100%',
@@ -147,22 +149,20 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess 
             borderRadius: '10px',
             padding: '0.65rem 0.85rem',
             fontSize: '0.75rem',
-            color: 'var(--outline)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
+            color: 'var(--outline)'
           }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '1.1rem', color: 'var(--primary-container)' }}>
-              shield
-            </span>
-            <span>Resident accounts are managed through the trusted ward structure.</span>
+            Enter your assigned civic username (e.g. <code>resident001</code>). Ward membership is strictly derived by the system.
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
             className="btn-primary"
-            style={{ width: '100%', padding: '0.75rem', marginTop: '0.5rem' }}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              marginTop: '0.5rem'
+            }}
           >
             {isLoading ? (
               <>
@@ -173,8 +173,8 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({ onBack, onSuccess 
               </>
             ) : (
               <>
-                <span>Sign In as Resident</span>
-                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>arrow_forward</span>
+                <span>Sign in</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>login</span>
               </>
             )}
           </button>

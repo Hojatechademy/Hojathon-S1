@@ -25,6 +25,7 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
       ? 'പ്രശ്നം പരിശോധിക്കുകയും ആവശ്യമായ പരിഹാര നടപടികൾ പൂർത്തിയാക്കുകയും ചെയ്തു.' 
       : 'വാർഡ് പ്രതിനിധി പരാതി പരിശോധിച്ച് നടപടി ആരംഭിച്ചു.'
   );
+  const [evidenceUrl, setEvidenceUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!issue) return null;
@@ -46,6 +47,14 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
 
     try {
       const result = await issueService.updateStatus(issue.id, newStatus, remarksMl, authContext);
+      if (evidenceUrl.trim()) {
+        await issueService.addEvidence({
+          issueId: issue.id,
+          mediaUrl: evidenceUrl.trim(),
+          stage: newStatus === 'resolved' ? 'after' : 'in_progress',
+          captionMl: `${newStatus === 'resolved' ? 'പരിഹാര തെളിവ്' : 'നടപടി തെളിവ്'}: ${remarksMl.trim()}`
+        });
+      }
       if (result) {
         onUpdated(result);
         onClose();
@@ -133,6 +142,29 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
                 resize: 'none'
               }}
             />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--outline)', marginBottom: '0.4rem' }}>
+              നടപടി തെളിവ് / ഫോട്ടോ (Evidence URL - Optional)
+            </label>
+            <input
+              type="url"
+              value={evidenceUrl}
+              onChange={(e) => setEvidenceUrl(e.target.value)}
+              placeholder="https://example.com/repair-work-photo.jpg"
+              style={{
+                width: '100%',
+                padding: '0.6rem 0.75rem',
+                borderRadius: '10px',
+                border: '1px solid var(--outline-light)',
+                outline: 'none',
+                fontSize: '0.85rem'
+              }}
+            />
+            <p style={{ fontSize: '0.7rem', color: 'var(--outline)', marginTop: '0.25rem' }}>
+              പരാതി പരിഹരിച്ചതിന്റെയോ നടക്കുന്ന ജോലിയുടെയോ ഫോട്ടോ ലിങ്ക് ചേർക്കാം.
+            </p>
           </div>
 
           <div style={{

@@ -6,6 +6,7 @@ import { UserRole } from './database';
 
 export interface UserProfile {
   id: string;
+  username?: string;
   email: string;
   fullName: string;
   fullNameMl?: string;

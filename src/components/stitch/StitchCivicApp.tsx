@@ -1289,7 +1289,7 @@ export const StitchCivicApp: React.FC = () => {
                       <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]">Platform Super Admin</span>
                       <span className="text-label-sm font-label-sm text-outline">Civic Administration Node</span>
                     </div>
-                    <h1 className="text-headline-lg font-headline-lg font-bold text-on-surface mt-1">Kerala Civic Grid & Hierarchy / ഭരണക്രമം</h1>
+                    <h1 className="text-headline-lg font-headline-lg font-bold text-on-surface mt-1">Local Ward Hierarchy / ഭരണക്രമം</h1>
                     <p className="text-body-md font-body-md text-outline">Provision Grama Panchayats, enforce Ward boundaries, and manage authorized Representative credentials.</p>
                   </div>
                   <button
@@ -1321,8 +1321,8 @@ export const StitchCivicApp: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <span className="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center font-bold text-sm">KG</span>
                         <div>
-                          <span className="text-xs uppercase font-bold text-outline">Tier 1 · State Grid</span>
-                          <h4 className="text-title-lg font-title-lg font-bold text-on-surface">Kerala Civic Grid Architecture</h4>
+                          <span className="text-xs uppercase font-bold text-outline">Tier 1 · Local Governance</span>
+                          <h4 className="text-title-lg font-title-lg font-bold text-on-surface">Local Ward Governance Architecture</h4>
                         </div>
                       </div>
                       <span className="px-2.5 py-1 rounded-full text-xs font-mono bg-white border border-outline-variant/40 font-semibold">14 Districts Active</span>

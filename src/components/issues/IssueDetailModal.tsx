@@ -1,5 +1,5 @@
 import React from 'react';
-import { Issue } from '../../types/database';
+import { Issue, IssueEvidence, IssueTimeline } from '../../types/database';
 import { issueService } from '../../services/issueService';
 
 interface IssueDetailModalProps {
@@ -81,7 +81,7 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({ issue, onClo
               ഫോട്ടോകളും തെളിവുകളും (Evidence & Photos)
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
-              {evidence.map(e => (
+              {evidence.map((e: IssueEvidence) => (
                 <div key={e.id} style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--outline-light)' }}>
                   <img
                     src={e.mediaUrl}
@@ -112,7 +112,7 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({ issue, onClo
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative' }}>
-              {timeline.map((t) => (
+              {timeline.map((t: IssueTimeline) => (
                 <div key={t.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
                   <div style={{
                     width: '1.75rem',
@@ -147,6 +147,19 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({ issue, onClo
             </div>
           )}
         </div>
+
+        {/* Resident Feedback on Resolved Issue */}
+        {issue.status === 'resolved' && (
+          <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#15803d', fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.35rem' }}>
+              <span className="material-symbols-outlined text-sm">sentiment_satisfied</span>
+              <span>പരിഹാരത്തെക്കുറിച്ചുള്ള അഭിപ്രായം (Resident Feedback)</span>
+            </div>
+            <p style={{ fontSize: '0.78rem', color: '#166534', margin: 0 }}>
+              ഈ പ്രശ്നം നിങ്ങളുടെ വാർഡ് പ്രതിനിധി പരിഹരിച്ചിരിക്കുന്നു. പ്രതികരണങ്ങൾക്ക് നന്ദി!
+            </p>
+          </div>
+        )}
 
         {/* Modal Close Button */}
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>

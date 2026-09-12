@@ -8,15 +8,15 @@ interface AdminLoginProps {
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => {
-  const [email, setEmail] = useState('mshibin042@gmail.com');
+  const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage('Please enter your administrator email and password.');
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage('Incorrect username or password.');
       return;
     }
 
@@ -24,16 +24,16 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => 
     setErrorMessage(null);
 
     try {
-      const { user, error } = await authService.signIn(email, password, 'admin');
+      const { user, error } = await authService.signIn(username, password, 'admin');
       if (error || !user) {
-        setErrorMessage(error || 'Invalid administrator credentials.');
+        setErrorMessage('Incorrect username or password.');
       } else if (user.role !== 'admin') {
-        setErrorMessage('You are authenticated, but you do not have administration access.');
+        setErrorMessage('Incorrect username or password.');
       } else {
         onSuccess(user);
       }
     } catch (_err) {
-      setErrorMessage('Network error: Unable to connect to platform administration service.');
+      setErrorMessage('Incorrect username or password.');
     } finally {
       setIsLoading(false);
     }
@@ -95,16 +95,17 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--outline)', marginBottom: '0.4rem' }}>
-              Administrator Email
+              Username
             </label>
             <div style={{ position: 'relative' }}>
               <span className="material-symbols-outlined" style={{ position: 'absolute', left: '0.75rem', top: '0.75rem', color: 'var(--outline)', fontSize: '1.2rem' }}>
                 terminal
               </span>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
                 required
                 style={{
                   width: '100%',
@@ -129,7 +130,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter admin password"
+                placeholder="Enter your password"
                 required
                 style={{
                   width: '100%',
@@ -150,7 +151,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => 
             fontSize: '0.75rem',
             color: 'var(--outline)'
           }}>
-            Panchayat and ward node provisioning, representative management, and audit tracking.
+            Platform administration node provisioning and audit tracking.
           </div>
 
           <button
@@ -173,7 +174,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBack, onSuccess }) => 
               </>
             ) : (
               <>
-                <span>Sign In as Administrator</span>
+                <span>Sign in</span>
                 <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>terminal</span>
               </>
             )}

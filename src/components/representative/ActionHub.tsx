@@ -99,8 +99,23 @@ export const ActionHub: React.FC<ActionHubProps> = ({
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {wardIssues.map((issue) => (
-            <div key={issue.id} className="civic-card" style={{ padding: '1.5rem' }}>
+          {wardIssues.length === 0 ? (
+            <div className="civic-card" style={{ textAlign: 'center', padding: '3.5rem 1.5rem', background: '#ffffff', borderRadius: '16px', border: '1px solid var(--outline-light)' }}>
+              <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: '#ecfdf5', color: '#047857', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem auto' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '2rem' }}>
+                  task_alt
+                </span>
+              </div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--charcoal)', marginBottom: '0.35rem' }}>
+                വാർഡിൽ പുതിയ പരാതികളൊന്നുമില്ല
+              </h4>
+              <p style={{ fontSize: '0.85rem', color: 'var(--outline)', maxWidth: '420px', margin: '0 auto' }}>
+                No pending issues in your ward. All civic concerns are resolved or no new reports have been submitted.
+              </p>
+            </div>
+          ) : (
+            wardIssues.map((issue) => (
+              <div key={issue.id} className="civic-card" style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
@@ -195,7 +210,7 @@ export const ActionHub: React.FC<ActionHubProps> = ({
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       </div>
 

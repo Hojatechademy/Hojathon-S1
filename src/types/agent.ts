@@ -19,11 +19,16 @@ export type AgentState =
 
 export type AgentIntent =
   | 'REPORT_ISSUE'
-  | 'QUERY_ISSUE_STATUS'
+  | 'TRACK_ISSUE'
+  | 'ISSUE_STATUS'
   | 'LIST_MY_ISSUES'
-  | 'WARD_INQUIRY'
-  | 'REPRESENTATIVE_UPDATE'
-  | 'GENERAL_HELP'
+  | 'WARD_INFORMATION'
+  | 'CONTACT_INFORMATION'
+  | 'GOVERNMENT_CONTACT'
+  | 'REPRESENTATIVE_ACTION'
+  | 'ANALYTICS'
+  | 'GENERAL_INFORMATION'
+  | 'NEED_MORE_INFO'
   | 'UNKNOWN';
 
 export interface AuthenticatedUserContext {
@@ -33,6 +38,8 @@ export interface AuthenticatedUserContext {
   wardId: string;
   wardNumber: number;
   wardNameMl: string;
+  localBodyName?: string;
+  district?: string;
   isAuthenticated: boolean;
 }
 
@@ -43,17 +50,20 @@ export type SafeActivityStep = {
   labelEn: string; // e.g. "Understanding request"
   status: 'pending' | 'in_progress' | 'completed' | 'failed';
   timestamp: string;
+  toolName?: string;
+  details?: string;
 };
 
 export interface AgentToolDeclaration {
   name: string;
-  category: 'USER_CONTEXT' | 'ISSUES' | 'REPRESENTATIVE' | 'NOTIFICATIONS' | 'ANALYTICS';
+  category: 'USER_CONTEXT' | 'ISSUES' | 'CONTACTS' | 'REPRESENTATIVE' | 'NOTIFICATIONS' | 'ANALYTICS' | 'PUBLIC_INFO';
   descriptionEn: string;
   descriptionMl: string;
   parameters: Record<string, {
     type: string;
     description: string;
     required: boolean;
+    enum?: string[];
   }>;
   requiresAuth: boolean;
   authorizedRoles: UserRole[];
@@ -81,6 +91,8 @@ export interface ClassifiedComplaint {
   locationHint?: string;
   urgency: 'low' | 'medium' | 'high' | 'urgent';
   confidence: number;
+  requiresFollowUp?: boolean;
+  followUpQuestion?: string;
 }
 
 export interface AgentRunRecord {
@@ -94,7 +106,16 @@ export interface AgentRunRecord {
   toolCalls: AgentToolCall[];
   toolResults: AgentToolResult[];
   finalResponseMl?: string;
+  finalResponseEn?: string;
   createdIssueId?: string;
+  createdIssueNumber?: string;
   createdAt: string;
   completedAt?: string;
+}
+
+export interface ConversationTurn {
+  role: 'user' | 'agent' | 'system';
+  content: string;
+  runRecord?: AgentRunRecord;
+  timestamp: string;
 }

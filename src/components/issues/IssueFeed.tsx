@@ -101,11 +101,28 @@ export const IssueFeed: React.FC<IssueFeedProps> = ({ issues, onSelectIssue, onO
       {/* Issues List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
         {filteredIssues.length === 0 ? (
-          <div className="civic-card" style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--outline)' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: 'var(--outline-variant)', marginBottom: '0.5rem' }}>
-              inbox
-            </span>
-            <p style={{ fontWeight: 600 }}>ഈ വിഭാഗത്തിൽ പരാതികൾ ലഭ്യമല്ല.</p>
+          <div className="civic-card" style={{ textAlign: 'center', padding: '3rem 1.5rem', background: '#ffffff', borderRadius: '16px', border: '1px solid var(--outline-light)' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#ecfdf5', color: '#047857', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem auto' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.75rem' }}>
+                check_circle
+              </span>
+            </div>
+            <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--charcoal)', marginBottom: '0.35rem' }}>
+              നിങ്ങളുടെ വാർഡിൽ നിലവിൽ പരാതികളൊന്നുമില്ല
+            </h4>
+            <p style={{ fontSize: '0.85rem', color: 'var(--outline)', maxWidth: '400px', margin: '0 auto 1.25rem auto' }}>
+              No issues reported yet in your ward. Everything is looking good! വാർഡിൽ എന്തെങ്കിലും ശ്രദ്ധയിൽപ്പെട്ടാൽ പുതിയ പരാതി നൽകാം.
+            </p>
+            {onOpenNewReportModal && (
+              <button
+                onClick={onOpenNewReportModal}
+                className="btn-primary"
+                style={{ padding: '0.6rem 1.25rem', fontSize: '0.85rem', borderRadius: '12px', margin: '0 auto', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>add_circle</span>
+                <span>+ Report a Problem / പരാതി നൽകുക</span>
+              </button>
+            )}
           </div>
         ) : (
           filteredIssues.map((issue) => (

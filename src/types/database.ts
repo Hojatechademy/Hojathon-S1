@@ -37,6 +37,7 @@ export interface Ward {
 
 export interface Profile {
   id: string;
+  username?: string;
   fullName: string;
   phoneNumber?: string;
   email?: string;
@@ -107,5 +108,59 @@ export interface WardNotification {
   titleMl: string;
   bodyMl: string;
   isRead: boolean;
+  createdAt: string;
+}
+
+export interface WardContact {
+  id: string;
+  wardId: string;
+  name: string;
+  designation: string;
+  phone: string;
+  email?: string;
+  description?: string;
+  createdBy: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type GovernmentContactLevel = 
+  | 'minister' 
+  | 'district_collector' 
+  | 'senior_official' 
+  | 'secretariat';
+
+export interface GovernmentContact {
+  id: string;
+  name: string;
+  designation: string;
+  department?: string;
+  level: GovernmentContactLevel;
+  district?: string;
+  phone: string | null;
+  email?: string;
+  website?: string;
+  description?: string;
+  sourceName: string;
+  sourceUrl?: string;
+  lastVerified: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ResidentRecord {
+  id: string;
+  username?: string;
+  fullName: string;
+  email: string;
+  phone?: string;
+  wardId: string;
+  wardNumber: number;
+  wardNameMl?: string;
+  localBodyName?: string;
+  district?: string;
+  status: 'Active' | 'Pending';
   createdAt: string;
 }

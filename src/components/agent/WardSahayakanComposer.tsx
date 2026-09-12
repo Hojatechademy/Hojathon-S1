@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { UserProfile } from '../../types/auth';
-import { SafeActivityStep, AuthenticatedUserContext } from '../../types/agent';
+import { SafeActivityStep, AuthenticatedUserContext, AgentRunRecord, ConversationTurn } from '../../types/agent';
 import { defaultAgentRunner } from '../../agent/runner';
 import { Issue } from '../../types/database';
 
 interface WardSahayakanComposerProps {
   user: UserProfile;
-  onIssueCreated: (newIssue: Issue) => void;
+  onIssueCreated?: (newIssue: Issue) => void;
 }
 
 export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ user, onIssueCreated }) => {
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [steps, setSteps] = useState<SafeActivityStep[]>([]);
-  const [agentMessage, setAgentMessage] = useState<string | null>(null);
+  const [latestRun, setLatestRun] = useState<AgentRunRecord | null>(null);
+  const [conversationHistory, setConversationHistory] = useState<ConversationTurn[]>([]);
 
   const authContext: AuthenticatedUserContext = {
     userId: user.id,
@@ -22,6 +23,8 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
     wardId: user.wardId,
     wardNumber: user.wardNumber,
     wardNameMl: user.wardNameMl,
+    localBodyName: user.localBodyName || 'കുലുക്കല്ലൂർ ഗ്രാമപഞ്ചായത്ത്',
+    district: user.district || 'Palakkad',
     isAuthenticated: true
   };
 
@@ -31,45 +34,96 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
 
     setIsProcessing(true);
     setSteps([]);
-    setAgentMessage(null);
+
+    // Record user query in conversation history
+    const userTurn: ConversationTurn = {
+      role: 'user',
+      content: query,
+      timestamp: new Date().toISOString()
+    };
+    const updatedHistory = [...conversationHistory, userTurn];
+    setConversationHistory(updatedHistory);
 
     try {
-      const result = await defaultAgentRunner.processComplaint(
+      const result = await defaultAgentRunner.processRequest(
         query,
         authContext,
         (newStep) => {
           setSteps(prev => [...prev, newStep]);
-        }
+        },
+        updatedHistory
       );
 
+      setLatestRun(result);
+
+      // Save agent turn
       if (result.finalResponseMl) {
-        setAgentMessage(result.finalResponseMl);
+        setConversationHistory(prev => [
+          ...prev,
+          {
+            role: 'agent',
+            content: result.finalResponseMl || '',
+            runRecord: result,
+            timestamp: new Date().toISOString()
+          }
+        ]);
       }
 
       // Check tool results for created issue
       for (const res of result.toolResults) {
         if (res.toolName === 'create_issue' && res.success && res.data) {
-          const payload = res.data as { issue: Issue };
-          if (payload.issue) {
-            onIssueCreated(payload.issue);
+          const payload = res.data as { issueId?: string; issueNumber?: string; category?: string; priority?: string; titleMl?: string };
+          if (payload && onIssueCreated) {
+            const newlyCreatedIssue: Issue = {
+              id: payload.issueId || `issue-${Date.now()}`,
+              issueNumber: payload.issueNumber || 'EW-NEW',
+              wardId: authContext.wardId,
+              residentId: authContext.userId,
+              titleMl: payload.titleMl || 'വാർഡ് പരാതി',
+              descriptionMl: query,
+              category: (payload.category as any) || 'roads',
+              priority: (payload.priority as any) || 'medium',
+              status: 'submitted',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            };
+            onIssueCreated(newlyCreatedIssue);
           }
         }
       }
       setInput('');
     } catch (err) {
       console.error('Ward Sahayakan processing error:', err);
-      setAgentMessage('പരാതി രേഖപ്പെടുത്തുന്നതിൽ ചെറിയ തടസ്സം നേരിട്ടു. ദയവായി അല്പം കഴിഞ്ഞ് വീണ്ടും ശ്രമിക്കുക.');
     } finally {
       setIsProcessing(false);
     }
   };
 
   const quickPrompts = [
-    { label: 'റോഡ് കുഴികൾ (Road repairs)', query: 'നമ്മുടെ വാർഡിലെ സ്കൂളിന്റെ അടുത്തുള്ള റോഡ് വളരെ മോശമാണ്. വലിയ കുഴികൾ അടയ്ക്കണം.' },
-    { label: 'കുടിവെള്ള ചോർച്ച (Water pipe leak)', query: 'കനാൽ ജംഗ്ഷനിൽ കുടിവെള്ള പൈപ്പ് പൊട്ടി വെള്ളം പാഴായി ഒഴുകുന്നു.' },
-    { label: 'തെരുവ് വിളക്ക് (Streetlights)', query: 'ക്ഷേത്രം റോഡിലെ 4 തെരുവ് വിളക്കുകൾ കഴിഞ്ഞ മൂന്ന് ദിവസമായി കത്തുന്നില്ല.' },
-    { label: 'മാലിന്യം (Sanitation)', query: 'മാർക്കറ്റ് പരിസരത്ത് മാലിന്യം കെട്ടിക്കിടക്കുന്നു. അടിയന്തരമായി നീക്കം ചെയ്യണം.' }
+    {
+      label: 'റോഡ് കേടുപാടുകൾ (Road problem)',
+      query: 'Schoolinte aduthulla road valare mosham aanu, oru complaint register cheyyanam.'
+    },
+    {
+      label: 'പരാതി അന്വേഷണം (Track complaint)',
+      query: 'Where is my complaint?'
+    },
+    {
+      label: 'വാർഡ് ആരോഗ്യ നഴ്സ് (Health Nurse)',
+      query: 'Who is the health nurse in my ward?'
+    },
+    {
+      label: 'കേരള സർക്കാർ ഡയറക്ടറി (Govt Contacts)',
+      query: 'Give me Kerala government contacts'
+    }
   ];
+
+  // Helper to extract tool output data for rich rendering
+  const createdIssueResult = latestRun?.toolResults.find(r => r.toolName === 'create_issue' && r.success);
+  const myIssuesResult = latestRun?.toolResults.find(r => r.toolName === 'get_my_issues' && r.success);
+  const wardContactsResult = latestRun?.toolResults.find(r => r.toolName === 'get_ward_contacts' && r.success);
+  const govtContactsResult = latestRun?.toolResults.find(r => r.toolName === 'get_government_contacts' && r.success);
+  const statsResult = latestRun?.toolResults.find(r => r.toolName === 'get_ward_statistics' && r.success);
 
   return (
     <div className="civic-card" style={{
@@ -93,22 +147,27 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
             justifyContent: 'center'
           }}>
             <span className="material-symbols-outlined material-symbols-fill" style={{ fontSize: '1.4rem' }}>
-              auto_awesome
+              smart_toy
             </span>
           </div>
           <div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--charcoal)' }}>
-              വാർഡ് സഹായി (Ward Sahayakan AI)
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--charcoal)', letterSpacing: '-0.02em' }}>
+                വാർഡ് സഹായി (Ward Sahayakan Action Agent)
+              </h3>
+              <span className="badge badge-mint" style={{ fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
+                Gemini 3.6 Flash Live
+              </span>
+            </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--outline)' }}>
-              സ്വാഭാവിക മലയാളത്തിലോ ഇംഗ്ലീഷിലോ നിങ്ങളുടെ വാർഡിലെ പ്രശ്നം പറയൂ — ഏജന്റ് നേരിട്ട് നടപടി സ്വീകരിക്കും.
+              സ്വാഭാവിക മലയാളത്തിലോ ഇംഗ്ലീഷിലോ പറയൂ — ഏജന്റ് പരിശോധിച്ച് നേരിട്ട് ഡാറ്റാബേസിൽ നടപടി സ്വീകരിക്കും.
             </p>
           </div>
         </div>
 
-        <div className="badge badge-mint">
+        <div className="badge badge-mint hidden sm:flex">
           <span className="material-symbols-outlined text-xs">verified</span>
-          <span>ടൂൾ-എനേബിൾഡ് ഏജന്റ്</span>
+          <span>ആക്ഷൻ ടൂൾ-എനേബിൾഡ്</span>
         </div>
       </div>
 
@@ -118,7 +177,7 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
           rows={3}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="ഉദാഹരണത്തിന്: സ്കൂൾ റോഡിലെ കുഴികൾ കാരണം കുട്ടികൾക്ക് പോകാൻ ബുദ്ധിമുട്ടാണ്..."
+          placeholder="ഉദാഹരണത്തിന്: Schoolinte aduthulla road valare mosham aanu, oru complaint register cheyyanam..."
           disabled={isProcessing}
           style={{
             width: '100%',
@@ -148,7 +207,7 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--outline)' }}>
             <span className="material-symbols-outlined text-xs">location_on</span>
-            <span>{user.wardNameMl}</span>
+            <span>{user.wardNameMl} ({user.localBodyName || 'കുലുക്കല്ലൂർ'})</span>
           </div>
 
           <button
@@ -166,8 +225,8 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
               </>
             ) : (
               <>
-                <span>പരാതി നൽകുക</span>
-                <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>send</span>
+                <span>നിർദ്ദേശം അയക്കുക</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_forward</span>
               </>
             )}
           </button>
@@ -176,7 +235,7 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
 
       {/* Quick Prompt Chips */}
       <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.75rem', color: 'var(--outline)', fontWeight: 600 }}>ഉദാഹരണങ്ങൾ:</span>
+        <span style={{ fontSize: '0.75rem', color: 'var(--outline)', fontWeight: 600 }}>വേഗത്തിലുള്ള ഉദാഹരണങ്ങൾ:</span>
         {quickPrompts.map((p, idx) => (
           <button
             key={idx}
@@ -188,11 +247,13 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
             disabled={isProcessing}
             style={{
               fontSize: '0.75rem',
-              padding: '0.25rem 0.65rem',
+              padding: '0.3rem 0.75rem',
               borderRadius: '8px',
               background: 'var(--slate-100)',
               color: 'var(--charcoal)',
               border: '1px solid var(--outline-light)',
+              fontWeight: 500,
+              cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
             onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--mint)'}
@@ -203,7 +264,7 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
         ))}
       </div>
 
-      {/* Safe Agent Activity Stream (Spec Section 15) */}
+      {/* Safe Agent Activity Stream */}
       {steps.length > 0 && (
         <div className="animate-fadeIn" style={{
           marginTop: '1.25rem',
@@ -223,14 +284,14 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               <span className="material-symbols-outlined text-sm material-symbols-fill">auto_awesome</span>
-              <span>സുരക്ഷിത ഏജന്റ് പ്രവർത്തന ഘട്ടങ്ങൾ (Safe Agent Activity)</span>
+              <span>സുരക്ഷിത ഏജന്റ് പ്രവർത്തന ഘട്ടങ്ങൾ (Live Action Pipeline)</span>
             </div>
-            <span style={{ fontSize: '0.7rem', color: 'var(--outline)', fontWeight: 500 }}>
-              Zero Private CoT Exposed
+            <span style={{ fontSize: '0.7rem', color: '#059669', fontWeight: 600, background: '#ecfdf5', padding: '0.15rem 0.5rem', borderRadius: '6px' }}>
+              ✓ Real Backend Execution
             </span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
             {steps.map((s) => (
               <div
                 key={s.id}
@@ -247,27 +308,177 @@ export const WardSahayakanComposer: React.FC<WardSahayakanComposerProps> = ({ us
                 </span>
                 <span style={{ fontWeight: 600 }}>{s.labelMl}</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--outline)' }}>({s.labelEn})</span>
+                {s.toolName && (
+                  <span style={{ fontSize: '0.65rem', background: '#e0e7ff', color: '#3730a3', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: 700, fontFamily: 'monospace' }}>
+                    TOOL: {s.toolName}
+                  </span>
+                )}
               </div>
             ))}
           </div>
 
-          {agentMessage && (
+          {/* Final Agent Response Box */}
+          {latestRun?.finalResponseMl && (
             <div style={{
               marginTop: '1rem',
-              padding: '0.85rem',
+              padding: '1rem',
               background: '#ffffff',
               borderRadius: '10px',
               borderLeft: '4px solid var(--primary-container)',
               fontSize: '0.875rem',
               color: 'var(--primary-dark)',
               lineHeight: 1.6,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
+              boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
             }}>
-              <div style={{ fontWeight: 700, marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span className="material-symbols-outlined text-sm">chat</span>
-                <span>വാർഡ് സഹായിയുടെ മറുപടി:</span>
+              <div style={{ fontWeight: 700, marginBottom: '0.35rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span className="material-symbols-outlined text-sm">chat</span>
+                  <span>വാർഡ് സഹായിയുടെ മറുപടി:</span>
+                </div>
+                {latestRun.createdIssueNumber && (
+                  <span className="badge badge-mint" style={{ fontSize: '0.75rem' }}>
+                    Issue #{latestRun.createdIssueNumber}
+                  </span>
+                )}
               </div>
-              <p>{agentMessage}</p>
+              <p style={{ margin: 0 }}>{latestRun.finalResponseMl}</p>
+
+              {/* RICH RESULT: Created Issue Card */}
+              {createdIssueResult && (createdIssueResult.data as any)?.issueNumber && (
+                <div style={{
+                  marginTop: '0.85rem',
+                  padding: '0.75rem 1rem',
+                  background: '#f0fdf4',
+                  border: '1px solid #bbf7d0',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span className="material-symbols-outlined text-emerald-700">task_alt</span>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#14532d' }}>
+                        പരാതി സ്ഥിരീകരണം: #{(createdIssueResult.data as any).issueNumber}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#166534' }}>
+                        വിഭാഗം: {(createdIssueResult.data as any).category} | മുൻഗണന: {(createdIssueResult.data as any).priority}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="badge" style={{ background: '#dcfce7', color: '#15803d', fontWeight: 700 }}>
+                    SUBMITTED
+                  </span>
+                </div>
+              )}
+
+              {/* RICH RESULT: My Issues List */}
+              {myIssuesResult && (myIssuesResult.data as any)?.issues?.length > 0 && (
+                <div style={{ marginTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--outline)', textTransform: 'uppercase' }}>
+                    കണ്ടെത്തിയ പരാതികൾ ({(myIssuesResult.data as any).count})
+                  </div>
+                  {(myIssuesResult.data as any).issues.slice(0, 4).map((iss: any) => (
+                    <div key={iss.id} style={{
+                      padding: '0.6rem 0.85rem',
+                      background: '#f8fafc',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--charcoal)' }}>
+                          #{iss.issueNumber} — {iss.titleMl}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--outline)' }}>
+                          വിഭാഗം: {iss.category} | തീയതി: {new Date(iss.createdAt).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <span className="badge badge-outline" style={{ textTransform: 'uppercase', fontSize: '0.7rem' }}>
+                        {iss.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* RICH RESULT: Ward Contacts */}
+              {wardContactsResult && (wardContactsResult.data as any)?.contacts?.length > 0 && (
+                <div style={{ marginTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--outline)', textTransform: 'uppercase' }}>
+                    വാർഡ് {user.wardNumber} ബന്ധപ്പെടൽ നമ്പറുകൾ
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem' }}>
+                    {(wardContactsResult.data as any).contacts.map((c: any) => (
+                      <div key={c.id} style={{
+                        padding: '0.6rem 0.75rem',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px'
+                      }}>
+                        <div style={{ fontWeight: 700, fontSize: '0.825rem', color: 'var(--charcoal)' }}>
+                          {c.nameMl || c.name}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--outline)' }}>{c.role}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 700, marginTop: '0.2rem' }}>
+                          📞 {c.phone}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* RICH RESULT: Kerala Government Directory */}
+              {govtContactsResult && (govtContactsResult.data as any)?.contacts?.length > 0 && (
+                <div style={{ marginTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--outline)', textTransform: 'uppercase' }}>
+                    കേരള സർക്കാർ ഔദ്യോഗിക ഡയറക്ടറി
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem' }}>
+                    {(govtContactsResult.data as any).contacts.slice(0, 4).map((c: any) => (
+                      <div key={c.id} style={{
+                        padding: '0.6rem 0.75rem',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px'
+                      }}>
+                        <div style={{ fontWeight: 700, fontSize: '0.825rem', color: 'var(--charcoal)' }}>
+                          {c.name}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--outline)' }}>{c.designation}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 700, marginTop: '0.2rem' }}>
+                          📞 {c.phone}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* RICH RESULT: Ward Statistics (for Representatives or Inquiry) */}
+              {statsResult && (statsResult.data as any) && (
+                <div style={{ marginTop: '0.85rem', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
+                  <div style={{ padding: '0.5rem', background: '#f8fafc', borderRadius: '8px', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>{(statsResult.data as any).totalIssues}</div>
+                    <div style={{ fontSize: '0.65rem', color: 'var(--outline)', fontWeight: 600 }}>ആകെ പരാതികൾ</div>
+                  </div>
+                  <div style={{ padding: '0.5rem', background: '#fffbeb', borderRadius: '8px', textAlign: 'center', border: '1px solid #fde68a' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#b45309' }}>{(statsResult.data as any).openIssues}</div>
+                    <div style={{ fontSize: '0.65rem', color: '#92400e', fontWeight: 600 }}>നടപടിയിൽ</div>
+                  </div>
+                  <div style={{ padding: '0.5rem', background: '#f0fdf4', borderRadius: '8px', textAlign: 'center', border: '1px solid #bbf7d0' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#15803d' }}>{(statsResult.data as any).resolvedIssues}</div>
+                    <div style={{ fontSize: '0.65rem', color: '#166534', fontWeight: 600 }}>പരിഹരിച്ചവ</div>
+                  </div>
+                  <div style={{ padding: '0.5rem', background: '#eff6ff', borderRadius: '8px', textAlign: 'center', border: '1px solid #bfdbfe' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1d4ed8' }}>{(statsResult.data as any).resolutionRatePercent}%</div>
+                    <div style={{ fontSize: '0.65rem', color: '#1e40af', fontWeight: 600 }}>പരിഹാര നിരക്ക്</div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

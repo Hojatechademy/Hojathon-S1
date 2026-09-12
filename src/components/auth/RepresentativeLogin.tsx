@@ -8,15 +8,15 @@ interface RepresentativeLoginProps {
 }
 
 export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack, onSuccess }) => {
-  const [email, setEmail] = useState('lathika.rep7@kadakampally.enteward.in');
-  const [password, setPassword] = useState('demo123');
+  const [username, setUsername] = useState('ward7_rep');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage('Please enter your official representative email and password.');
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage('Incorrect username or password.');
       return;
     }
 
@@ -24,14 +24,14 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
     setErrorMessage(null);
 
     try {
-      const { user, error } = await authService.signIn(email, password, 'representative');
+      const { user, error } = await authService.signIn(username, password, 'representative');
       if (error || !user) {
-        setErrorMessage(error || 'Invalid credentials or account is not an authorized representative.');
+        setErrorMessage(error || 'Incorrect username or password.');
       } else {
         onSuccess(user);
       }
     } catch (_err) {
-      setErrorMessage('Network error: Unable to connect to authentication service.');
+      setErrorMessage('Incorrect username or password.');
     } finally {
       setIsLoading(false);
     }
@@ -58,34 +58,34 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
 
         <div style={{ marginBottom: '1.5rem' }}>
           <div className="badge badge-teal" style={{ marginBottom: '0.5rem' }}>
-            <span className="material-symbols-outlined text-xs">badge</span>
-            <span>Representative Access</span>
+            <span className="material-symbols-outlined text-xs">how_to_reg</span>
+            <span>Ward Representative</span>
           </div>
           <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--charcoal)', letterSpacing: '-0.02em' }}>
-            Representative access
+            Representative Portal
           </h2>
-          <p style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--secondary)', marginTop: '0.2rem' }}>
-            പ്രതിനിധി പ്രവേശനം
+          <p style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--teal-primary)', marginTop: '0.2rem' }}>
+            ജനപ്രതിനിധി ലോഗിൻ
           </p>
           <p style={{ fontSize: '0.8rem', color: 'var(--outline)', marginTop: '0.25rem' }}>
-            Sign in to manage your assigned ward.
+            Sign in with your official representative username.
           </p>
         </div>
 
         {errorMessage && (
           <div style={{
-            background: '#fffbeb',
-            border: '1px solid #fde68a',
+            background: '#fef2f2',
+            border: '1px solid #fecaca',
             borderRadius: '10px',
             padding: '0.75rem',
             display: 'flex',
             alignItems: 'flex-start',
             gap: '0.5rem',
             fontSize: '0.8rem',
-            color: '#92400e',
+            color: '#991b1b',
             marginBottom: '1.25rem'
           }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: '#d97706' }}>lock_person</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: '#dc2626' }}>error</span>
             <div>{errorMessage}</div>
           </div>
         )}
@@ -93,7 +93,7 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--outline)', marginBottom: '0.4rem' }}>
-              Official UID or Email
+              Username
             </label>
             <div style={{ position: 'relative' }}>
               <span className="material-symbols-outlined" style={{ position: 'absolute', left: '0.75rem', top: '0.75rem', color: 'var(--outline)', fontSize: '1.2rem' }}>
@@ -101,8 +101,9 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
               </span>
               <input
                 type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
                 required
                 style={{
                   width: '100%',
@@ -116,17 +117,20 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--outline)', marginBottom: '0.4rem' }}>
-              Password
-            </label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+              <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--outline)' }}>
+                Password
+              </label>
+            </div>
             <div style={{ position: 'relative' }}>
               <span className="material-symbols-outlined" style={{ position: 'absolute', left: '0.75rem', top: '0.75rem', color: 'var(--outline)', fontSize: '1.2rem' }}>
-                vpn_key
+                lock
               </span>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
                 required
                 style={{
                   width: '100%',
@@ -139,31 +143,27 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
             </div>
           </div>
 
-          {/* Mandatory Trust Policy Note (Spec Section 7) */}
           <div style={{
-            background: '#f0fdf4',
-            border: '1px solid #bbf7d0',
+            background: 'var(--surface-bg)',
+            border: '1px solid var(--outline-light)',
             borderRadius: '10px',
             padding: '0.65rem 0.85rem',
             fontSize: '0.75rem',
-            color: '#065f46',
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: '0.5rem'
+            color: 'var(--outline)'
           }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '1.1rem', color: '#059669', flexShrink: 0 }}>
-              verified_user
-            </span>
-            <span>
-              <strong>Trust Policy:</strong> Representative accounts are created by Ente Ward administrators. Public registration is not permitted.
-            </span>
+            Authorized ward representative access. Ward jurisdiction is securely derived by the platform.
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="btn-teal"
-            style={{ width: '100%', padding: '0.75rem', marginTop: '0.5rem' }}
+            className="btn-primary"
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              marginTop: '0.5rem',
+              backgroundColor: 'var(--teal-primary)'
+            }}
           >
             {isLoading ? (
               <>
@@ -174,8 +174,8 @@ export const RepresentativeLogin: React.FC<RepresentativeLoginProps> = ({ onBack
               </>
             ) : (
               <>
-                <span>Sign In to Ward Action Hub</span>
-                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>arrow_forward</span>
+                <span>Sign in</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '1.1rem' }}>login</span>
               </>
             )}
           </button>

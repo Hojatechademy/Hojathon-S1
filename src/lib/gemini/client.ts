@@ -1,33 +1,53 @@
 /**
- * Ward Sahayakan - Google Gemini Client Placeholder
- * Prepared for agent model calls, intent classification, and Malayalam comprehension.
+ * Ward Sahayakan - Google Gemini Client Configuration
+ * Powered by gemini-3.6-flash for natural language comprehension in Malayalam, English, and Manglish.
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '';
+const geminiApiKey = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY) || (globalThis as any).process?.env?.VITE_GEMINI_API_KEY || (globalThis as any).process?.env?.GEMINI_API_KEY || '';
 
 export const isGeminiConfigured = Boolean(
   geminiApiKey && 
   !geminiApiKey.includes('your-gemini-api-key')
 );
 
+export const GEMINI_MODEL_NAME = 'gemini-3.6-flash';
+
+let geminiClientInstance: GoogleGenerativeAI | null = null;
+
 export function getGeminiClient(): GoogleGenerativeAI | null {
   if (!isGeminiConfigured) {
     return null;
   }
-  return new GoogleGenerativeAI(geminiApiKey);
+  if (!geminiClientInstance) {
+    geminiClientInstance = new GoogleGenerativeAI(geminiApiKey);
+  }
+  return geminiClientInstance;
 }
 
-export function getGeminiStatus(): { configured: boolean; message: string } {
+export function getGeminiModel(): GenerativeModel | null {
+  const client = getGeminiClient();
+  if (!client) return null;
+  return client.getGenerativeModel({
+    model: GEMINI_MODEL_NAME,
+    generationConfig: {
+      temperature: 0.2
+    }
+  });
+}
+
+export function getGeminiStatus(): { configured: boolean; message: string; model: string } {
   if (isGeminiConfigured) {
     return {
       configured: true,
-      message: 'Gemini client configured with API key.'
+      message: `Gemini live model active (${GEMINI_MODEL_NAME}).`,
+      model: GEMINI_MODEL_NAME
     };
   }
   return {
     configured: false,
-    message: 'Gemini API key pending in environment. Ward Sahayakan operating with local heuristic reasoning.'
+    message: 'Gemini API key pending in environment. Operating with robust local civic reasoning.',
+    model: 'heuristic-local'
   };
 }
