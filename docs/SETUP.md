@@ -2,6 +2,8 @@
 
 This project uses Next.js, React, TypeScript, shadcn/ui, Supabase, and Gemini. The application implementation will be built in this fork; this document defines the judge-ready setup contract.
 
+The current foundation is intentionally minimal and does not yet include the complete patient workspace or Follow-up Agent modules.
+
 ## Prerequisites
 
 - Git

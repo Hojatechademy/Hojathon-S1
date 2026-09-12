@@ -51,3 +51,7 @@ Test authentication, RLS ownership, empty/loading/error states, tool validation,
 ## Documentation rules
 
 Every implementation agent reads the docs before editing, inspects existing code, implements only its module, tests, updates documentation and status immediately, reviews the diff, and commits on its feature branch. Do not commit secrets.
+
+## Foundation status
+
+The initial Next.js, TypeScript, shadcn-compatible, Supabase server-client, Gemini server-client, shared-contract, environment-template, and database-migration foundation is now present. The placeholder home page is intentional; product modules remain the next implementation phase.
