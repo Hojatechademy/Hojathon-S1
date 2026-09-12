@@ -1,0 +1,74 @@
+{
+  "student_id": "student_001",
+  "name": "Alex Rivera",
+  "xp": 330,
+  "rank_id": 2,
+  "streak_days": 3,
+  "completed_chapters": [
+    "physics_ch1",
+    "physics_ch2"
+  ],
+  "topic_mastery": {
+    "physics_ch1": 31,
+    "cs_ch1": 45,
+    "bio_ch1": 20,
+    "math_ch1": 15,
+    "physics_ch2": 58
+  },
+  "quiz_history": [
+    {
+      "timestamp": "recent",
+      "chapter_id": "physics_ch2",
+      "score": 3,
+      "max_score": 3,
+      "accuracy_pct": 100,
+      "xp_gained": 105,
+      "feedback": "Outstanding performance! You demonstrated a solid understanding of inverse-square electrostatics, circuit conservation laws, and parallel-plate capacitance. Keep up the strong analytical momentum!"
+    },
+    {
+      "timestamp": "recent",
+      "chapter_id": "physics_ch1",
+      "score": 0,
+      "max_score": 3,
+      "accuracy_pct": 0,
+      "xp_gained": 0,
+      "feedback": "You're taking steps on your journey as an Apprentice Scholar! Make sure to revisit foundational concepts such as Newton's Third Law action-reaction pairs, translational equilibrium at constant velocity, and Galileo's inertia thought experiments."
+    },
+    {
+      "timestamp": "recent",
+      "chapter_id": "physics_ch1",
+      "score": 1,
+      "max_score": 3,
+      "accuracy_pct": 33,
+      "xp_gained": 35,
+      "feedback": "You showed a solid understanding of Newton's First Law and inertia! Take some time to review Newton's Second Law unit derivations and the interaction mechanics of Newton's Third Law action-reaction pairs."
+    },
+    {
+      "timestamp": "recent",
+      "chapter_id": "physics_ch1",
+      "score": 2,
+      "max_score": 3,
+      "accuracy_pct": 66,
+      "xp_gained": 70,
+      "feedback": "Great work! You have a solid grasp of Newton's First and Third Laws. Make sure to review the unit derivations from Newton's Second Law (F = ma) so you can confidently tackle SI unit definitions."
+    }
+  ],
+  "preferred_pace": "casual",
+  "weak_spots": [
+    "Action-Reaction forces in non-isolated systems",
+    "Time complexity of recursive branching",
+    "SI unit definition and derivation of the Newton from Newton's Second Law",
+    "Newton's Third Law action-reaction pairs & SI unit derivations for force",
+    "Newton's Laws of Motion and Dynamic Equilibrium"
+  ],
+  "rank": {
+    "rank_id": 2,
+    "name": "Apprentice Scholar",
+    "min_xp": 200,
+    "max_xp": 499,
+    "difficulty_label": "Core Understanding (Medium-Easy)",
+    "color": "blue",
+    "progress_pct": 43,
+    "xp_to_next": 170
+  }
+}

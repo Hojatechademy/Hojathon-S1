@@ -1,163 +1,147 @@
-# Hojathon
+# Eduro — AI-Powered Personalized Learning Platform
 
-Build agents that don't just respond — they act.
+> **"AI agents that make learning more personalized. They can explain topics in different ways, create practice questions, help with exam preparation, and adjust to a student's learning pace and level."**
 
-Hojathon is an agentic AI hackathon. Teams build systems that can reason, plan, call tools or APIs, and carry out multi-step tasks on their own — not just chatbots that answer a single prompt. This repository is the official starter and submission template: fork it, build your project inside your fork, and submit your final work back here through a Pull Request.
-
-There's no required stack. Build your agent with any language, any framework, any model provider or orchestration approach — LangChain, a custom agent loop, raw API calls, whatever gets the job done. This repo itself contains no code. It's just the structure and docs every team needs so judges can actually run and evaluate what you built.
+Eduro is a full-stack educational web application built with **Next.js (App Router, Tailwind CSS, TypeScript)** and a **Flask REST API (Python)**, powered by **Google Cloud Vertex AI (Gemini)** via **GCP Application Default Credentials (ADC)**.
 
 ---
 
-## Getting Started
+## 🌟 Core Features & User Journey
 
-1. **Fork this repository** — click "Fork" at the top of this page, then click the green **"Create fork"** button on the page that follows to confirm.
-2. **Clone your fork** to your computer:
-   ```bash
-   git clone https://github.com/<your-username>/<your-fork>.git
-   ```
-3. **Read through this README and the [`docs/`](docs/) folder in full** before you write any code, so you understand the rules, the workflow, and what your final submission needs to include.
-4. **Add your teammates as collaborators** on your fork (GitHub → Settings → Collaborators) so everyone can push directly.
-5. **Build your project** inside your fork, using whatever stack fits your idea.
-6. **Commit and push regularly** — don't wait until the deadline to save your work.
-7. **Fill in the project documentation** (see [Project Documentation](#project-documentation) below and the [`docs/`](docs/) folder).
-8. **Open your final Pull Request** back to this repository before the deadline.
+### 1. Subject & Chapter Catalog
+- Browse core academic curricula: **Physics**, **Computer Science**, **Biology**, and **Mathematics**.
+- Each subject contains comprehensive chapters with estimated study times, difficulty tags, and learning objectives.
+- Ability to **upload custom textbook PDFs** for any subject.
 
----
+### 2. Dual-Pane Chapter Workspace
+- **Interactive PDF Viewer**: Multi-page textbook reading with zoom controls, fullscreen mode, jump-to-page, download, and a dedicated *"Ask AI About This Page"* trigger.
+- **Context-Aware AI Tutor**: Grounded in the exact textbook chapter text.
+- **5 Pedagogical Modes**:
+  - 🧸 **ELI5 (Like I'm 5)**: Real-world analogies, simplified vocabulary, intuitive concepts.
+  - 💡 **Analogy Mode**: Relatable metaphors and mental models.
+  - 🔬 **Deep Dive**: Rigorous mathematical derivations, formal proofs, and boundary conditions.
+  - 🎯 **Exam Focus**: High-yield marks points, examiner pitfalls, and model answer structure.
+  - 🧭 **Socratic Guide**: Probing guided questions that help the student deduce answers independently.
 
-## Team Information
-
-Fill this in as soon as your team is formed.
-
-**Team ID:**
-
-**Team Name:**
-
-**Team Members:**
-
-1. Name
-2. Name
-3. Name
-
-**Project Name:**
-
-> Teams may have **1, 2, or 3 members**.
-
----
-
-## Project Documentation
-
-Replace the placeholders below with your own project's details — this is what judges will actually read.
-
-### Project Name
-
-### Team
-
-### Problem Statement
-
-What problem are you solving, and why does it call for an agent rather than a static script or a plain UI?
-
-### Proposed Solution
-
-Explain your solution and how your agent approaches the problem.
-
-### Key Features
-
-* Feature 1
-* Feature 2
-* Feature 3
-
-### Technology Stack
-
-Describe whatever stack you chose. None of the categories below are required — leave out or add rows as needed.
-
-| Category | Technology |
-| -------- | ---------- |
-| Frontend |            |
-| Backend  |            |
-| Database |            |
-| AI/ML    |            |
-| APIs     |            |
-| Other    |            |
-
-### How It Works
-
-Explain your agent's architecture: what tools or APIs it can call, how it plans and decides what to do next, and what a full run through your system looks like. Add diagrams if they help.
-
-### Setup & Installation
-
-Replace this section with your project's actual setup instructions.
-
-### Running the Project
-
-Explain exactly how judges can run and use the project.
+### 3. Hamburger Menu Study Suite
+Click the **Study Tools (Hamburger)** button in the header to access:
+- 📝 **Adaptive Practice Questions**:
+  - Automatically calibrated to the student's current **Rank Level**.
+  - Interactive MCQs & conceptual questions.
+  - Instant **AI Evaluation**: Points out misconceptions, provides model solutions, and awards XP.
+  - **Dynamic Rank Progression**: Rank levels (Novice Explorer ➔ Apprentice Scholar ➔ Skilled Adept ➔ Master Practitioner ➔ Grandmaster) adapt question difficulty dynamically.
+- ⚡ **Rapid Exam Prep**:
+  - High-yield concept cheat sheets.
+  - Essential formulas & scientific laws table.
+  - Frequent exam traps and misconceptions to avoid.
+  - Memory mnemonics.
+- 🎴 **Active Recall Flashcards**:
+  - Flippable 3D memory cards for spaced repetition.
+  - Mastered vs Needs Review tracking.
+- 📊 **Mastery Diagnostics & Learning Pace**:
+  - Topic mastery matrix (0-100%).
+  - AI-diagnosed concept gaps from practice quiz misses.
+  - Learning Pace setting: *Casual Pace*, *Balanced Pace*, or *Exam Rush*.
 
 ---
 
-## Participant Rules
+## 🏗️ Architecture
 
-* Teams must contain **1–3 members**.
-* Teams may use **any technology stack**.
-* Teams should commit their work regularly.
-* Do **not** commit passwords, API keys, tokens, or other secrets.
-* The final state of the repository at the submission deadline will be considered for judging.
-* The final Pull Request must be submitted before the official deadline.
-* Participants are responsible for ensuring their project can be evaluated.
+```
+eduro/
+├── backend/
+│   ├── app.py                     # Flask REST API with CORS & PDF streaming
+│   ├── config.py                  # GCP ADC configuration & fallback diagnostics
+│   ├── requirements.txt           # Python dependencies
+│   ├── generate_pdfs.py           # Academic textbook PDF generator (ReportLab)
+│   ├── services/
+│   │   ├── gemini_service.py      # Vertex AI Gemini client via GCP ADC
+│   │   ├── pdf_service.py         # PDF text extraction (pypdf) & generation
+│   │   └── adaptive_engine.py     # Student rank, XP, mastery & difficulty engine
+│   └── data/
+│       ├── subjects.json          # Subject & chapter catalog
+│       ├── student_profile.json   # Persistent student profile, rank & history
+│       └── pdfs/                  # Multi-page textbook chapter PDFs
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx           # Subject & Chapter Selection Hub
+│   │   │   └── chapter/[id]/page.tsx # Split-screen PDF reader & AI Tutor
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx         # Breadcrumbs, GCP ADC pill & hamburger trigger
+│   │   │   ├── PdfViewer.tsx      # Multi-page PDF viewer with zoom & actions
+│   │   │   ├── ChatPanel.tsx      # AI Tutor Chat with 5 pedagogical modes
+│   │   │   ├── PracticeDrawer.tsx # Adaptive quiz, instant AI grading & rank-up
+│   │   │   ├── ExamPrepDrawer.tsx # High-yield cheat sheets & formulas
+│   │   │   ├── FlashcardsDrawer.tsx # Flippable 3D active recall cards
+│   │   │   ├── MasteryAnalyticsDrawer.tsx # Topic mastery & pace controls
+│   │   │   ├── HamburgerMenu.tsx  # Hamburger slide-in menu
+│   │   │   ├── RankBadge.tsx      # Rank, level & XP progression bar
+│   │   │   └── UploadModal.tsx    # Custom PDF textbook uploader
+│   │   └── lib/
+│   │       ├── api.ts             # Typed API client
+│   │       └── types.ts           # Core TypeScript types
+├── start.sh                       # Single-command launcher for frontend & backend
+└── README.md
+```
 
 ---
 
-## GitHub Workflow
+## 🚀 Getting Started
 
+### 1. Prerequisites
+- **Node.js**: v18+ or v20+
+- **Python**: 3.9+ or 3.11+
+- **Google Cloud CLI (`gcloud`)** (for GCP ADC authentication)
+
+### 2. Configure GCP Application Default Credentials (ADC)
+In your terminal, authenticate your Google Cloud account:
+```bash
+gcloud auth application-default login
+gcloud config set project YOUR_GCP_PROJECT_ID
 ```
-Official Hojathon Repository
-        ↓
-      Fork
-        ↓
-   Team's Fork
-        ↓
-  Build Project
-        ↓
-  Commit & Push
-        ↓
- Complete README
-        ↓
-   Final PR
-        ↓
-   Organizers
-        ↓
-    Judges
+*(Optional: set `GOOGLE_CLOUD_PROJECT=YOUR_GCP_PROJECT_ID` in your environment or in `.env`)*.
+
+> **Note**: Even if your GCP project credentials are being initialized or pending quota, Eduro includes a built-in intelligent tutor fallback engine so the app is always functional and ready for testing!
+
+### 3. Launch with One Command
+Run the runner script in the project root:
+```bash
+./start.sh
 ```
 
-Don't open a Pull Request for every change. Work normally inside your own fork, committing and pushing as often as you like — only open a Pull Request to the official repository when you're ready to make your **final submission**.
+Or run manually in two terminals:
+
+**Terminal 1 (Backend):**
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python generate_pdfs.py   # Generates sample chapter PDFs if not present
+PYTHONPATH=. python app.py
+```
+*Backend runs on `http://127.0.0.1:5001`.*
+
+**Terminal 2 (Frontend):**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Frontend runs on `http://localhost:3000`.*
 
 ---
 
-## Final Pull Request
+## 🎯 Verification & API Endpoints
 
-When your project is ready, open a Pull Request from your fork's default branch into the official Hojathon repository.
-
-**PR title format:**
-
-```
-[TEAM-ID] Project Name
-```
-
-**Example:**
-
-```
-[TEAM-042] Smart Campus Assistant
-```
-
-**The PR description must contain:**
-
-* Team ID
-* Team name
-* Team members
-* Project name
-* Problem statement
-* Solution
-* Technology stack
-* Demo URL
-* Demo video
-* Special instructions for judges
-
-See [`docs/SUBMISSION.md`](docs/SUBMISSION.md) for the full submission checklist and process, and use the [Pull Request template](.github/PULL_REQUEST_TEMPLATE.md) when you open your final PR.
+- `GET /api/health` — Checks GCP ADC credentials, active project, and Gemini model.
+- `GET /api/subjects` — Fetches subjects, chapters, and student mastery.
+- `GET /api/pdf/<chapter_id>` — Streams the textbook chapter PDF inline.
+- `POST /api/chat` — Context-aware chat grounded in the chapter with 5 style modes.
+- `POST /api/practice/generate` — Generates rank-adaptive practice questions.
+- `POST /api/practice/evaluate` — AI grading, XP calculation, and rank progression.
+- `POST /api/exam-prep` — High-yield cheat sheets, formulas, and examiner traps.
+- `POST /api/flashcards` — Active recall flashcards.
+- `GET /api/student/profile` — Student rank, XP, and topic mastery matrix.
+- `POST /api/upload` — Upload custom PDF textbooks.
