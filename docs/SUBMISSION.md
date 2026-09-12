@@ -101,7 +101,7 @@ Technology Stack:
 | AI/ML    | OpenRouter — `anthropic/claude-sonnet-4.5` for reasoning, `google/gemini-2.5-flash` for vision |
 | APIs     | Open-Meteo forecast API (no key required), browser Geolocation API               |
 | Other    | Node.js 22, ESLint, custom Node scripts for pre-flight and end-to-end checks     |
-Demo URL:
+Demo URL:  https://farm-assist-agent.vercel.app
 
 Demo Video:
 
