@@ -1,0 +1,1501 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ente Ward (എന്റെ വാർഡ്) - Modern Civic Platform</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Inter & Geist / Manjari fonts for Malayalam/English harmony -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Manjari:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim from Design System -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#9bd2ba",
+            "surface-container-high": "#e1e8fd",
+            "primary-container": "#0b4634",
+            "on-primary-fixed": "#002116",
+            "on-surface": "#141b2b",
+            "inverse-surface": "#293040",
+            "on-tertiary-container": "#20bf86",
+            "error-container": "#ffdad6",
+            "secondary-fixed": "#9bf2e8",
+            "tertiary": "#002e1d",
+            "surface-variant": "#dce2f7",
+            "surface-bright": "#f9f9ff",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-fixed": "#00201d",
+            "secondary-container": "#9bf2e8",
+            "tertiary-fixed-dim": "#4edea3",
+            "primary": "#002e20",
+            "surface-tint": "#336854",
+            "background": "#f9f9ff",
+            "secondary-fixed-dim": "#7fd5cc",
+            "tertiary-fixed": "#6ffbbe",
+            "tertiary-container": "#00472f",
+            "on-secondary-fixed-variant": "#00504a",
+            "secondary": "#006a63",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#404944",
+            "on-primary-fixed-variant": "#18503d",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#dce2f7",
+            "on-error": "#ffffff",
+            "outline-variant": "#c0c9c2",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f1f3ff",
+            "outline": "#707974",
+            "on-secondary-container": "#007169",
+            "on-error-container": "#93000a",
+            "on-primary-container": "#7db39c",
+            "on-background": "#141b2b",
+            "inverse-primary": "#9bd2ba",
+            "surface-dim": "#d3daef",
+            "on-tertiary-fixed-variant": "#005236",
+            "inverse-on-surface": "#edf0ff",
+            "primary-fixed": "#b6efd5",
+            "surface": "#f9f9ff",
+            "on-tertiary": "#ffffff",
+            "surface-container": "#e9edff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1.25rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin": "1rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter", "Manjari", "sans-serif"],
+            "headline-lg": ["Geist", "Manjari", "sans-serif"],
+            "body-sm": ["Inter", "Manjari", "sans-serif"],
+            "headline-md": ["Geist", "Manjari", "sans-serif"],
+            "title-md": ["Geist", "Manjari", "sans-serif"],
+            "headline-lg-mobile": ["Geist", "Manjari", "sans-serif"],
+            "display-lg": ["Geist", "Manjari", "sans-serif"],
+            "body-md": ["Inter", "Manjari", "sans-serif"],
+            "label-sm": ["Geist", "Manjari", "sans-serif"],
+            "title-lg": ["Geist", "Manjari", "sans-serif"],
+            "label-md": ["Geist", "Manjari", "sans-serif"]
+          },
+          "fontSize": {
+            "body-lg": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "title-md": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "title-lg": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.02);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(0, 46, 32, 0.15);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 46, 32, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-[#F9FAF8] text-on-surface antialiased h-full font-body-md overflow-x-hidden selection:bg-primary-fixed selection:text-primary">
+<!-- SIDEBAR NAVIGATION (Shared Component Anchor) -->
+<aside class="fixed top-0 left-0 bottom-0 z-40 w-64 p-space-md flex flex-col justify-between bg-surface-container-lowest border-r border-outline-variant/30 shadow-sm transition-transform duration-300">
+<div class="flex flex-col gap-y-4">
+<!-- Header / Brand -->
+<div class="flex items-center gap-3 px-2 py-1">
+<div class="w-9 h-9 rounded-xl bg-primary-container text-white flex items-center justify-center font-bold shadow-sm">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="text-title-lg font-title-lg text-primary tracking-tight font-bold">Ente Ward (എന്റെ വാർഡ്)</h1>
+<p class="text-label-sm font-label-sm text-outline font-medium">Kadakampally GP · Ward 7</p>
+</div>
+</div>
+<!-- Quick CTA -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-primary-container hover:bg-[#125B42] text-white font-title-md text-title-md shadow-sm transition-all duration-150 active:scale-[0.99]" onclick="openModal('reportModal')">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+<span>New Civic Report / പുതിയ പരാതി</span>
+</button>
+<!-- Navigation Tabs (Shared Anchor from JSON) -->
+<nav class="flex flex-col gap-1 mt-2" id="sidebarNav">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container text-primary font-title-md text-title-md transition-colors" href="#residentView" id="navTab0" onclick="switchRole('resident'); return false;">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard / ഡാഷ്‌ബോർഡ്</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface font-title-md text-title-md transition-colors hover:bg-surface-container-low" href="#wardSahayakan" id="navTab1" onclick="triggerSahayakanDemo(); return false;">
+<span class="material-symbols-outlined">smart_toy</span>
+<span>Ward Sahayakan / വാർഡ് സഹായി</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface font-title-md text-title-md transition-colors hover:bg-surface-container-low" href="#issuesSection" id="navTab2" onclick="switchRole('resident'); scrollToIssues(); return false;">
+<span class="material-symbols-outlined">report_problem</span>
+<span>Issues &amp; Petitions / പരാതികൾ</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface font-title-md text-title-md transition-colors hover:bg-surface-container-low" href="#repHub" id="navTab3" onclick="switchRole('representative'); return false;">
+<span class="material-symbols-outlined">groups</span>
+<span>Ward Directory / റസിഡന്റ്സ്</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface font-title-md text-title-md transition-colors hover:bg-surface-container-low" href="#adminConsole" id="navTab4" onclick="switchRole('admin'); return false;">
+<span class="material-symbols-outlined">account_tree</span>
+<span>Hierarchy &amp; Settings / ക്രമീകരണങ്ങൾ</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom / Footer Tabs -->
+<div class="border-t border-outline-variant/30 pt-3 flex flex-col gap-1">
+<div class="px-2 py-1.5 rounded-lg bg-[#ECFDF5] border border-[#A7F3D0] flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-primary font-medium">Kerala Civic Grid · Active</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-outline hover:text-on-surface text-body-sm font-body-sm transition-colors hover:bg-surface-container-low" href="#auditLog" onclick="switchRole('admin'); return false;">
+<span class="material-symbols-outlined text-lg">history</span>
+<span>Audit Log</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-outline hover:text-on-surface text-body-sm font-body-sm transition-colors hover:bg-surface-container-low" href="#docs" onclick="openDocNote(); return false;">
+<span class="material-symbols-outlined text-lg">description</span>
+<span>Documentation</span>
+</a>
+</div>
+</aside>
+<!-- TOP NAVBAR (Shared Component Anchor) -->
+<header class="sticky top-0 right-0 z-30 flex items-center justify-between px-space-lg h-16 w-full ml-64 bg-surface-container-lowest border-b border-outline-variant/30 shadow-sm backdrop-blur-md bg-opacity-95">
+<!-- Search Bar on Left -->
+<div class="flex items-center gap-3 w-72">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full pl-9 pr-8 py-1.5 bg-surface-bright rounded-lg border border-outline-variant/50 text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" placeholder="Search issues, ward memo, rules..." type="text">
+<span class="absolute right-2.5 top-2 px-1.5 py-0.5 rounded text-[10px] font-mono text-outline bg-surface-container border border-outline-variant/30">⌘K</span>
+</div>
+</div>
+<!-- Navigation Links & Interactive Role Switcher -->
+<div class="flex items-center gap-6">
+<!-- Direct Nav links from JSON -->
+<nav class="hidden md:flex items-center gap-5">
+<button class="text-primary border-b-2 border-primary font-title-md text-title-md pb-1 font-semibold transition-colors" id="topLinkResident" onclick="switchRole('resident')">Resident Portal</button>
+<button class="text-on-surface-variant font-title-md text-title-md hover:text-on-surface transition-colors" id="topLinkRep" onclick="switchRole('representative')">Ward Rep Hub</button>
+<button class="text-on-surface-variant font-title-md text-title-md hover:text-on-surface transition-colors" id="topLinkAdmin" onclick="switchRole('admin')">Admin Console</button>
+</nav>
+<!-- Trailing Action Badges & Profile Drop -->
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/40">
+<!-- Bilingual toggle indicator -->
+<button class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">translate</span>
+<span>English / മലയാളം</span>
+</button>
+<!-- Notification Bell with Ping -->
+<button class="relative p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-low transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<!-- Current Role Pill -->
+<div class="flex items-center gap-2 bg-[#ECFDF5] border border-[#A7F3D0] px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-[#0B4634] text-base" style="font-variation-settings: 'FILL' 1;">badge</span>
+<span class="text-label-sm font-label-sm font-semibold text-[#0B4634]" id="roleIndicatorText">Role: Resident (Ward 7)</span>
+</div>
+<!-- Profile Avatar -->
+<div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-medium text-xs shadow-inner cursor-pointer" title="Authorized Representative Profile Avatar">
+          LK
+        </div>
+</div>
+</div>
+</header>
+<!-- MAIN DYNAMIC CONTENT CANVAS -->
+<main class="ml-64 p-space-xl min-h-[calc(100vh-4rem)] relative max-w-[1440px]">
+<!-- ==========================================
+         VIEW 1: RESIDENT VIEW
+         ========================================== -->
+<div class="space-y-8 animate-fadeIn" id="viewResident">
+<!-- HERO HEADER SECTION -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0B4634] via-[#0E523E] to-[#125B42] text-white p-8 shadow-md border border-[#16654C]/40">
+<div class="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-white/5 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="max-w-2xl space-y-3">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium border border-white/20 text-[#b6efd5]">
+<span class="w-2 h-2 rounded-full bg-[#4edea3] animate-pulse"></span>
+<span>Kadakampally GP · Ward 7 (Chakkai)</span>
+</div>
+<h1 class="text-display-lg font-headline-lg font-bold tracking-tight text-white leading-tight">
+              Tell your ward what needs attention.
+              <span class="block text-xl font-normal text-white/80 mt-1 font-headline-md">നിങ്ങളുടെ വാർഡിന് എന്താണ് വേണ്ടതെന്ന് പറയൂ</span>
+</h1>
+<p class="text-body-md font-body-md text-white/70 max-w-xl">
+              Voice local concerns, report infrastructure damage, or follow Grama Panchayat developments with transparent end-to-end civic resolution.
+            </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-3 self-start md:self-center">
+<button class="px-5 py-3 rounded-xl bg-white text-primary font-title-md font-semibold shadow-lg hover:bg-[#F9FAF8] transition-all flex items-center gap-2 active:scale-95" onclick="openModal('reportModal')">
+<span class="material-symbols-outlined text-xl text-primary">campaign</span>
+<span>File New Issue / പരാതി നൽകുക</span>
+</button>
+<button class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-title-md font-medium transition-all flex items-center gap-2" onclick="scrollToTimeline()">
+<span class="material-symbols-outlined text-xl">near_me</span>
+<span>Track Ticket</span>
+</button>
+</div>
+</div>
+</div>
+<!-- WARD SAHAYAKAN AI COMPOSER & AGENTIC DRAWER -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 p-6 shadow-sm">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center text-[#0B4634]">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">Ward Sahayakan AI Composer</h3>
+<span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-[#ECFDF5] text-[#0B4634] border border-[#A7F3D0]">Agentic Triage</span>
+</div>
+<p class="text-body-sm font-body-sm text-outline">Type naturally in Malayalam or English. Our automated civic agent categorizes, geotags, and prepares the petition for Ward 7 Representative.</p>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-outline hidden sm:inline-block">Shortcuts: ⌘ + Enter to send</span>
+</div>
+<!-- Input Area -->
+<div class="mt-4 relative">
+<textarea class="w-full p-4 rounded-xl border border-outline-variant/60 bg-surface-bright text-body-lg font-body-lg text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none shadow-inner" id="aiPromptInput" placeholder="റോഡ് മോശമാണ് - സ്കൂളിന് സമീപം, or describe a broken streetlight, stagnant water, waste accumulation..." rows="3"></textarea>
+<div class="flex flex-wrap items-center justify-between gap-3 mt-3">
+<!-- Suggestion Chips -->
+<div class="flex flex-wrap items-center gap-2">
+<span class="text-label-sm font-label-sm text-outline mr-1">Quick Prompts:</span>
+<button class="px-3 py-1.5 rounded-full bg-surface-container hover:bg-[#ECFDF5] text-on-surface-variant hover:text-[#0B4634] border border-outline-variant/40 text-label-sm font-label-sm transition-colors flex items-center gap-1" onclick="fillAiInput('റോഡ് മോശമാണ് - സ്കൂളിന് സമീപം വലിയ കുഴികൾ രൂപപ്പെട്ടു')">
+<span>റോഡ് മോശമാണ് - സ്കൂളിന് സമീപം</span>
+</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container hover:bg-[#ECFDF5] text-on-surface-variant hover:text-[#0B4634] border border-outline-variant/40 text-label-sm font-label-sm transition-colors flex items-center gap-1" onclick="fillAiInput('Track EW-1042')">
+<span class="material-symbols-outlined text-xs">search</span>
+<span>Track EW-1042</span>
+</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container hover:bg-[#ECFDF5] text-on-surface-variant hover:text-[#0B4634] border border-outline-variant/40 text-label-sm font-label-sm transition-colors" onclick="fillAiInput('Ward Announcements: When is next Ward Sabha meeting?')">
+<span>Ward Announcements</span>
+</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container hover:bg-[#ECFDF5] text-on-surface-variant hover:text-[#0B4634] border border-outline-variant/40 text-label-sm font-label-sm transition-colors" onclick="fillAiInput('Drinking water pipeline leak on Temple Road junction near Transformer')">
+<span>Drinking water pipeline leak</span>
+</button>
+</div>
+<!-- Run Agent Button -->
+<button class="px-5 py-2.5 rounded-xl bg-primary-container hover:bg-[#125B42] text-white font-title-md font-semibold text-title-md shadow-sm transition-all flex items-center gap-2 active:scale-95" id="btnRunAgent" onclick="runAgenticWorkflow()">
+<span class="material-symbols-outlined text-base">psychology</span>
+<span>Execute Sahayakan Agent</span>
+</button>
+</div>
+</div>
+<!-- LIVE AGENTIC DRAWER / STEP EXECUTION PANEL -->
+<div class="mt-6 p-5 rounded-xl bg-[#F4F9F6] border border-[#A7F3D0]/60 space-y-4 hidden" id="aiExecutionPanel">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
+</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Ward Sahayakan · Live Multi-Step Execution</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Autonomous Civic Agent v2.4</span>
+</div>
+<!-- Step Progression List -->
+<div class="space-y-2.5 font-mono text-body-sm">
+<div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-outline-variant/30 text-on-surface opacity-40 transition-all duration-300" id="agentStep1">
+<span class="material-symbols-outlined text-emerald-600 text-lg step-icon">radio_button_unchecked</span>
+<div>
+<strong class="font-semibold text-primary">1. UNDERSTAND:</strong> Parsed Malayalam text: "Road deterioration near Govt LP School, Kadakampally Ward 7"
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-outline-variant/30 text-on-surface opacity-40 transition-all duration-300" id="agentStep2">
+<span class="material-symbols-outlined text-emerald-600 text-lg step-icon">radio_button_unchecked</span>
+<div>
+<strong class="font-semibold text-primary">2. CHECK CONTEXT:</strong> Verified Kadakampally Ward 7 boundaries &amp; active representative Smt. Lathika Kumari.
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-outline-variant/30 text-on-surface opacity-40 transition-all duration-300" id="agentStep3">
+<span class="material-symbols-outlined text-emerald-600 text-lg step-icon">radio_button_unchecked</span>
+<div>
+<strong class="font-semibold text-primary">3. CLASSIFY:</strong> Category: Roads &amp; Drainage · Suggested Priority: <span class="px-2 py-0.5 rounded bg-red-100 text-red-800 font-sans text-xs font-bold">High (AI suggestion)</span>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-outline-variant/30 text-on-surface opacity-40 transition-all duration-300" id="agentStep4">
+<span class="material-symbols-outlined text-emerald-600 text-lg step-icon">radio_button_unchecked</span>
+<div>
+<strong class="font-semibold text-primary">4. PREPARE:</strong> Formulated ticket #EW-1042 with geotag note (8.5085° N, 76.9214° E) and uploaded road photo attachment.
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-lg bg-white border border-outline-variant/30 text-on-surface opacity-40 transition-all duration-300" id="agentStep5">
+<span class="material-symbols-outlined text-emerald-600 text-lg step-icon">radio_button_unchecked</span>
+<div>
+<strong class="font-semibold text-primary">5. NOTIFY:</strong> Dispatched priority action item to Ward Representative Smt. Lathika Kumari.
+              </div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-lg bg-[#ECFDF5] border border-[#A7F3D0] text-[#0B4634] opacity-40 transition-all duration-300" id="agentStep6">
+<span class="material-symbols-outlined text-emerald-700 text-lg step-icon">radio_button_unchecked</span>
+<div class="flex-1 flex items-center justify-between">
+<div>
+<strong class="font-semibold">RESULT:</strong> Issue <span class="font-bold underline">#EW-1042</span> created with live citizen tracking link.
+                </div>
+<button class="px-3 py-1 rounded bg-[#0B4634] text-white font-sans text-xs font-semibold hover:bg-opacity-90" onclick="openIssueDetail('EW-1042')">View Live Ticket</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2-COLUMN SECTION: MY ISSUES & QUICK WARD INFO -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left: MY ISSUES LIST (2 Cols) -->
+<div class="lg:col-span-2 space-y-4" id="issuesListContainer">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="text-headline-md font-headline-md font-bold text-on-surface">My Ward Petitions &amp; Issues</h2>
+<p class="text-body-sm font-body-sm text-outline">Real-time status updates directly from Kadakampally Ward 7 desk.</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/50 bg-white text-label-sm font-label-sm font-medium hover:bg-surface-container-low transition-colors">All (4)</button>
+<button class="px-3 py-1.5 rounded-lg border border-transparent text-label-sm font-label-sm text-outline hover:text-on-surface">Active (3)</button>
+</div>
+</div>
+<!-- Cards Stack -->
+<div class="space-y-3">
+<!-- Issue Item 1: EW-1042 (In Progress) -->
+<div class="group p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer" onclick="openIssueDetail('EW-1042')">
+<div class="flex items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-mono text-xs font-semibold text-outline">#EW-1042</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1D4ED8] animate-pulse"></span>
+                      In Progress
+                    </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-surface-container text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-xs">alt_route</span> Roads &amp; Drainage
+                    </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-[#ECFDF5] text-[#0B4634] font-medium border border-[#A7F3D0]">
+<span class="material-symbols-outlined text-xs">auto_awesome</span> AI Verified
+                    </span>
+</div>
+<h3 class="text-title-lg font-title-lg font-semibold text-on-surface group-hover:text-primary transition-colors">
+                    Road deterioration &amp; potholes near Govt LP School / സ്കൂൾ റോഡിലെ കുഴികൾ
+                  </h3>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">
+                    Large cavities forming on both edges causing water stagnation during morning student drop-offs. Tar patching approved by Ward Member.
+                  </p>
+</div>
+<div class="text-right whitespace-nowrap">
+<span class="text-label-sm font-label-sm text-outline">Updated 2h ago</span>
+<div class="text-xs text-primary font-medium mt-2 flex items-center gap-1 justify-end">
+<span>Inspect Timeline</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Mini Progress Bar -->
+<div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-[#0B4634]">engineering</span>
+<span>PW Contractor Assigned: Kadakampally Works Wing</span>
+</div>
+<div class="w-36 h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-[#0B4634] rounded-full w-3/4"></div>
+</div>
+</div>
+</div>
+<!-- Issue Item 2: EW-1039 (Action Taken) -->
+<div class="group p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer" onclick="openIssueDetail('EW-1039')">
+<div class="flex items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-mono text-xs font-semibold text-outline">#EW-1039</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#065F46]"></span>
+                      Action Taken
+                    </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-surface-container text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-xs">water_drop</span> Drinking Water
+                    </span>
+</div>
+<h3 class="text-title-lg font-title-lg font-semibold text-on-surface group-hover:text-primary transition-colors">
+                    Pipeline crack near Temple Pond culvert / കുടിവെള്ള പൈപ്പ് ചോർച്ച
+                  </h3>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">
+                    Kerala Water Authority field line inspection completed. Valve sleeve clamped and pressure verified on Oct 24.
+                  </p>
+</div>
+<div class="text-right whitespace-nowrap">
+<span class="text-label-sm font-label-sm text-outline">Yesterday</span>
+<div class="text-xs text-primary font-medium mt-2 flex items-center gap-1 justify-end">
+<span>Inspect Timeline</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Issue Item 3: EW-1035 (Resolved with Feedback) -->
+<div class="group p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer" onclick="openIssueDetail('EW-1035')">
+<div class="flex items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-mono text-xs font-semibold text-outline">#EW-1035</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#F3F4F6] text-[#374151] border border-[#E5E7EB]">
+<span class="material-symbols-outlined text-xs text-emerald-600">check_circle</span>
+                      Resolved
+                    </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-surface-container text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-xs">lightbulb</span> Streetlights
+                    </span>
+</div>
+<h3 class="text-title-lg font-title-lg font-semibold text-on-surface group-hover:text-primary transition-colors">
+                    Replacement of 3 faulty LED fixtures along KSRTC sub-route
+                  </h3>
+<p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">
+                    KSEB Electrical Section Chakkai replaced drivers and photocells. Resident verified functional illumination.
+                  </p>
+</div>
+<div class="text-right whitespace-nowrap">
+<span class="text-label-sm font-label-sm text-outline">Oct 18</span>
+<div class="flex items-center gap-0.5 text-amber-500 text-xs mt-2 justify-end">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: QUICK WARD INFORMATION CARD (1 Col) -->
+<div class="space-y-6">
+<div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm space-y-5">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">Ward 7 Directory &amp; Office</h3>
+<span class="material-symbols-outlined text-primary">location_city</span>
+</div>
+<!-- Rep Profile Mini Banner -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-bright border border-outline-variant/40">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                LK
+              </div>
+<div>
+<h4 class="text-title-md font-title-md font-bold text-on-surface">Smt. Lathika Kumari</h4>
+<p class="text-label-sm font-label-sm text-outline">Elected Representative · Ward 7</p>
+<p class="text-[11px] text-primary font-medium">Kadakampally Grama Panchayat</p>
+</div>
+</div>
+<!-- Key Ward Facts -->
+<div class="space-y-2.5 text-body-sm">
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/20">
+<span class="text-outline">Upcoming Ward Sabha:</span>
+<span class="font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">event</span>
+                  Sunday, Nov 12, 10:00 AM
+                </span>
+</div>
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/20">
+<span class="text-outline">Venue:</span>
+<span class="font-medium text-on-surface">Govt LP School Hall, Chakkai</span>
+</div>
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/20">
+<span class="text-outline">Emergency Water Desk:</span>
+<span class="font-mono text-primary font-semibold">0471-2448911</span>
+</div>
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/20">
+<span class="text-outline">KSEB Sub-station:</span>
+<span class="font-mono text-primary font-semibold">1912 / 9496010101</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-outline">Total Active Petitions:</span>
+<span class="font-bold text-primary">8 Pending · 84 Resolved</span>
+</div>
+</div>
+<!-- Platform Disclaimer & Notice -->
+<div class="p-3 rounded-xl bg-[#FFFBEB] border border-[#FDE68A] text-amber-900 text-xs space-y-1">
+<div class="flex items-center gap-1.5 font-bold">
+<span class="material-symbols-outlined text-sm text-amber-700">info</span>
+<span>Private Civic Platform · Demo Data</span>
+</div>
+<p class="text-[11px] text-amber-800 leading-relaxed">
+                This instance demonstrates the Kerala Civic Grid protocol for Ward 7 Kadakampally. All representative actions reflect testing simulation.
+              </p>
+</div>
+<button class="w-full py-2.5 rounded-xl border border-[#0B4634] text-[#0B4634] hover:bg-[#ECFDF5] font-title-md font-medium text-center transition-colors" onclick="openModal('reportModal')">
+              Schedule Public Meeting Slot
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- ==========================================
+         VIEW 2: REPRESENTATIVE ACTION HUB
+         ========================================== -->
+<div class="space-y-8 hidden animate-fadeIn" id="viewRepresentative">
+<!-- REPRESENTATIVE HEADER / TRIAGE STATUS -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm">
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#ECFDF5] text-[#0B4634] border border-[#A7F3D0]">Ward Representative Desk</span>
+<span class="text-label-sm font-label-sm text-outline">Ward 7 · Kadakampally</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg font-bold text-on-surface mt-1">Ward Action Hub / ജനപ്രതിനിധി കൺസോൾ</h1>
+<p class="text-body-md font-body-md text-outline">Triage grievances, assign panchayat contractors, and publish official resolution logs.</p>
+</div>
+<!-- Quick Stats Cards -->
+<div class="flex items-center gap-3">
+<div class="px-4 py-2.5 rounded-xl bg-red-50 border border-red-200 text-center">
+<span class="block text-2xl font-bold text-red-700 font-mono">3</span>
+<span class="text-[11px] font-medium text-red-800 uppercase tracking-wide">Needs Action</span>
+</div>
+<div class="px-4 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-center">
+<span class="block text-2xl font-bold text-amber-700 font-mono">1</span>
+<span class="text-[11px] font-medium text-amber-800 uppercase tracking-wide">Unacknowledged</span>
+</div>
+<div class="px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-200 text-center">
+<span class="block text-2xl font-bold text-blue-700 font-mono">4</span>
+<span class="text-[11px] font-medium text-blue-800 uppercase tracking-wide">In Progress</span>
+</div>
+</div>
+</div>
+<!-- AI WARD INSIGHT BANNER -->
+<div class="p-4 rounded-xl bg-gradient-to-r from-[#ECFDF5] to-[#F0FDF4] border border-[#A7F3D0] flex items-start gap-3">
+<div class="p-2 rounded-lg bg-white shadow-xs text-[#0B4634]">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<h4 class="text-title-md font-title-md font-bold text-[#0B4634]">Voice of the Ward · AI Ward Insight</h4>
+<span class="px-2 py-0.2 rounded text-[10px] bg-[#0B4634] text-white font-mono">WEEKLY SUMMARY</span>
+</div>
+<p class="text-body-sm font-body-sm text-[#065F46] mt-0.5">
+            "Road and monsoon drainage complaints surged 34% this week near school zone. 3 repeat complaints logged within 200m of Govt LP School. Recommended action: expedite culvert desilting before heavy rainfall on Thursday."
+            <span class="text-xs text-outline ml-1">— AI Generated Summary based on Ward 7 data</span>
+</p>
+</div>
+</div>
+<!-- ACTION TRIAGE CARDS (Raycast / Modern Minimalist Grid) -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-headline-md font-headline-md font-bold text-on-surface">Urgent Triage Queue (Ward 7)</h3>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-surface-bright border border-outline-variant/40 text-label-sm font-medium">Filter by Department</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-bright border border-outline-variant/40 text-label-sm font-medium">Sort by Priority</button>
+</div>
+</div>
+<!-- Triage Card 1 -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm space-y-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-surface-container text-primary">#EW-1042</span>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200">Critical Priority</span>
+<span class="text-label-sm font-label-sm text-outline">Submitted by Resident: Anoop V. (Chakkai)</span>
+</div>
+<h4 class="text-title-lg font-title-lg font-bold text-on-surface">Potholes and culvert blockage near Govt LP School</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Automated classification matches Kadakampally Panchayat Works division. Geotag verified inside Ward 7.</p>
+</div>
+<!-- Triage Quick Action Buttons -->
+<div class="flex items-center gap-2 flex-wrap">
+<button class="px-3 py-1.5 rounded-lg bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#0B4634] border border-[#A7F3D0] text-title-md font-medium transition-all flex items-center gap-1.5" onclick="acknowledgeIssue('EW-1042')">
+<span class="material-symbols-outlined text-sm">done_all</span>
+<span>Acknowledge</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface text-title-md font-medium transition-all flex items-center gap-1.5" onclick="openStatusModal('EW-1042')">
+<span class="material-symbols-outlined text-sm">edit_note</span>
+<span>Update Status</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface text-title-md font-medium transition-all flex items-center gap-1.5" onclick="addEvidencePrompt('EW-1042')">
+<span class="material-symbols-outlined text-sm">add_a_photo</span>
+<span>Add Evidence</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-[#0B4634] hover:bg-[#125B42] text-white text-title-md font-semibold transition-all flex items-center gap-1.5 shadow-sm" onclick="resolveIssueModal('EW-1042')">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Resolve Issue</span>
+</button>
+</div>
+</div>
+<!-- Representative Work Log Preview -->
+<div class="p-3.5 rounded-xl bg-surface-bright border border-outline-variant/30 flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-lg">history</span>
+<span class="text-on-surface-variant">Last internal memo: <strong>Contractor Biju Pillai instructed to lay bitumen seal before Friday.</strong></span>
+</div>
+<span class="text-outline text-xs">Logged by Smt. Lathika Kumari</span>
+</div>
+</div>
+<!-- Triage Card 2 -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm space-y-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-surface-container text-primary">#EW-1044</span>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">Unacknowledged</span>
+<span class="text-label-sm font-label-sm text-outline">Submitted 45 mins ago · Sreedevi K.</span>
+</div>
+<h4 class="text-title-lg font-title-lg font-bold text-on-surface">Waste accumulation near bypass lane 4 container bin</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Haritha Karma Sena collection missed regular Tuesday round.</p>
+</div>
+<div class="flex items-center gap-2 flex-wrap">
+<button class="px-3.5 py-2 rounded-lg bg-[#0B4634] text-white text-title-md font-semibold hover:bg-[#125B42] transition-all flex items-center gap-1.5" onclick="acknowledgeIssue('EW-1044')">
+<span class="material-symbols-outlined text-sm">check</span>
+<span>Acknowledge Now</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-variant text-title-md font-medium" onclick="openStatusModal('EW-1044')">
+                Dispatch Sena
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- WARD RESIDENT MANAGEMENT TABLE -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div>
+<h3 class="text-headline-md font-headline-md font-bold text-on-surface">Registered Ward 7 Residents</h3>
+<p class="text-body-sm font-body-sm text-outline">142 verified residents enrolled via Kadakampally GP civic roster.</p>
+</div>
+<button class="px-4 py-2 rounded-xl bg-primary-container hover:bg-[#125B42] text-white font-title-md font-semibold text-title-md flex items-center gap-2 self-start" onclick="openModal('addResidentModal')">
+<span class="material-symbols-outlined text-base">person_add</span>
+<span>+ Add Resident</span>
+</button>
+</div>
+<!-- Clean High Density Table -->
+<div class="overflow-x-auto border border-outline-variant/30 rounded-xl">
+<table class="w-full text-left border-collapse text-body-sm">
+<thead class="bg-surface-container-low text-on-surface-variant font-medium border-b border-outline-variant/30">
+<tr>
+<th class="p-3 font-semibold">Resident Name</th>
+<th class="p-3 font-semibold">House No. / Landmark</th>
+<th class="p-3 font-semibold">Contact</th>
+<th class="p-3 font-semibold">Bound Ward</th>
+<th class="p-3 font-semibold">Petitions Logged</th>
+<th class="p-3 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-3 font-medium text-on-surface">Anoop V.</td>
+<td class="p-3 text-outline">7/342, Temple View, Chakkai</td>
+<td class="p-3 font-mono text-outline">+91 98470 *****</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold">Ward 7 (Locked)</span></td>
+<td class="p-3 font-mono font-medium">3 Petitions</td>
+<td class="p-3 text-right">
+<button class="text-primary hover:underline font-semibold text-xs">View Profile</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-3 font-medium text-on-surface">Sreedevi K.</td>
+<td class="p-3 text-outline">7/118, Bypass Road, Chakkai</td>
+<td class="p-3 font-mono text-outline">+91 94471 *****</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold">Ward 7 (Locked)</span></td>
+<td class="p-3 font-mono font-medium">1 Petition</td>
+<td class="p-3 text-right">
+<button class="text-primary hover:underline font-semibold text-xs">View Profile</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-3 font-medium text-on-surface">Manoj Kumar R.</td>
+<td class="p-3 text-outline">7/502, Canal Side Lane</td>
+<td class="p-3 font-mono text-outline">+91 98952 *****</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold">Ward 7 (Locked)</span></td>
+<td class="p-3 font-mono font-medium">5 Petitions</td>
+<td class="p-3 text-right">
+<button class="text-primary hover:underline font-semibold text-xs">View Profile</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ==========================================
+         VIEW 3: ADMIN CIVIC STRUCTURE & HIERARCHY
+         ========================================== -->
+<div class="space-y-8 hidden animate-fadeIn" id="viewAdmin">
+<!-- ADMIN HEADER & SECURITY PROTOCOL -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm">
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]">Platform Super Admin</span>
+<span class="text-label-sm font-label-sm text-outline">Civic Administration Node</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg font-bold text-on-surface mt-1">Kerala Civic Grid &amp; Hierarchy / ഭരണക്രമം</h1>
+<p class="text-body-md font-body-md text-outline">Provision Grama Panchayats, enforce Ward boundaries, and manage authorized Representative credentials.</p>
+</div>
+<button class="px-5 py-2.5 rounded-xl bg-primary-container hover:bg-[#125B42] text-white font-title-md font-semibold text-title-md shadow-sm transition-all flex items-center gap-2 self-start" onclick="openModal('createRepModal')">
+<span class="material-symbols-outlined text-base">person_add_alt</span>
+<span>+ Create Representative</span>
+</button>
+</div>
+<!-- SECURITY NOTICE -->
+<div class="p-4 rounded-xl bg-[#FFF1F2] border border-[#FECDD3] text-red-900 flex items-start gap-3">
+<span class="material-symbols-outlined text-xl text-red-600">shield_lock</span>
+<div class="text-body-sm">
+<strong class="font-bold">Strict Protocol Mandate:</strong> Representative accounts are exclusively provisioned by Ente Ward Administrators. Public self-registration is disabled to preserve institutional sovereignty and electoral integrity.
+        </div>
+</div>
+<!-- INTERACTIVE HIERARCHY VISUALIZER -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm space-y-6">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<h3 class="text-headline-md font-headline-md font-bold text-on-surface">Administrative Tree Visualizer</h3>
+<span class="text-label-sm font-label-sm text-outline">Interactive Cascade</span>
+</div>
+<!-- Node Cascading Tree -->
+<div class="space-y-4">
+<!-- Level 1: Civic Grid Root -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-white flex items-center justify-center font-bold text-sm">KG</span>
+<div>
+<span class="text-xs uppercase font-bold text-outline">Tier 1 · State Grid</span>
+<h4 class="text-title-lg font-title-lg font-bold text-on-surface">Kerala Civic Grid Architecture</h4>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full text-xs font-mono bg-white border border-outline-variant/40 font-semibold">14 Districts Active</span>
+</div>
+<!-- Indent Connector -->
+<div class="pl-8 border-l-2 border-dashed border-outline-variant/60 ml-4 space-y-4">
+<!-- Level 2: Grama Panchayat -->
+<div class="p-4 rounded-xl bg-white border border-outline-variant/40 flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">account_balance</span>
+<div>
+<span class="text-xs uppercase font-bold text-[#0B4634]">Tier 2 · Grama Panchayat</span>
+<h4 class="text-title-lg font-title-lg font-bold text-on-surface">Kadakampally GP (തിരുവനന്തപുരം ജില്ല)</h4>
+<p class="text-body-sm text-outline">21 Wards Constituted · GP Code: KL-TVM-024</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full text-xs bg-[#ECFDF5] text-[#0B4634] font-semibold border border-[#A7F3D0]">Jurisdiction Verified</span>
+</div>
+<!-- Indent Level 3: Ward -->
+<div class="pl-8 border-l-2 border-dashed border-outline-variant/60 ml-4 space-y-4">
+<div class="p-4 rounded-xl bg-white border-2 border-primary/30 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">signpost</span>
+<div>
+<span class="text-xs uppercase font-bold text-[#0B4634]">Tier 3 · Electoral Ward</span>
+<h4 class="text-title-lg font-title-lg font-bold text-primary">Ward 7 - Chakkai (ചാക്ക)</h4>
+<p class="text-body-sm text-outline">Area: 3.42 sq km · Geofenced Bound Verified</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded-full text-xs bg-surface-container font-mono font-medium">Ward Sabha #4 Scheduled</span>
+</div>
+</div>
+<!-- Indent Level 4: Representative & Citizens -->
+<div class="pl-8 border-l-2 border-dashed border-outline-variant/60 ml-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Rep Box -->
+<div class="p-4 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#0B4634]">how_to_reg</span>
+<span class="text-xs font-bold uppercase text-[#0B4634]">Authorized Representative</span>
+</div>
+<h5 class="text-title-md font-title-md font-bold text-on-surface">Smt. Lathika Kumari</h5>
+<p class="text-xs text-outline font-mono">UID: REP-KL-TVM-W07-001</p>
+<p class="text-xs text-on-surface-variant">Key Holder for Ward 7 Resolution Dispatch</p>
+</div>
+<!-- Residents Box -->
+<div class="p-4 rounded-xl bg-surface-bright border border-outline-variant/40 space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">groups</span>
+<span class="text-xs font-bold uppercase text-outline">Citizen Base</span>
+</div>
+<h5 class="text-title-md font-title-md font-bold text-on-surface">142 Registered Residents</h5>
+<p class="text-xs text-outline font-mono">100% Geotag Bound Validation</p>
+<p class="text-xs text-on-surface-variant">Active Petitioners with Citizen Verification</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AUDIT LOG (Platform Traceability) -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm space-y-4" id="auditLog">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">security</span>
+<h3 class="text-headline-md font-headline-md font-bold text-on-surface">Immutable Civic Audit Log</h3>
+</div>
+<span class="text-xs font-mono text-outline">SHA-256 Validated</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-body-sm font-mono">
+<thead class="bg-surface-container-low text-outline text-xs border-b border-outline-variant/30">
+<tr>
+<th class="p-2.5">Timestamp (IST)</th>
+<th class="p-2.5">Actor</th>
+<th class="p-2.5">Action</th>
+<th class="p-2.5">Entity</th>
+<th class="p-2.5">Result</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 text-xs">
+<tr>
+<td class="p-2.5 text-outline">2023-10-24 14:32:01</td>
+<td class="p-2.5 font-bold text-primary">Ward Sahayakan AI</td>
+<td class="p-2.5">AUTONOMOUS_TRIAGE</td>
+<td class="p-2.5">Ticket #EW-1042</td>
+<td class="p-2.5"><span class="text-emerald-700 font-bold">SUCCESS (DISPATCHED)</span></td>
+</tr>
+<tr>
+<td class="p-2.5 text-outline">2023-10-24 11:15:40</td>
+<td class="p-2.5 font-bold text-on-surface">Rep. Lathika Kumari</td>
+<td class="p-2.5">STATUS_UPDATE_PROGRESS</td>
+<td class="p-2.5">Ticket #EW-1039</td>
+<td class="p-2.5"><span class="text-blue-700 font-bold">COMMITTED</span></td>
+</tr>
+<tr>
+<td class="p-2.5 text-outline">2023-10-23 09:04:12</td>
+<td class="p-2.5 font-bold text-red-800">SuperAdmin Root</td>
+<td class="p-2.5">REP_CREDENTIAL_PROVISION</td>
+<td class="p-2.5">User #REP-W07</td>
+<td class="p-2.5"><span class="text-emerald-700 font-bold">ENROLLED</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- GLOBAL TRANSPARENCY FOOTER -->
+<footer class="mt-16 pt-8 pb-12 border-t border-outline-variant/30 text-center space-y-2">
+<div class="flex items-center justify-center gap-2 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span>Ente Ward (എന്റെ വാർഡ്)</span>
+</div>
+<p class="text-body-sm font-body-sm text-outline max-w-xl mx-auto">
+        Ente Ward is a private civic technology platform. Not affiliated with any official government department. Demo Data.
+      </p>
+<div class="flex items-center justify-center gap-4 text-xs text-outline pt-2">
+<span>Kadakampally GP Demo</span>
+<span>•</span>
+<span>Bilingual AI Engine</span>
+<span>•</span>
+<span>Version 2.4.0-Production</span>
+</div>
+</footer>
+</main>
+<!-- ==========================================
+       MODAL 1: 5-STEP CIVIC REPORT SUBMISSION
+       ========================================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 hidden" id="reportModal">
+<div class="bg-surface-container-lowest rounded-2xl w-full max-w-2xl border border-outline-variant/40 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+<!-- Modal Header with Stepper Progress -->
+<div class="p-6 border-b border-outline-variant/30 bg-surface-bright flex items-center justify-between">
+<div>
+<span class="text-xs uppercase font-bold text-primary">Civic Grievance Redressal</span>
+<h3 class="text-headline-md font-headline-md font-bold text-on-surface">File New Issue / പുതിയ പരാതി</h3>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container" onclick="closeModal('reportModal')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Step Indicator Dots -->
+<div class="px-6 py-3 bg-surface-container-low border-b border-outline-variant/30 flex items-center justify-between text-xs font-semibold">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary-container text-white flex items-center justify-center" id="stepBadge1">1</span>
+<span class="text-primary">Describe</span>
+</div>
+<div class="h-0.5 w-8 bg-outline-variant/40"></div>
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container text-outline flex items-center justify-center" id="stepBadge2">2</span>
+<span class="text-outline">Category</span>
+</div>
+<div class="h-0.5 w-8 bg-outline-variant/40"></div>
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container text-outline flex items-center justify-center" id="stepBadge3">3</span>
+<span class="text-outline">Location</span>
+</div>
+<div class="h-0.5 w-8 bg-outline-variant/40"></div>
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container text-outline flex items-center justify-center" id="stepBadge4">4</span>
+<span class="text-outline">Evidence</span>
+</div>
+<div class="h-0.5 w-8 bg-outline-variant/40"></div>
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container text-outline flex items-center justify-center" id="stepBadge5">5</span>
+<span class="text-outline">AI Review</span>
+</div>
+</div>
+<!-- Modal Body (Steps) -->
+<div class="p-6 overflow-y-auto space-y-6 flex-1 custom-scrollbar">
+<!-- STEP 1: Describe -->
+<div class="space-y-4" id="modalStep1">
+<div>
+<label class="block text-title-md font-bold text-on-surface mb-1">Issue Title (Malayalam or English)</label>
+<input class="w-full px-4 py-2.5 rounded-xl border border-outline-variant/60 focus:ring-1 focus:ring-primary focus:border-primary" id="reportTitle" placeholder="e.g. Broken water pipe near Temple junction" type="text" value="റോഡ് മോശമാണ് - സ്കൂളിന് സമീപം">
+</div>
+<div>
+<label class="block text-title-md font-bold text-on-surface mb-1">Detailed Description / വിശദാംശങ്ങൾ</label>
+<textarea class="w-full p-4 rounded-xl border border-outline-variant/60 focus:ring-1 focus:ring-primary focus:border-primary" id="reportDesc" rows="4">സ്കൂളിന് സമീപമുള്ള റോഡിൽ വലിയ കുഴികൾ രൂപപ്പെട്ടു. മഴയത്ത് വെള്ളക്കെട്ട് കാരണം കുട്ടികൾക്കും കാൽനടയാത്രക്കാർക്കും സഞ്ചരിക്കാൻ ബുദ്ധിമുട്ടാണ്.</textarea>
+</div>
+</div>
+<!-- STEP 2: 18-Category Grid -->
+<div class="space-y-3 hidden" id="modalStep2">
+<h4 class="text-title-md font-bold text-on-surface">Select Ward Department Category (18 Civic Domains)</h4>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-64 overflow-y-auto pr-1">
+<button class="cat-pill p-2.5 rounded-xl border-2 border-primary bg-[#ECFDF5] text-primary text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Roads &amp; Bridges')" type="button">
+<span class="material-symbols-outlined text-base">alt_route</span>
+<span>Roads &amp; Bridges</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Drinking Water')" type="button">
+<span class="material-symbols-outlined text-base">water_drop</span>
+<span>Drinking Water (KWA)</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Streetlights &amp; Power')" type="button">
+<span class="material-symbols-outlined text-base">lightbulb</span>
+<span>Streetlights &amp; Power</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Waste Management')" type="button">
+<span class="material-symbols-outlined text-base">delete</span>
+<span>Waste &amp; Haritha Karma</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Drainage &amp; Canals')" type="button">
+<span class="material-symbols-outlined text-base">waves</span>
+<span>Drainage &amp; Culverts</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Public Health &amp; PHC')" type="button">
+<span class="material-symbols-outlined text-base">medical_services</span>
+<span>Public Health &amp; PHC</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Anganwadi &amp; Education')" type="button">
+<span class="material-symbols-outlined text-base">school</span>
+<span>Anganwadi &amp; Schools</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Stray Animals')" type="button">
+<span class="material-symbols-outlined text-base">pets</span>
+<span>Stray Animal Safety</span>
+</button>
+<button class="cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left" onclick="selectCategory(this, 'Parks &amp; Public Grounds')" type="button">
+<span class="material-symbols-outlined text-base">park</span>
+<span>Parks &amp; Open Spaces</span>
+</button>
+</div>
+</div>
+<!-- STEP 3: Honest Location Picker -->
+<div class="space-y-3 hidden" id="modalStep3">
+<h4 class="text-title-md font-bold text-on-surface">Honest Geotag &amp; Ward 7 Verification</h4>
+<p class="text-body-sm text-outline">Ente Ward validates coordinates against Kadakampally Ward 7 polygon boundaries.</p>
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-3">
+<div class="flex items-center justify-between text-xs">
+<span class="text-outline font-medium">Auto-detected Geotag:</span>
+<span class="font-mono text-primary font-bold">8.5085° N, 76.9214° E (Accurate: 4m)</span>
+</div>
+<div class="p-3 bg-white rounded-lg border border-outline-variant/40 flex items-center gap-2 text-xs">
+<span class="material-symbols-outlined text-emerald-600">verified</span>
+<span class="text-on-surface">Point falls precisely inside <strong>Kadakampally GP · Ward 7 (Chakkai)</strong>.</span>
+</div>
+<div>
+<label class="block text-xs font-bold text-outline mb-1">Local Landmark / House Identifier</label>
+<input class="w-full px-3 py-2 text-xs rounded-lg border border-outline-variant/40 bg-white" type="text" value="Opposite Govt LP School Chakkai main gate, Temple Road">
+</div>
+</div>
+</div>
+<!-- STEP 4: Evidence Uploader -->
+<div class="space-y-3 hidden" id="modalStep4">
+<h4 class="text-title-md font-bold text-on-surface">Photographic Evidence / ഫോട്ടോ തെളിവ്</h4>
+<!-- Image with Prompt Override Rules -->
+<div class="relative rounded-xl overflow-hidden border border-outline-variant/40 h-48 bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A realistic documentary photograph of an asphalt village road in Kerala with large monsoon potholes filled with muddy rainwater right in front of a modest green painted government primary school gate. Natural diffused daylight during overcast Kerala monsoon weather with lush coconut palm trees in the background, sharp detail showing civic deterioration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh75YVLJ9TBzodsbFt8TZclqZKyqFLZGciaIkWcwyrQkPfw4q_sZxmxNvE-3Tnj44MXrMd7PyyNVpSvXqgGW2gFouFaXP7HPpT3PQGiyO6to97dXP76JD-GtXkJ-M4g0NsyfZALBy_jrGGg7V5k1e4LCBG4eXLza2K_epFifdOUpdWDHwnHqTZysMJkLfIBf41L3WYVdDzYl0ayW0I6do9ZqISgRkzHWnozN9Qwe5Ukti0gDOq56k">
+<div class="absolute bottom-2 left-2 px-2.5 py-1 rounded bg-black/60 backdrop-blur-sm text-white text-[11px] font-mono flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs">photo_camera</span>
+<span>IMG_20231024_0912_LP_School.jpg (Geotag Embedded)</span>
+</div>
+</div>
+<p class="text-xs text-outline">File size: 2.4 MB · High clarity evidence speeds up Ward member approvals.</p>
+</div>
+<!-- STEP 5: AI Review with Suggestions -->
+<div class="space-y-4 hidden" id="modalStep5">
+<div class="p-4 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#0B4634]">auto_awesome</span>
+<h4 class="text-title-md font-bold text-[#0B4634]">Ward Sahayakan Pre-Submission Assessment</h4>
+</div>
+<div class="space-y-2 text-xs text-[#065F46]">
+<div class="flex items-center justify-between">
+<span>Routing Department:</span>
+<span class="font-bold">Kadakampally Works &amp; Engineering Section</span>
+</div>
+<div class="flex items-center justify-between">
+<span>Suggested Priority:</span>
+<span class="px-2 py-0.5 rounded bg-red-100 text-red-800 font-bold">High (AI Suggestion: School Safety Hazard)</span>
+</div>
+<div class="flex items-center justify-between">
+<span>Estimated Resolution SLA:</span>
+<span class="font-bold">48 - 72 Working Hours</span>
+</div>
+</div>
+</div>
+<div class="p-3 rounded-xl bg-surface-container border border-outline-variant/30 text-xs text-on-surface-variant">
+            By submitting, this petition will be transmitted directly to Ward Representative <strong>Smt. Lathika Kumari</strong> and registered in the Kerala Civic Grid.
+          </div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-4 border-t border-outline-variant/30 bg-surface-bright flex items-center justify-between">
+<button class="px-4 py-2 rounded-xl text-on-surface hover:bg-surface-container text-body-sm font-medium transition-colors hidden" id="modalBtnBack" onclick="prevModalStep()">
+          Back
+        </button>
+<div class="ml-auto flex items-center gap-2">
+<button class="px-4 py-2 rounded-xl text-outline hover:text-on-surface text-body-sm" onclick="closeModal('reportModal')">
+            Cancel
+          </button>
+<button class="px-5 py-2 rounded-xl bg-primary-container hover:bg-[#125B42] text-white text-body-sm font-semibold transition-all" id="modalBtnNext" onclick="nextModalStep()">
+            Continue to Category →
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- ==========================================
+       MODAL 2: ISSUE DETAIL & FEEDBACK RATING
+       ========================================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 hidden" id="issueDetailModal">
+<div class="bg-surface-container-lowest rounded-2xl w-full max-w-2xl border border-outline-variant/40 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+<div class="p-6 border-b border-outline-variant/30 bg-surface-bright flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded bg-primary-container text-white font-mono text-xs font-bold" id="detailModalId">#EW-1042</span>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">In Progress</span>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface" onclick="closeModal('issueDetailModal')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-6 overflow-y-auto space-y-6 flex-1 custom-scrollbar">
+<div>
+<h3 class="text-headline-md font-headline-md font-bold text-on-surface">Road deterioration &amp; potholes near Govt LP School</h3>
+<p class="text-body-sm text-outline mt-1">Ward 7 · Chakkai · Kadakampally Grama Panchayat</p>
+</div>
+<!-- Vertical Timeline Component -->
+<div>
+<h4 class="text-title-md font-bold text-on-surface mb-4">Official Resolution Timeline</h4>
+<div class="space-y-4 pl-4 border-l-2 border-primary/40 ml-2">
+<div class="relative pl-6">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-white"></span>
+<span class="text-[11px] font-mono text-outline">Today, 02:40 PM</span>
+<h5 class="text-title-md font-semibold text-on-surface">Panchayat Works Order Dispatched</h5>
+<p class="text-body-sm text-on-surface-variant">Contractor Biju Pillai mobilized cold-mix bitumen team to LP School road stretch.</p>
+</div>
+<div class="relative pl-6">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-4 border-white"></span>
+<span class="text-[11px] font-mono text-outline">Today, 11:20 AM</span>
+<h5 class="text-title-md font-semibold text-on-surface">Ward Representative Acknowledged</h5>
+<p class="text-body-sm text-on-surface-variant">Smt. Lathika Kumari personally reviewed grievance and assigned priority high.</p>
+</div>
+<div class="relative pl-6">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-slate-300 border-4 border-white"></span>
+<span class="text-[11px] font-mono text-outline">Today, 09:12 AM</span>
+<h5 class="text-title-md font-semibold text-on-surface">Issue Formulated via Ward Sahayakan AI</h5>
+<p class="text-body-sm text-on-surface-variant">Geotag logged and boundary conditions verified with photograph.</p>
+</div>
+</div>
+</div>
+<!-- Interactive Citizen Feedback Rating -->
+<div class="p-5 rounded-xl bg-surface-bright border border-outline-variant/40 space-y-3">
+<h4 class="text-title-md font-bold text-on-surface">Resident Feedback &amp; Verification</h4>
+<p class="text-body-sm text-outline">Rate the speed and responsiveness of this civic resolution:</p>
+<div class="flex items-center gap-2">
+<button class="star-btn text-2xl text-slate-300 hover:text-amber-500" onclick="rateStar(1)"><span class="material-symbols-outlined">star</span></button>
+<button class="star-btn text-2xl text-slate-300 hover:text-amber-500" onclick="rateStar(2)"><span class="material-symbols-outlined">star</span></button>
+<button class="star-btn text-2xl text-slate-300 hover:text-amber-500" onclick="rateStar(3)"><span class="material-symbols-outlined">star</span></button>
+<button class="star-btn text-2xl text-slate-300 hover:text-amber-500" onclick="rateStar(4)"><span class="material-symbols-outlined">star</span></button>
+<button class="star-btn text-2xl text-slate-300 hover:text-amber-500" onclick="rateStar(5)"><span class="material-symbols-outlined">star</span></button>
+<span class="text-xs text-primary font-semibold ml-2" id="starRatingFeedback">Click to rate</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ==========================================
+       MODAL 3: ADD RESIDENT (LOCKED TO GP & WARD 7)
+       ========================================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 hidden" id="addResidentModal">
+<div class="bg-surface-container-lowest rounded-2xl w-full max-w-lg border border-outline-variant/40 shadow-2xl overflow-hidden flex flex-col">
+<div class="p-5 border-b border-outline-variant/30 bg-surface-bright flex items-center justify-between">
+<div>
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">+ Add Ward Resident</h3>
+<p class="text-xs text-outline">Strictly locked to Kadakampally Ward 7 jurisdiction.</p>
+</div>
+<button class="text-outline hover:text-on-surface" onclick="closeModal('addResidentModal')"><span class="material-symbols-outlined">close</span></button>
+</div>
+<form class="p-6 space-y-4" onsubmit="saveNewResident(event)">
+<!-- Locked Fields -->
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-bold text-outline uppercase mb-1">Grama Panchayat (Locked)</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg border border-outline-variant/40 text-xs font-semibold text-outline cursor-not-allowed" readonly="" type="text" value="Kadakampally GP">
+</div>
+<div>
+<label class="block text-xs font-bold text-outline uppercase mb-1">Ward Number (Locked)</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-lg border border-outline-variant/40 text-xs font-semibold text-outline cursor-not-allowed" readonly="" type="text" value="Ward 7 (Chakkai)">
+</div>
+</div>
+<div>
+<label class="block text-body-sm font-bold text-on-surface mb-1">Resident Full Name</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-body-sm" placeholder="e.g. Radhakrishnan Nair" required="" type="text">
+</div>
+<div>
+<label class="block text-body-sm font-bold text-on-surface mb-1">House Number &amp; Street / വീട്ടുപേര്</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-body-sm" placeholder="7/620, Near Devi Temple" required="" type="text">
+</div>
+<div>
+<label class="block text-body-sm font-bold text-on-surface mb-1">Mobile Number for SMS Notifications</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-body-sm font-mono" placeholder="+91 98470 00000" required="" type="tel">
+</div>
+<div class="pt-2 flex items-center justify-end gap-2">
+<button class="px-4 py-2 text-body-sm text-outline hover:text-on-surface" onclick="closeModal('addResidentModal')" type="button">Cancel</button>
+<button class="px-5 py-2 rounded-xl bg-primary-container text-white text-body-sm font-semibold hover:bg-[#125B42]" type="submit">Enroll Resident</button>
+</div>
+</form>
+</div>
+</div>
+<!-- ==========================================
+       MODAL 4: CREATE REPRESENTATIVE (ADMIN STRICT FLOW)
+       ========================================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 hidden" id="createRepModal">
+<div class="bg-surface-container-lowest rounded-2xl w-full max-w-xl border border-outline-variant/40 shadow-2xl overflow-hidden flex flex-col">
+<div class="p-5 border-b border-outline-variant/30 bg-surface-bright flex items-center justify-between">
+<div>
+<span class="text-[11px] font-bold uppercase text-red-700">Administrator Provisioning Flow</span>
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">+ Authorize Representative</h3>
+</div>
+<button class="text-outline hover:text-on-surface" onclick="closeModal('createRepModal')"><span class="material-symbols-outlined">close</span></button>
+</div>
+<form class="p-6 space-y-4" onsubmit="saveRepresentative(event)">
+<div class="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-900 leading-relaxed">
+<strong>Security Rule:</strong> Representative accounts are exclusively provisioned by Ente Ward Administrators. Public self-registration is disabled.
+        </div>
+<!-- Dependent Dropdowns -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-bold text-outline uppercase mb-1">Grama Panchayat</label>
+<select class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-xs font-semibold" id="gpSelect" onchange="loadChildWards(this.value)">
+<option value="Kadakampally">Kadakampally GP (തിരുവനന്തപുരം)</option>
+<option value="Kalliyoor">Kalliyoor GP (തിരുവനന്തപുരം)</option>
+<option value="Venganoor">Venganoor GP (തിരുവനന്തപുരം)</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-outline uppercase mb-1">Dependent Child Ward</label>
+<select class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-xs font-semibold" id="wardSelect">
+<option value="7">Ward 7 - Chakkai</option>
+<option value="8">Ward 8 - Anayara</option>
+<option value="9">Ward 9 - Pettah West</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-body-sm font-bold text-on-surface mb-1">Representative Full Name</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-body-sm" required="" type="text" value="Smt. Lathika Kumari">
+</div>
+<div>
+<label class="block text-body-sm font-bold text-on-surface mb-1">State Election Commission Gazette Ref / ID</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant/60 text-body-sm font-mono" required="" type="text" value="SEC-KL-2020-W7-9821">
+</div>
+<div class="pt-2 flex items-center justify-end gap-2">
+<button class="px-4 py-2 text-body-sm text-outline hover:text-on-surface" onclick="closeModal('createRepModal')" type="button">Cancel</button>
+<button class="px-5 py-2 rounded-xl bg-primary-container text-white text-body-sm font-semibold hover:bg-[#125B42]" type="submit">Provision Credential Key</button>
+</div>
+</form>
+</div>
+</div>
+<!-- JAVASCRIPT: INTERACTIVE CONTROLLER FOR SEAMLESS ROLE SWITCHING & AGENTIC SIMULATION -->
+<script>
+    // State management
+    let currentRole = 'resident';
+    let currentReportStep = 1;
+
+    function switchRole(role) {
+      currentRole = role;
+      
+      // Elements
+      const viewResident = document.getElementById('viewResident');
+      const viewRep = document.getElementById('viewRepresentative');
+      const viewAdmin = document.getElementById('viewAdmin');
+
+      const linkRes = document.getElementById('topLinkResident');
+      const linkRep = document.getElementById('topLinkRep');
+      const linkAdmin = document.getElementById('topLinkAdmin');
+
+      const indicator = document.getElementById('roleIndicatorText');
+
+      // Reset top nav links styling
+      [linkRes, linkRep, linkAdmin].forEach(link => {
+        link.className = "text-on-surface-variant font-title-md text-title-md hover:text-on-surface transition-colors";
+      });
+
+      // Hide all views
+      viewResident.classList.add('hidden');
+      viewRep.classList.add('hidden');
+      viewAdmin.classList.add('hidden');
+
+      if (role === 'resident') {
+        viewResident.classList.remove('hidden');
+        linkRes.className = "text-primary border-b-2 border-primary font-title-md text-title-md pb-1 font-semibold transition-colors";
+        indicator.innerText = "Role: Resident (Ward 7)";
+        highlightSidebarTab(0);
+      } else if (role === 'representative') {
+        viewRep.classList.remove('hidden');
+        linkRep.className = "text-primary border-b-2 border-primary font-title-md text-title-md pb-1 font-semibold transition-colors";
+        indicator.innerText = "Role: Ward Rep (Ward 7)";
+        highlightSidebarTab(3);
+      } else if (role === 'admin') {
+        viewAdmin.classList.remove('hidden');
+        linkAdmin.className = "text-primary border-b-2 border-primary font-title-md text-title-md pb-1 font-semibold transition-colors";
+        indicator.innerText = "Role: Platform Super Admin";
+        highlightSidebarTab(4);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function highlightSidebarTab(index) {
+      for (let i = 0; i <= 4; i++) {
+        const tab = document.getElementById(`navTab${i}`);
+        if (!tab) continue;
+        if (i === index) {
+          tab.className = "flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container text-primary font-title-md text-title-md";
+        } else {
+          tab.className = "flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface font-title-md text-title-md transition-colors hover:bg-surface-container-low";
+        }
+      }
+    }
+
+    function fillAiInput(text) {
+      const input = document.getElementById('aiPromptInput');
+      input.value = text;
+      input.focus();
+    }
+
+    function triggerSahayakanDemo() {
+      switchRole('resident');
+      fillAiInput('റോഡ് മോശമാണ് - സ്കൂളിന് സമീപം വലിയ കുഴികൾ രൂപപ്പെട്ടു');
+      runAgenticWorkflow();
+    }
+
+    function runAgenticWorkflow() {
+      const panel = document.getElementById('aiExecutionPanel');
+      panel.classList.remove('hidden');
+
+      const steps = [
+        'agentStep1',
+        'agentStep2',
+        'agentStep3',
+        'agentStep4',
+        'agentStep5',
+        'agentStep6'
+      ];
+
+      // Reset
+      steps.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.add('opacity-40');
+        const icon = el.querySelector('.step-icon');
+        if (icon) {
+          icon.textContent = 'radio_button_unchecked';
+          icon.style.fontVariationSettings = "'FILL' 0";
+        }
+      });
+
+      // Animate execution sequentially
+      steps.forEach((id, index) => {
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          el.classList.remove('opacity-40');
+          el.classList.add('bg-white', 'shadow-xs');
+          const icon = el.querySelector('.step-icon');
+          if (icon) {
+            icon.textContent = 'check_circle';
+            icon.style.fontVariationSettings = "'FILL' 1";
+          }
+        }, (index + 1) * 350);
+      });
+    }
+
+    // Modal Control
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function openIssueDetail(ticketId) {
+      document.getElementById('detailModalId').innerText = `#${ticketId}`;
+      openModal('issueDetailModal');
+    }
+
+    // 5-Step Logic
+    function updateReportStepUI() {
+      for (let s = 1; s <= 5; s++) {
+        const stepDiv = document.getElementById(`modalStep${s}`);
+        const badge = document.getElementById(`stepBadge${s}`);
+        if (s === currentReportStep) {
+          stepDiv.classList.remove('hidden');
+          badge.className = "w-6 h-6 rounded-full bg-primary-container text-white flex items-center justify-center font-bold";
+        } else if (s < currentReportStep) {
+          stepDiv.classList.add('hidden');
+          badge.className = "w-6 h-6 rounded-full bg-[#ECFDF5] text-[#0B4634] flex items-center justify-center font-bold";
+          badge.innerHTML = "✓";
+        } else {
+          stepDiv.classList.add('hidden');
+          badge.className = "w-6 h-6 rounded-full bg-surface-container text-outline flex items-center justify-center";
+          badge.innerHTML = s;
+        }
+      }
+
+      const btnBack = document.getElementById('modalBtnBack');
+      const btnNext = document.getElementById('modalBtnNext');
+
+      if (currentReportStep === 1) {
+        btnBack.classList.add('hidden');
+        btnNext.innerText = "Continue to Category →";
+      } else if (currentReportStep === 2) {
+        btnBack.classList.remove('hidden');
+        btnNext.innerText = "Confirm Location →";
+      } else if (currentReportStep === 3) {
+        btnBack.classList.remove('hidden');
+        btnNext.innerText = "Attach Evidence →";
+      } else if (currentReportStep === 4) {
+        btnBack.classList.remove('hidden');
+        btnNext.innerText = "Run AI Review →";
+      } else if (currentReportStep === 5) {
+        btnBack.classList.remove('hidden');
+        btnNext.innerText = "Submit to Ward 7 Desk ✓";
+      }
+    }
+
+    function nextModalStep() {
+      if (currentReportStep < 5) {
+        currentReportStep++;
+        updateReportStepUI();
+      } else {
+        closeModal('reportModal');
+        alert("Petition #EW-1045 formulated and queued for Ward Representative Smt. Lathika Kumari.");
+        currentReportStep = 1;
+        updateReportStepUI();
+      }
+    }
+
+    function prevModalStep() {
+      if (currentReportStep > 1) {
+        currentReportStep--;
+        updateReportStepUI();
+      }
+    }
+
+    function selectCategory(button, categoryName) {
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.className = "cat-pill p-2.5 rounded-xl border border-outline-variant/40 bg-white hover:bg-surface-container text-on-surface text-xs font-semibold flex items-center gap-2 text-left";
+      });
+      button.className = "cat-pill p-2.5 rounded-xl border-2 border-primary bg-[#ECFDF5] text-primary text-xs font-semibold flex items-center gap-2 text-left";
+    }
+
+    function rateStar(stars) {
+      const buttons = document.querySelectorAll('.star-btn');
+      buttons.forEach((btn, index) => {
+        if (index < stars) {
+          btn.classList.remove('text-slate-300');
+          btn.classList.add('text-amber-500');
+          btn.querySelector('span').style.fontVariationSettings = "'FILL' 1";
+        } else {
+          btn.classList.add('text-slate-300');
+          btn.classList.remove('text-amber-500');
+          btn.querySelector('span').style.fontVariationSettings = "'FILL' 0";
+        }
+      });
+      document.getElementById('starRatingFeedback').innerText = `Rated ${stars} / 5 Stars · Recorded to Citizen Audit Log`;
+    }
+
+    function acknowledgeIssue(id) {
+      alert(`Issue #${id} acknowledged by Representative Smt. Lathika Kumari. Citizen notified via SMS & App.`);
+    }
+
+    function openStatusModal(id) {
+      alert(`Status update drawer loaded for #${id}. Ward works team assigned.`);
+    }
+
+    function addEvidencePrompt(id) {
+      alert(`Photo / Geotag attachment tool ready for #${id}.`);
+    }
+
+    function resolveIssueModal(id) {
+      alert(`Issue #${id} marked RESOLVED. Closing report filed to Kadakampally Panchayat Works Secretary.`);
+    }
+
+    function saveNewResident(e) {
+      e.preventDefault();
+      closeModal('addResidentModal');
+      alert("New Resident successfully added to Kadakampally GP Ward 7 roster with geofenced boundaries.");
+    }
+
+    function saveRepresentative(e) {
+      e.preventDefault();
+      closeModal('createRepModal');
+      alert("Representative Smt. Lathika Kumari re-authorized. Cryptographic civic dispatch keys generated.");
+    }
+
+    function loadChildWards(gpName) {
+      const wardSelect = document.getElementById('wardSelect');
+      wardSelect.innerHTML = '';
+      if (gpName === 'Kadakampally') {
+        wardSelect.innerHTML = `
+          <option value="7">Ward 7 - Chakkai</option>
+          <option value="8">Ward 8 - Anayara</option>
+          <option value="9">Ward 9 - Pettah West</option>
+        `;
+      } else {
+        wardSelect.innerHTML = `
+          <option value="1">Ward 1 - North Roster</option>
+          <option value="2">Ward 2 - Central Market</option>
+          <option value="3">Ward 3 - East Colony</option>
+        `;
+      }
+    }
+
+    function scrollToIssues() {
+      const el = document.getElementById('issuesListContainer');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToTimeline() {
+      openIssueDetail('EW-1042');
+    }
+
+    function openDocNote() {
+      alert("Ente Ward Architecture: Multi-tiered civic coordination standard for Kerala Local Self Government (LSGD).");
+    }
+  </script>
+</body></html>

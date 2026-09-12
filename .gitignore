@@ -44,3 +44,14 @@ desktop.ini
 *.temp
 *.bak
 *.cache
+
+# ---- Node & Build artifacts ----
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+

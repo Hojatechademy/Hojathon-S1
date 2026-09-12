@@ -1,0 +1,238 @@
+/* Ente Ward (എന്റെ വാർഡ്) - Civic Design System */
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-ml: 'Noto Sans Malayalam', 'Inter', system-ui, sans-serif;
+
+  /* Primary Forest & Emerald */
+  --primary: #002e20;
+  --primary-dark: #062e22;
+  --primary-container: #0b4634;
+  --primary-light: #125b42;
+  --on-primary: #ffffff;
+  --primary-fixed: #b6efd5;
+
+  /* Secondary Teal */
+  --secondary: #006a63;
+  --secondary-container: #9bf2e8;
+  --secondary-light: #e6fffa;
+  --secondary-border: #7fd5cc;
+
+  /* Mint & Accents */
+  --mint: #ecfdf5;
+  --mint-border: #a7f3d0;
+  --mint-text: #065f46;
+
+  /* Neutrals & Surfaces */
+  --charcoal: #141b2b;
+  --surface-bg: #f9faf8;
+  --surface-card: #ffffff;
+  --outline: #707974;
+  --outline-light: #e2e8f0;
+  --outline-variant: #c0c9c2;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-600: #475569;
+  --slate-800: #1e293b;
+
+  /* Status Tokens */
+  --status-submitted: #fef3c7;
+  --status-submitted-text: #92400e;
+  --status-progress: #dbeafe;
+  --status-progress-text: #1e40af;
+  --status-action: #ede9fe;
+  --status-action-text: #5b21b6;
+  --status-resolved: #d1fae5;
+  --status-resolved-text: #065f46;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-ml);
+  background-color: var(--surface-bg);
+  color: var(--charcoal);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.material-symbols-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Clean UI Cards */
+.civic-card {
+  background: var(--surface-card);
+  border: 1px solid var(--outline-light);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.civic-card-interactive {
+  cursor: pointer;
+}
+
+.civic-card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(0, 46, 32, 0.08);
+  border-color: var(--primary-container);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.badge-mint {
+  background-color: var(--mint);
+  border: 1px solid var(--mint-border);
+  color: var(--mint-text);
+}
+
+.badge-teal {
+  background-color: var(--secondary-light);
+  border: 1px solid var(--secondary-border);
+  color: var(--secondary);
+}
+
+.badge-outline {
+  border: 1px solid var(--outline-light);
+  background: #ffffff;
+  color: var(--outline);
+}
+
+/* Primary Action Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--primary-container);
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0, 46, 32, 0.12);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid var(--outline-light);
+  color: var(--charcoal);
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--slate-100);
+  border-color: var(--outline-variant);
+}
+
+.btn-teal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--secondary);
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.btn-teal:hover {
+  background-color: #00504a;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(20, 27, 43, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
