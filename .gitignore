@@ -1,25 +1,4 @@
-# =========================================
-# Hojathon — Generic, stack-agnostic .gitignore
-# =========================================
-# This file protects against accidentally committing secrets and
-# common OS/editor junk. It does not assume any specific language,
-# framework, or tool. Add stack-specific rules for your own project
-# as needed inside your fork.
-
-# ---- Secrets & credentials ----
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-*.cert
-*.crt
-*secret*
-*credentials*
-*.p12
-*.pfx
-
-# ---- OS-generated files ----
+# Operating System files
 .DS_Store
 .DS_Store?
 ._*
@@ -27,20 +6,97 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-desktop.ini
 
-# ---- Editor / IDE metadata ----
-.vscode/
+# Environment variables & Secrets
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+*.crt
+application_default_credentials.json
+*credentials*.json
+service-account*.json
+# Preserve example environment templates
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# Python & Backend
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Python Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+backend/venv/
+
+# Testing & Code Quality
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage/
+
+# Node & Frontend (Next.js)
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+frontend/out/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+frontend/next-env.d.ts
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDEs & Editors
 .idea/
+.vscode/
 *.sublime-project
 *.sublime-workspace
 *.swp
 *.swo
 *~
-
-# ---- Temporary / log files ----
-*.log
-*.tmp
-*.temp
-*.bak
-*.cache

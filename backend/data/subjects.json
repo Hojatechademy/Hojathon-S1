@@ -1,0 +1,215 @@
+[
+  {
+    "id": "physics",
+    "name": "Physics",
+    "icon": "Atom",
+    "color": "from-blue-600 to-indigo-700",
+    "accent_bg": "bg-blue-50 text-blue-700 border-blue-200",
+    "description": "Mechanics, Electromagnetism, Quantum phenomena, and the fundamental laws governing the universe.",
+    "chapters": [
+      {
+        "id": "physics_ch1",
+        "title": "Newton's Laws of Motion & Classical Dynamics",
+        "chapter_number": 1,
+        "estimated_mins": 25,
+        "difficulty": "Foundational to Intermediate",
+        "pdf_filename": "physics_newtons_laws.pdf",
+        "summary": "Explores Galileo's principle of inertia, Newton's three foundational laws of motion, free body diagrams, friction, and multi-body gravitational mechanics.",
+        "key_topics": [
+          "Newton's First Law & Inertia",
+          "F = ma & Momentum",
+          "Action-Reaction Pairs",
+          "Free Body Diagrams",
+          "Frictional Forces"
+        ]
+      },
+      {
+        "id": "physics_ch2",
+        "title": "Electric Fields, Potential & DC Circuits",
+        "chapter_number": 2,
+        "estimated_mins": 30,
+        "difficulty": "Intermediate",
+        "pdf_filename": "physics_electromagnetism.pdf",
+        "summary": "Coulomb's Law, electrostatic potential, electric flux, Gauss's law, capacitance, Ohm's law, and Kirchhoff's loop and junction rules.",
+        "key_topics": [
+          "Coulomb's Law",
+          "Electric Field & Potential",
+          "Capacitors & Dielectrics",
+          "Kirchhoff's Laws",
+          "RC Circuits"
+        ]
+      },
+      {
+        "id": "physics_ch3",
+        "title": "Wave Optics & Quantum Dual Nature",
+        "chapter_number": 3,
+        "estimated_mins": 35,
+        "difficulty": "Advanced",
+        "pdf_filename": "physics_optics.pdf",
+        "summary": "Huygens' wave theory, Young's double-slit interference, diffraction gratings, photoelectric effect, de Broglie wavelength, and wave-particle duality.",
+        "key_topics": [
+          "Interference & Diffraction",
+          "Photoelectric Effect",
+          "de Broglie Wavelength",
+          "Wave Packets",
+          "Work Function"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "computer_science",
+    "name": "Computer Science",
+    "icon": "Cpu",
+    "color": "from-violet-600 to-purple-800",
+    "accent_bg": "bg-purple-50 text-purple-700 border-purple-200",
+    "description": "Core algorithms, hierarchical data structures, system architecture, and computational complexity.",
+    "chapters": [
+      {
+        "id": "cs_ch1",
+        "title": "Data Structures: Trees & Balanced Search Trees",
+        "chapter_number": 1,
+        "estimated_mins": 25,
+        "difficulty": "Intermediate",
+        "pdf_filename": "cs_trees_graphs.pdf",
+        "summary": "Binary trees, binary search trees (BST), balanced AVL trees, tree rotations, traversal orders (pre/in/post/level-order), and logarithmic search guarantees.",
+        "key_topics": [
+          "Binary Search Trees",
+          "Tree Traversals",
+          "AVL Tree Balancing",
+          "Height & Depth Math",
+          "Time Complexity Analysis"
+        ]
+      },
+      {
+        "id": "cs_ch2",
+        "title": "Algorithmic Paradigms: Dynamic Programming",
+        "chapter_number": 2,
+        "estimated_mins": 35,
+        "difficulty": "Advanced",
+        "pdf_filename": "cs_algorithms.pdf",
+        "summary": "Optimal substructure, overlapping subproblems, memoization vs tabulation, knapsack problems, and recurrence state formulation.",
+        "key_topics": [
+          "Optimal Substructure",
+          "Overlapping Subproblems",
+          "0/1 Knapsack",
+          "Longest Common Subsequence",
+          "Space Optimization"
+        ]
+      },
+      {
+        "id": "cs_ch3",
+        "title": "Operating Systems: Concurrency & Synchronization",
+        "chapter_number": 3,
+        "estimated_mins": 30,
+        "difficulty": "Advanced",
+        "pdf_filename": "cs_os.pdf",
+        "summary": "Processes vs threads, race conditions, critical section problem, mutexes, semaphores, and Coffman's four conditions for deadlock.",
+        "key_topics": [
+          "Critical Section Problem",
+          "Semaphores & Mutex",
+          "Deadlock Coffman Conditions",
+          "Banker's Algorithm",
+          "Thread Safety"
+        ]
+      },
+      {
+        "id": "computer_science_ai-poweredqrinventorymvpplan",
+        "title": "AI PoweredQRInventoryMVPPlan",
+        "chapter_number": 4,
+        "estimated_mins": 20,
+        "difficulty": "Custom Upload",
+        "pdf_filename": "AI-PoweredQRInventoryMVPPlan.pdf",
+        "summary": "Uploaded textbook PDF: AI PoweredQRInventoryMVPPlan",
+        "key_topics": [
+          "User Uploaded Material",
+          "Interactive AI Tutoring"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "biology",
+    "name": "Biology & Life Sciences",
+    "icon": "Dna",
+    "color": "from-emerald-600 to-teal-800",
+    "accent_bg": "bg-emerald-50 text-emerald-700 border-emerald-200",
+    "description": "Cellular machinery, energy conversion pathways, genetics, and molecular biology.",
+    "chapters": [
+      {
+        "id": "bio_ch1",
+        "title": "Cellular Respiration & ATP Synthesis",
+        "chapter_number": 1,
+        "estimated_mins": 25,
+        "difficulty": "Intermediate",
+        "pdf_filename": "bio_cellular_respiration.pdf",
+        "summary": "Glycolysis, the citric acid (Krebs) cycle, electron transport chain, chemiosmosis, proton gradients, and aerobic vs anaerobic fermentation.",
+        "key_topics": [
+          "Glycolysis in Cytoplasm",
+          "Krebs Cycle in Matrix",
+          "Electron Transport Chain",
+          "ATP Synthase Mechanism",
+          "Proton Motive Force"
+        ]
+      },
+      {
+        "id": "bio_ch2",
+        "title": "Molecular Genetics & DNA Replication",
+        "chapter_number": 2,
+        "estimated_mins": 30,
+        "difficulty": "Intermediate to Advanced",
+        "pdf_filename": "bio_genetics.pdf",
+        "summary": "DNA double-helix structure, semi-conservative replication, leading and lagging strands, Okazaki fragments, DNA polymerases, and proofreading.",
+        "key_topics": [
+          "Double Helix Structure",
+          "Helicase & Topoisomerase",
+          "Okazaki Fragments",
+          "DNA Polymerase III & I",
+          "Proofreading & Repair"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mathematics",
+    "name": "Mathematics",
+    "icon": "Calculator",
+    "color": "from-amber-600 to-orange-700",
+    "accent_bg": "bg-amber-50 text-amber-700 border-amber-200",
+    "description": "Calculus, continuous change, rates, vector spaces, and analytical problem solving.",
+    "chapters": [
+      {
+        "id": "math_ch1",
+        "title": "Differential Calculus & Optimization",
+        "chapter_number": 1,
+        "estimated_mins": 25,
+        "difficulty": "Foundational to Intermediate",
+        "pdf_filename": "math_calculus.pdf",
+        "summary": "Limits, definition of the derivative, product and quotient rules, chain rule, critical points, first and second derivative tests, and optimization.",
+        "key_topics": [
+          "Limit Definition of Derivative",
+          "Chain Rule & Product Rule",
+          "Critical Points & Extrema",
+          "Concavity & Inflection",
+          "Applied Optimization"
+        ]
+      },
+      {
+        "id": "math_ch2",
+        "title": "Linear Algebra: Vector Spaces & Transformations",
+        "chapter_number": 2,
+        "estimated_mins": 30,
+        "difficulty": "Advanced",
+        "pdf_filename": "math_linear_algebra.pdf",
+        "summary": "Vector spaces, linear combinations, span, linear independence, basis, dimension, matrix transformations, determinants, eigenvalues and eigenvectors.",
+        "key_topics": [
+          "Span & Linear Independence",
+          "Basis & Dimension",
+          "Linear Transformations",
+          "Determinants",
+          "Eigenvalues & Eigenvectors"
+        ]
+      }
+    ]
+  }
+]
