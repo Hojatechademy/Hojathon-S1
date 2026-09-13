@@ -1,0 +1,473 @@
+<!-- <!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri & Local AI Advisor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f9f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Responsive Header */
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #2e7d32;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+        }
+
+        /* Advice Result Box */
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-left: 5px solid #2e7d32;
+            display: none;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Agri & Local Business AI Advisor</h1>
+        <p>കർഷകർക്കും ചെറുകിട സംരംഭകർക്കും വ്യക്തിഗത AI ഉപദേശകൻ</p>
+    </header>
+
+    <div class="container">
+        <h2>നിങ്ങളുടെ ചോദ്യം ചോദിക്കൂ</h2>
+        <form id="agriForm">
+            <div class="form-group">
+                <label for="name">പേര്:</label>
+                <input type="text" id="name" placeholder="നിങ്ങളുടെ പേര്" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">സ്ഥലം/ജില്ല:</label>
+                <input type="text" id="location" placeholder="ഉദാഹരണത്തിന്: കോഴിക്കോട്" required>
+            </div>
+
+            <div class="form-group">
+                <label for="crop">വിള / ബിസിനസ്സ് വർഗ്ഗം:</label>
+                <input type="text" id="crop" placeholder="ഉദാഹരണത്തിന്: തെങ്ങ്, നെല്ല്, പച്ചക്കറി" required>
+            </div>
+
+            <div class="form-group">
+                <label for="query">ചോദ്യം / ആവശ്യം:</label>
+                <textarea id="query" rows="4" placeholder="കാലാവസ്ഥ, വിപണി വില, രോഗനിയന്ത്രണം എന്നിവ ചോദിക്കാം..." required></textarea>
+            </div>
+
+            <button type="submit">AI ഉപദേശം നേടുക</button>
+        </form>
+
+        <div id="result" class="result-box">
+            <h3>AI നൽകുന്ന ഉപദേശം:</h3>
+            <p id="adviceText"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('agriForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Input values
+            const farmerName = document.getElementById('name').value;
+            const location = document.getElementById('location').value;
+            const crop = document.getElementById('crop').value;
+            const query = document.getElementById('query').value;
+
+            // Backend API call
+            try {
+                const response = await fetch('http://localhost:5000/api/ask-advisor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ farmerName, location, crop, query })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('adviceText').innerText = data.advice;
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    alert('എന്തോ തരാറ സംഭവിച്ചു. ദയവായി വീണ്ടും ശ്രമിക്കുക.');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("ബാക്ക് എൻഡ് സെർവറുമായി കണക്ട് ചെയ്യാൻ സാധിച്ചില്ല.");
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriCart - ഇ-കോമേഴ്സ് സ്റ്റോർ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f9f4;
+            color: #333;
+        }
+        .bg-custom-green {
+            background-color: #2e7d32;
+        }
+        .text-custom-green {
+            color: #2e7d32;
+        }
+        .btn-custom-green {
+            background-color: #2e7d32;
+            color: white;
+        }
+        .btn-custom-green:hover {
+            background-color: #1b5e20;
+            color: white;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000') center/cover no-repeat;
+            color: white;
+            padding: 80px 0;
+        }
+        .product-card {
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-custom-green sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                AgriCart
+                <span class="d-block fs-6 fw-normal" id="headerSubtitle">നാടൻ ഉൽപ്പന്നങ്ങളുടെ ഓൺലൈൻ വിപണി</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Navigation Links -->
+                <ul class="navbar-menu navbar-nav me-auto ms-3 mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#home" id="navHome">ഹോം</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products" id="navProducts">ഉൽപ്പന്നങ്ങൾ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about" id="navAbout">ഞങ്ങളെക്കുറിച്ച്</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact" id="navContact">ബന്ധപ്പെടുക</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Multi-Language Selector -->
+                    <select class="form-select form-select-sm" id="languageSelect" onchange="changeLanguage()" style="width: auto;">
+                        <option value="ml">മലയാളം</option>
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                    </select>
+
+                    <!-- Auth Button -->
+                    <button class="btn btn-light text-custom-green fw-bold btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#authOffcanvas">
+                        <span id="btnAuthText">ലോഗിൻ / സൈൻ അപ്പ്</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home / Hero Section -->
+    <section id="home" class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold" id="heroTitle">ഗുണനിലവാരമുള്ള ജൈവ ഉൽപ്പന്നങ്ങൾ</h1>
+            <p class="lead" id="heroSubtext">കർഷകരിൽ നിന്ന് നേരിട്ട് നിങ്ങളുടെ അടുക്കളയിലേക്ക്</p>
+            <a href="#products" class="btn btn-custom-green btn-lg mt-3" id="btnShopNow">ഇപ്പോൾ വാങ്ങൂ</a>
+        </div>
+    </section>
+
+    <!-- Sidebar Offcanvas for Login / User Verification -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="authOffcanvas" aria-labelledby="authOffcanvasLabel">
+        <div class="offcanvas-header bg-custom-green text-white">
+            <h5 class="offcanvas-title" id="authOffcanvasLabel">ഉപയോക്തൃ അക്കൗണ്ട്</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Login Form -->
+            <h5 class="text-custom-green mb-3" id="loginHeading">ലോഗിൻ ചെയ്യുക</h5>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label" id="lblPhone">ഫോൺ നമ്പർ / ഇമെയിൽ:</label>
+                    <input type="text" class="form-control" placeholder="നിങ്ങളുടെ വിവരങ്ങൾ നൽകുക" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" id="lblPassword">പാസ്‌വേഡ്:</label>
+                    <input type="password" class="form-control" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn btn-custom-green w-100" id="btnLogin">ലോഗിൻ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <section id="products" class="container my-5">
+        <h2 class="text-center text-custom-green fw-bold mb-4" id="productsHeading">ഞങ്ങളുടെ ഉൽപ്പന്നങ്ങൾ</h2>
+        <div class="row g-4">
+            <!-- Product 1 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm product-card h-100">
+                    <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=400" class="card-img-top" alt="നാടൻ മസാല">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">നാടൻ മസാല കൂട്ടുകൾ</h5>
+                        <p class="card-text text-muted">വീട്ടിൽ തയ്യാറാക്കിയ ശുദ്ധമായ മസാലപ്പൊടികൾ.</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-custom-green fs-5">₹ 150</span>
+                            <button class="btn btn-custom-green btn-sm">വാങ്ങുക</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm product-card h-100">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?q=80&w=400" class="card-img-top" alt="തേൻ">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">ശുദ്ധമായ നാടൻ തേൻ</h5>
+                        <p class="card-text text-muted">പ്രകൃതിദത്തമായ ശുദ്ധമായ ചെറുതേൻ & വൻതേൻ.</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-custom-green fs-5">₹ 350</span>
+                            <button class="btn btn-custom-green btn-sm">വാങ്ങുക</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm product-card h-100">
+                    <img src="https://images.unsplash.com/photo-1566454825485-990f7070b357?q=80&w=400" class="card-img-top" alt="വെളിച്ചെണ്ണ">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">മരച്ചക്കിലാട്ടിയ വെളിച്ചെണ്ണ</h5>
+                        <p class="card-text text-muted">തനതായ മണവും ഗുണവുമുള്ള ശുദ്ധമായ വെളിച്ചെണ്ണ.</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-custom-green fs-5">₹ 240</span>
+                            <button class="btn btn-custom-green btn-sm">വാങ്ങുക</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-white py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="text-custom-green fw-bold mb-3" id="aboutHeading">ഞങ്ങളെക്കുറിച്ച്</h2>
+                    <p class="lead" id="aboutText">കർഷകരുടെയും ചെറുകിട സംരംഭകരുടെയും ഉൽപ്പന്നങ്ങൾ ഇടനിലക്കാരില്ലാതെ ഉപഭോക്താക്കളിലേക്ക് എത്തിക്കുക എന്നതാണ് ഞങ്ങളുടെ ലക്ഷ്യം. മികച്ച ഗുണനിലവാരവും മിതമായ വിലയും ഞങ്ങൾ ഉറപ്പുനൽകുന്നു.</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=600" class="img-fluid rounded shadow-sm" alt="Farming">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container my-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h4 class="card-title text-custom-green fw-bold mb-3" id="contactTitle">ബന്ധപ്പെടുക</h4>
+                <form id="contactForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="contactName" class="form-label" id="lblContactName">പേര്:</label>
+                            <input type="text" class="form-control" id="contactName" placeholder="നിങ്ങളുടെ പേര്" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="contactEmail" class="form-label" id="lblContactEmail">ഇമെയിൽ / ഫോൺ:</label>
+                            <input type="text" class="form-control" id="contactEmail" placeholder="വിവരങ്ങൾ നൽകുക" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contactMessage" class="form-label" id="lblContactMessage">സന്ദേശം:</label>
+                        <textarea class="form-control" id="contactMessage" rows="4" placeholder="നിങ്ങളുടെ സംശയങ്ങളോ സന്ദേശങ്ങളോ ഇവിടെ രേഖപ്പെടുത്തുക..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-custom-green w-100 py-2 fs-5" id="btnContactSubmit">സന്ദേശം അയക്കുക</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-custom-green text-white text-center py-3">
+        <p class="mb-0">&copy; 2026 AgriCart. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Language Dictionaries
+        const translations = {
+            ml: {
+                headerSubtitle: "നാടൻ ഉൽപ്പന്നങ്ങളുടെ ഓൺലൈൻ വിപണി",
+                navHome: "ഹോം",
+                navProducts: "ഉൽപ്പന്നങ്ങൾ",
+                navAbout: "ഞങ്ങളെക്കുറിച്ച്",
+                navContact: "ബന്ധപ്പെടുക",
+                btnAuthText: "ലോഗിൻ / സൈൻ അപ്പ്",
+                authOffcanvasLabel: "ഉപയോക്തൃ അക്കൗണ്ട്",
+                loginHeading: "ലോഗിൻ ചെയ്യുക",
+                lblPhone: "ഫോൺ നമ്പർ / ഇമെയിൽ:",
+                lblPassword: "പാസ്‌വേഡ്:",
+                btnLogin: "ലോഗിൻ",
+                heroTitle: "ഗുണനിലവാരമുള്ള ജൈവ ഉൽപ്പന്നങ്ങൾ",
+                heroSubtext: "കർഷകരിൽ നിന്ന് നേരിട്ട് നിങ്ങളുടെ അടുക്കളയിലേക്ക്",
+                btnShopNow: "ഇപ്പോൾ വാങ്ങൂ",
+                productsHeading: "ഞങ്ങളുടെ ഉൽപ്പന്നങ്ങൾ",
+                aboutHeading: "ഞങ്ങളെക്കുറിച്ച്",
+                aboutText: "കർഷകരുടെയും ചെറുകിട സംരംഭകരുടെയും ഉൽപ്പന്നങ്ങൾ ഇടനിലക്കാരില്ലാതെ ഉപഭോക്താക്കളിലേക്ക് എത്തിക്കുക എന്നതാണ് ഞങ്ങളുടെ ലക്ഷ്യം. മികച്ച ഗുണനിലവാരവും മിതമായ വിലയും ഞങ്ങൾ ഉറപ്പുനൽകുന്നു.",
+                contactTitle: "ബന്ധപ്പെടുക",
+                lblContactName: "പേര്:",
+                lblContactEmail: "ഇമെയിൽ / ഫോൺ:",
+                lblContactMessage: "സന്ദേശം:",
+                btnContactSubmit: "സന്ദേശം അയക്കുക"
+            },
+            en: {
+                headerSubtitle: "Online Marketplace for Local Organic Products",
+                navHome: "Home",
+                navProducts: "Products",
+                navAbout: "About Us",
+                navContact: "Contact",
+                btnAuthText: "Login / Sign Up",
+                authOffcanvasLabel: "User Account",
+                loginHeading: "Login",
+                lblPhone: "Phone Number / Email:",
+                lblPassword: "Password:",
+                btnLogin: "Login",
+                heroTitle: "High Quality Organic Products",
+                heroSubtext: "Directly from Farmers to Your Kitchen",
+                btnShopNow: "Shop Now",
+                productsHeading: "Our Products",
+                aboutHeading: "About Us",
+                aboutText: "Our mission is to deliver products from farmers and small entrepreneurs directly to consumers without middlemen. We ensure top quality and reasonable prices.",
+                contactTitle: "Contact Us",
+                lblContactName: "Name:",
+                lblContactEmail: "Email / Phone:",
+                lblContactMessage: "Message:",
+                btnContactSubmit: "Send Message"
+            },
+            hi: {
+                headerSubtitle: "स्थानीय जैविक उत्पादों का ऑनलाइन बाज़ार",
+                navHome: "होम",
+                navProducts: "उत्पाद",
+                navAbout: "हमारे बारे में",
+                navContact: "संपर्क करें",
+                btnAuthText: "लॉगिन / साइन अप",
+                authOffcanvasLabel: "उपयोगकर्ता खाता",
+                loginHeading: "लॉगिन करें",
+                lblPhone: "फ़ोन नंबर / ईमेल:",
+                lblPassword: "पासवर्ड:",
+                btnLogin: "लॉगिन",
+                heroTitle: "उच्च गुणवत्ता वाले जैविक उत्पाद",
+                heroSubtext: "किसानों से सीधे आपकी रसोई तक",
+                btnShopNow: "अभी खरीदें",
+                productsHeading: "हमारे उत्पाद",
+                aboutHeading: "हमारे बारे में",
+                aboutText: "हमारा मिशन किसानों और छोटे उद्यमियों के उत्पादों को बिना बिचौलियों के सीधे उपभोक्ताओं तक पहुंचाना है।",
+                contactTitle: "संपर्क करें",
+                lblContactName: "नाम:",
+                lblContactEmail: "ईमेल / फोन:",
+                lblContactMessage: "संदेश:",
+                btnContactSubmit: "संदेश भेजें"
+            }
+        };
+
+        // Function to Switch Interface Language
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const dict = translations[lang] || translations.ml;
+
+            for (let key in dict) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.innerText = dict[key];
+                }
+            }
+        }
+    </script>
+</body>
+</html>
