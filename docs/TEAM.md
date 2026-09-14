@@ -1,10 +1,10 @@
 # Team Information
 
-**Team ID:**
+**Team ID:saeid(78), sinan(79)**
 
-**Team Name:**
+**Team Name:2core**
 
-**Project Name:**
+**Project Name:expertforge**
 
 ---
 
